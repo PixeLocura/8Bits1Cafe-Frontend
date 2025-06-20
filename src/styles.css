@@ -1,2 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'Nunito';
+  src: url('/assets/fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
 @import "tailwindcss";
+
+:root {
+  --font-nunito: "Nunito", sans-serif;
+  --text-nav: 24px;
+  --color-nav: #464039;
+}
+
+body {
+  background: #FDF9ED;
+  font-family: 'Nunito', sans-serif;
+}
