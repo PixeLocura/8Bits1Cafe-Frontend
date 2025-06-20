@@ -1,0 +1,13 @@
+<div class="relative w-6 h-6 flex items-center justify-center cursor-pointer" (click)="onClick()">
+  <div class="flex items-center justify-center w-5 h-5">
+    <svg width="20" height="20" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5">
+      <path
+        d="M1.0415 1.04167H5.20817L7.99984 14.9896C8.09509 15.4692 8.35599 15.9 8.73686 16.2066C9.11774 16.5132 9.59431 16.676 10.0832 16.6667H20.2082C20.697 16.676 21.1736 16.5132 21.5545 16.2066C21.9354 15.9 22.1963 15.4692 22.2915 14.9896L23.9582 6.25H6.24984M10.4165 21.875C10.4165 22.4503 9.95013 22.9167 9.37484 22.9167C8.79954 22.9167 8.33317 22.4503 8.33317 21.875C8.33317 21.2997 8.79954 20.8333 9.37484 20.8333C9.95013 20.8333 10.4165 21.2997 10.4165 21.875ZM21.8748 21.875C21.8748 22.4503 21.4085 22.9167 20.8332 22.9167C20.2579 22.9167 19.7915 22.4503 19.7915 21.875C19.7915 21.2997 20.2579 20.8333 20.8332 20.8333C21.4085 20.8333 21.8748 21.2997 21.8748 21.875Z"
+        stroke="#464039" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </div>
+  <div *ngIf="itemCount > 0"
+    class="absolute -top-1 -right-1 w-[18px] h-[18px] bg-[#E5A277] rounded-full grid place-items-center z-20 pointer-events-none transition-all">
+    <span class="text-white font-semibold font-nunito text-[11px] leading-none">{{itemCount}}</span>
+  </div>
+</div>
