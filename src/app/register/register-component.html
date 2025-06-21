@@ -1,0 +1,111 @@
+<div class="container mx-auto px-4 py-12 flex flex-col items-center">
+  <div class="w-full max-w-lg">
+    <a routerLink="/" class="inline-flex items-center text-sm mb-6 text-muted-foreground hover:text-foreground">
+      ← Volver al inicio
+    </a>
+
+    <div class="bg-coffee-cream border border-coffee-brown/20 shadow-md rounded p-6">
+      <div class="text-center">
+        <!-- <app-logo></app-logo>-->
+        <h2 class="text-xl mt-6">Crea tu Cuenta</h2>
+        <p class="text-sm mt-2 text-muted-foreground">
+          ¡Forma parte de una nueva generación de gamers y creadores!
+        </p>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6 mt-6 max-w-xl mx-auto">
+        <div class="flex flex-col">
+          <label class="mb-1 font-semibold" for="username">Usuario</label>
+          <input
+            id="username"
+            formControlName="username"
+            class="input w-full rounded border border-coffee-brown/50 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coffee-terracotta"
+            placeholder="coolplayer123"
+          />
+          <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="text-red-500 text-sm mt-1">
+            El nombre de usuario es requerido (mínimo 3 caracteres)
+          </div>
+        </div>
+      
+        <div class="flex flex-col">
+          <label class="mb-1 font-semibold" for="email">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="input w-full rounded border border-coffee-brown/50 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coffee-terracotta"
+            placeholder="you@example.com"
+          />
+          <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="text-red-500 text-sm mt-1">
+            Un email válido es requerido
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="flex flex-col">
+            <label class="mb-1 font-semibold" for="password">Contraseña</label>
+            <input
+              id="password"
+              formControlName="password"
+              type="password"
+              placeholder="••••••••"
+              class="input w-full rounded border border-coffee-brown/50 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coffee-terracotta"
+            />
+          </div>
+          <div class="flex flex-col">
+            <label class="mb-1 font-semibold" for="confirmPassword">Confirmar contraseña</label>
+            <input
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              type="password"
+              placeholder="••••••••"
+              class="input w-full rounded border border-coffee-brown/50 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coffee-terracotta"
+            />
+          </div>
+        </div>
+        <div *ngIf="form.errors?.['mismatch']" class="text-red-500 text-sm mt-1">
+          Las contraseñas no coinciden
+        </div>
+        
+        <div class="flex items-start gap-2">
+          <input type="checkbox" formControlName="agreeTerms" />
+          <label class="text-sm">
+            Acepto los
+            <a routerLink="/terms" class="text-primary hover:underline">términos del servicio</a>
+            y
+            <a routerLink="/privacy" class="text-primary hover:underline">la política de privacidad.</a>
+          </label>
+        </div>
+        <div *ngIf="form.get('agreeTerms')?.invalid && form.get('agreeTerms')?.touched" class="text-red-500 text-sm">
+          Debes estar de acuerdo con los términos del servicio.
+        </div>
+
+        <button
+          type="submit"
+          [disabled]="isSubmitting"
+          class="w-full px-4 py-2 text-sm tracking-tight transition-colors pixel-corners font-press-start text-white bg-coffee-terracotta hover:bg-coffee-terracotta/90 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px]"
+        >
+          {{ isSubmitting ? 'Creando cuenta...' : 'Crear cuenta' }}
+        </button>
+      </form>
+
+      <div class="my-6 text-xs text-center">
+        <span class="px-2 bg-coffee-cream text-muted-foreground">o regístrate con</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-4">
+        <button class="w-full px-4 py-2 text-sm tracking-tight transition-colors pixel-corners font-press-start text-coffee-brown bg-coffee-cream hover:bg-coffee-cream/80 border border-coffee-brown/20 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px]">
+          Google
+        </button>
+        <button class="w-full px-4 py-2 text-sm tracking-tight transition-colors pixel-corners font-press-start text-coffee-brown bg-coffee-cream hover:bg-coffee-cream/80 border border-coffee-brown/20 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px]">
+          Discord
+        </button>
+      </div>
+
+      <div class="text-center text-sm mt-6">
+        ¿Ya tienes una cuenta?
+        <a routerLink="/login" class="text-primary hover:underline">Iniciar Sesión</a>
+      </div>
+    </div>
+  </div>
+</div>

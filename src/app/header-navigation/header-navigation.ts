@@ -29,6 +29,8 @@ export class HeaderNavigation {
   onProfileClick(): void {
     console.log('Profile clicked');
     // TODO: Implement profile functionality
+    //<a routerLink="/register" class="text-primary hover:underline">Register</a>
+
   }
 
   toggleMobileMenu(): void {
