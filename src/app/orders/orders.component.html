@@ -1,0 +1,67 @@
+
+<div class="container mx-auto px-4 py-8">
+  <button (click)="goBack()" class="flex items-center text-sm text-gray-600 mb-4 hover:text-gray-800">
+    ← Volver al perfil
+  </button>
+  <h1 class="text-3xl font-bold mb-1">Mis Pedidos</h1>
+  <p class="text-gray-500">Gestiona y revisa el historial de tus pedidos</p>
+
+  <div class="bg-coffee-cream rounded-lg border border-coffee-brown/20 shadow p-6 mt-6">
+    <div class="mb-4 flex space-x-4">
+      <button (click)="selectedTab='all'; currentPage=1" [class.font-semibold]="selectedTab==='all'">Todos</button>
+      <button (click)="selectedTab='completed'; currentPage=1" [class.font-semibold]="selectedTab==='completed'">Completados</button>
+      <button (click)="selectedTab='pending'; currentPage=1" [class.font-semibold]="selectedTab==='pending'">Pendientes</button>
+      <button (click)="selectedTab='cancelled'; currentPage=1" [class.font-semibold]="selectedTab==='cancelled'">Cancelados</button>
+    </div>
+
+    <ng-container *ngIf="paginated.length; else empty">
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="text-left">
+            <th class="py-2">Pedido</th><th>Fecha</th><th>Productos</th><th>Estado</th><th>Total</th><th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let o of paginated" class="border-t">
+            <td class="py-2 font-medium">{{o.id}}</td>
+            <td>{{ formatDate(o.date) }}</td>
+            <td>
+              <div class="flex flex-col space-y-1">
+                <div *ngFor="let i of o.items" class="flex items-center space-x-2">
+                  <img [src]="i.image" class="w-8 h-8 rounded object-cover" alt="{{i.name}}">
+                  <span class="text-sm">{{i.name}}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span [ngClass]="getStatusColor(o.status)" class="inline-flex items-center px-2 py-1 text-xs rounded text-white">
+                {{ getStatusIcon(o.status) }} <span class="ml-1">{{o.status}}</span>
+              </span>
+            </td>
+            <td class="font-medium">{{o.total}}</td>
+            <td class="flex space-x-2">
+              <button class="px-2 py-1 text-sm border rounded hover:bg-gray-100">Ver</button>
+              <button class="px-2 py-1 text-sm border rounded hover:bg-gray-100">Factura</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="flex justify-center items-center mt-4 space-x-2">
+        <button (click)="currentPage = currentPage>1? currentPage-1:1" [disabled]="currentPage===1" class="px-3 py-1 border rounded">«</button>
+        <ng-container *ngFor="let p of [].constructor(totalPages); let i = index">
+          <button (click)="currentPage=i+1" [class.bg-primary]="currentPage===i+1" class="px-3 py-1 border rounded">{{i+1}}</button>
+        </ng-container>
+        <button (click)="currentPage = currentPage<totalPages? currentPage+1:totalPages" [disabled]="currentPage===totalPages" class="px-3 py-1 border rounded">»</button>
+      </div>
+    </ng-container>
+
+    <ng-template #empty>
+      <div class="text-center py-12 text-gray-500">
+        <div class="text-4xl mb-2">📦</div>
+        No hay pedidos en esta categoría
+      </div>
+    </ng-template>
+  </div>
+</div>
+
