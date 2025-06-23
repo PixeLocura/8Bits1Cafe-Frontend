@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { Login } from './auth/login/login';
 
 export const appRoutes: Routes = [
 
@@ -22,8 +23,7 @@ export const appRoutes: Routes = [
 
   {
     path: 'login',
-    loadComponent: () =>
-      import('./login/login.component').then(m => m.LoginComponent),
+    component: Login
   },
 
   { path: '', redirectTo: '/register', pathMatch: 'full' },
