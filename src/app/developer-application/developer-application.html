@@ -1,0 +1,83 @@
+<div class="min-h-screen flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-8">
+  <!-- Back Button -->
+  <button routerLink="/become-developer"
+    class="flex items-center gap-2 text-[#CCB396] hover:text-[#E95151] transition-colors duration-200 p-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd"
+        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+        clip-rule="evenodd" />
+    </svg>
+    <span class="font-[Nunito]">Volver</span>
+  </button>
+
+  <!-- Main Content -->
+  <div class="flex justify-center items-start">
+    <div class="max-w-2xl w-full bg-white p-8 rounded-2xl shadow-lg">
+      <!-- Heading -->
+      <div class="space-y-2 mb-6">
+        <div class="text-center font-['Press_Start_2P'] text-[35px] tracking-[-0.5px] leading-[44px] text-[#504940] ">
+          <div>Crear Perfil de</div>
+          <div>Desarrollador</div>
+        </div>
+      </div>
+
+      @if (errorMessage) {
+      <div class="text-center text-red-500 font-[Nunito] text-sm">
+        {{errorMessage}}
+      </div>
+      }
+
+      <!-- Form -->
+      <form class="space-y-6" [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
+        <!-- Developer Name -->
+        <div class="space-y-2">
+          <label for="developerName" class="block text-[14px] font-[Nunito] font-semibold text-gray-700">
+            Nombre del Desarrollador o Estudio
+          </label>
+          <input id="developerName" type="text" formControlName="developerName"
+            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent"
+            placeholder="Ingrese el nombre de su estudio">
+        </div>
+
+        <!-- Description -->
+        <div class="space-y-2">
+          <label for="description" class="block text-[14px] font-[Nunito] font-semibold text-gray-700">
+            Descripción
+          </label>
+          <textarea id="description" formControlName="description" rows="4"
+            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent resize-none"
+            placeholder="Cuéntanos sobre tu estudio y los juegos que desarrollas"></textarea>
+          <p class="text-sm text-gray-500 font-[Nunito]">Mínimo 50 caracteres</p>
+        </div>
+
+        <!-- Website URL -->
+        <div class="space-y-2">
+          <label for="websiteUrl" class="block text-[14px] font-[Nunito] font-semibold text-gray-700">
+            URL del Sitio Web
+          </label>
+          <input id="websiteUrl" type="url" formControlName="websiteUrl"
+            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent"
+            placeholder="https://tusitio.com">
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6 mb-6">
+          <button type="submit" [disabled]="!applicationForm.valid"
+            class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-white bg-[#E5A277] hover:bg-[#D89267] rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition-colors duration-200">
+            Crear Perfil
+          </button>
+        </div>
+      </form>
+
+      <!-- Note -->
+      <div class="text-center mt-8">
+        <p class="font-[Nunito] text-sm text-[#7F776C]">
+          Al crear tu perfil de desarrollador, aceptas nuestros
+          <a routerLink="/terms" class="text-[#E5A277] hover:text-[#D89267] transition-colors duration-200">
+            términos y condiciones
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
