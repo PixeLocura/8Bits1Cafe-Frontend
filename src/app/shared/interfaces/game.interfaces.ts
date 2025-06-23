@@ -1,18 +1,8 @@
-export enum Platform {
-  MAC_OS = 'MAC_OS',
-  WINDOWS = 'WINDOWS'
-}
+export type Platform = String;
 
-export enum Category {
-  ACTION = 'ACTION',
-  ADVENTURE = 'ADVENTURE'
-}
+export type Category = String;
 
-export enum Language {
-  EN = 'EN',
-  ES = 'ES',
-  JA = 'JA'
-}
+export type Language = String;
 
 export interface Game {
   id: string;
