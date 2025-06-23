@@ -1,11 +1,17 @@
 import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { BecomeDeveloper } from './become-developer/become-developer';
+import { DeveloperApplication } from './developer-application/developer-application';
 
 export const appRoutes: Routes = [
   {
     path: 'become-developer',
     component: BecomeDeveloper,
+  },
+
+  {
+    path: 'developer-application',
+    component: DeveloperApplication,
   },
 
   {
