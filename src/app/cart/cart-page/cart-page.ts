@@ -38,7 +38,7 @@ export class CartPage implements OnInit {
     }
 
     get subtotal(): number {
-        return this.cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        return this.cartItems.reduce((sum, item) => sum + item.price, 0);
     }
 
     get tax(): number {
@@ -47,13 +47,6 @@ export class CartPage implements OnInit {
 
     get total(): number {
         return this.subtotal + this.tax;
-    }
-
-    updateQuantity(itemId: string, newQuantity: number): void {
-        const item = this.cartItems.find(i => i.id === itemId);
-        if (item && newQuantity > 0) {
-            item.quantity = newQuantity;
-        }
     }
 
     removeItem(itemId: string): void {

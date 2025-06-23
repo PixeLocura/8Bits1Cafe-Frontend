@@ -9,7 +9,6 @@ export interface CartProduct {
   id: string;
   name: string;
   price: number;
-  quantity: number;
   imageUrl: string;
 }
 
@@ -76,7 +75,6 @@ export class CartService {
         id: game.id,
         name: game.title,
         price: game.price,
-        quantity: 1,
         imageUrl: game.coverUrl
       }))
     );

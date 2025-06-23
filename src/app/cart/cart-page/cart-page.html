@@ -29,9 +29,8 @@
       <!-- Cart Items List -->
       <div class="lg:col-span-2 space-y-4">
         @for (item of cartItems; track item.id) {
-        <app-cart-item [id]="item.id" [name]="item.name" [price]="item.price" [quantity]="item.quantity"
-          [imageUrl]="item.imageUrl" (quantityChange)="updateQuantity(item.id, $event)"
-          (remove)="removeItem(item.id)"></app-cart-item>
+        <app-cart-item [id]="item.id" [name]="item.name" [price]="item.price" 
+          [imageUrl]="item.imageUrl" (remove)="removeItem(item.id)"></app-cart-item>
         }
       </div>
 
