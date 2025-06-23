@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
+import { BecomeDeveloper } from './become-developer/become-developer';
 
 export const appRoutes: Routes = [
+  {
+    path: 'become-developer',
+    component: BecomeDeveloper,
+  },
 
   {
     path: 'favorites',
@@ -28,7 +33,7 @@ export const appRoutes: Routes = [
 
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
- 
+
   // Página 404 - ruta comodín
   {
     path: '**',
