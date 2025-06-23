@@ -26,9 +26,15 @@ export const appRoutes: Routes = [
     component: Login
   },
 
+  {
+    path: 'buscar-juegos',
+    loadComponent: () =>
+      import('./buscar-juegos/buscar-juegos.component').then(m => m.BuscarJuegosComponent),
+  },
+
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
- 
+
   // Página 404 - ruta comodín
   {
     path: '**',
