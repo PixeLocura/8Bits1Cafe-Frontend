@@ -5,10 +5,11 @@ import { Footer } from './footer/footer';
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   imports: [RouterOutlet, HeaderNavigation, Footer],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-export class App {
+export class AppComponent {
   protected title = '8Bits1Cafe-frontend';
 }

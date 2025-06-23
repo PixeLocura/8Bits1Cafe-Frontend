@@ -1,0 +1,51 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="flex items-center mb-8">
+      <span class="mr-2 text-red-500">❤️</span>
+      <h1 class="text-2xl font-press-start">Mis Juegos Favoritos</h1>
+    </div>
+  
+    <div *ngIf="favorites.length > 0; else noFavorites">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div *ngFor="let game of favorites" class="relative bg-white rounded-lg shadow p-4">
+              
+              <!-- altura fija y recorte -->
+              <div class="w-full h-48 overflow-hidden rounded mb-2">
+                <img 
+                  [src]="game.coverImage" 
+                  [alt]="game.title" 
+                  class="w-full h-full object-cover"
+                />
+              </div>
+              
+              <h2 class="text-lg font-bold">{{ game.title }}</h2>
+              <p class="text-sm text-gray-600">{{ game.developer }}</p>
+              <p class="text-sm">Categorías: {{ game.category.join(', ') }}</p>
+              <p class="text-sm">Plataformas: {{ game.platforms.join(', ') }}</p>
+              <p class="text-sm font-semibold">{{ game.price }}</p>
+          
+              <button
+                class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+                (click)="removeFavorite(game.id)">
+                ✕
+              </button>
+            </div>
+          </div>
+          
+    </div>
+  
+    <ng-template #noFavorites>
+      <div class="text-center py-12 bg-coffee-cream border border-coffee-brown/20 rounded-lg">
+        <div class="text-4xl text-gray-400 mb-4">💔</div>
+        <h3 class="text-xl font-semibold">No tienes juegos favoritos</h3>
+        <p class="text-sm text-gray-600 max-w-md mx-auto mb-4">
+          Explora nuestra tienda y añade juegos a tu lista de favoritos para verlos aquí.
+        </p>
+        <button
+          (click)="goHome()"
+          class="px-4 py-2 border border-gray-400 hover:bg-gray-100 transition rounded">
+          Explorar Juegos
+        </button>
+      </div>
+    </ng-template>
+  </div>
+  

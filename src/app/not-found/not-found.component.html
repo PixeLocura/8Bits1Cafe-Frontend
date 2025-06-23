@@ -1,0 +1,52 @@
+<!-- <app-navbar /> -->
+<div class="container mx-auto px-4 py-12 flex flex-col items-center min-h-[70vh] justify-center">
+    <div class="font-press-start text-7xl md:text-9xl text-primary mb-6">404</div>
+  
+    <div class="w-40 h-40 md:w-56 md:h-56 mb-8 relative">
+      <div class="absolute w-28 h-28 md:w-40 md:h-40 bg-coffee-terracotta bottom-0 left-1/2 transform -translate-x-1/2 pixel-corners"></div>
+      <div class="absolute w-20 h-24 md:w-28 md:h-32 bg-coffee-yellow/80 bottom-4 left-1/2 transform -translate-x-1/2 pixel-corners"></div>
+  
+      <div class="absolute w-4 h-4 bg-coffee-terracotta/50 rounded-full -top-0 left-1/2 transform -translate-x-4 animate-coffee-steam"></div>
+      <div class="absolute w-4 h-4 bg-coffee-terracotta/50 rounded-full -top-4 left-1/2 transform -translate-x-1 animate-coffee-steam delay-300"></div>
+      <div class="absolute w-4 h-4 bg-coffee-terracotta/50 rounded-full -top-8 left-1/2 transform translate-x-2 animate-coffee-steam delay-150"></div>
+  
+      <div class="absolute w-8 h-16 md:w-12 md:h-24 bg-coffee-terracotta right-0 md:right-2 bottom-8 pixel-corners"></div>
+    </div>
+  
+    <div class="text-center mb-8 px-4">
+      <h1 class="font-press-start text-xl mb-3">Game Over</h1>
+      <p class="text-muted-foreground max-w-md">
+        Parece que este nivel no existe. La página que buscas se ha desvanecido en el vacío digital.
+      </p>
+    </div>
+  
+    <div class="flex flex-col sm:flex-row gap-4">
+      <a routerLink="/">
+        <button
+          class="flex items-center gap-2 px-4 py-2 text-sm font-press-start text-white bg-coffee-terracotta pixel-corners hover:bg-coffee-terracotta/90 shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px] transition-all"
+        >
+          <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path d="M3 12l9-9 9 9M4 10v10a1 1 0 001 1h5m10-11v10a1 1 0 01-1 1h-5" />
+          </svg>
+          Homepage
+        </button>
+      </a>
+  
+      <button
+        (click)="goBack()"
+        class="flex items-center gap-2 px-4 py-2 text-sm font-press-start text-coffee-terracotta bg-transparent border border-coffee-terracotta pixel-corners hover:bg-coffee-cream shadow-[4px_4px_0px_0px_rgba(0,0,0,0.2)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,0.2)] active:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] active:translate-x-[4px] active:translate-y-[4px] transition-all"
+      >
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path d="M15 19l-7-7 7-7" />
+        </svg>
+        Atrás
+      </button>
+    </div>
+  
+    <div class="font-press-start text-xs mt-16 text-muted-foreground">
+      PRESS START TO CONTINUE
+    </div>
+  </div>
+  
+  <!-- footer -->
+  
