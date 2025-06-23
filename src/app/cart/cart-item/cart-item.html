@@ -1,0 +1,28 @@
+<div class="flex items-center space-x-4 p-4 bg-white rounded-lg shadow">
+  <!-- Product Image -->
+  <img [src]="imageUrl" [alt]="name" class="w-20 h-20 object-cover rounded">
+
+  <!-- Product Details -->
+  <div class="flex-grow">
+    <h3 class="font-['Press_Start_2P'] text-sm text-[#504940]">{{ name }}</h3>
+    <p class="font-[Nunito] text-[#7F776C] mt-1">${{ price.toFixed(2) }}</p>
+  </div>
+
+  <!-- Quantity Controls -->
+  <div class="flex items-center space-x-2">
+    <button (click)="updateQuantity(-1)"
+      class="w-8 h-8 flex items-center justify-center rounded-full border border-[#E5A277] text-[#E5A277] hover:bg-[#E5A277] hover:text-white transition-colors duration-200">
+      -
+    </button>
+    <span class="font-[Nunito] w-8 text-center">{{ quantity }}</span>
+    <button (click)="updateQuantity(1)"
+      class="w-8 h-8 flex items-center justify-center rounded-full border border-[#E5A277] text-[#E5A277] hover:bg-[#E5A277] hover:text-white transition-colors duration-200">
+      +
+    </button>
+  </div>
+
+  <!-- Remove Button -->
+  <button (click)="removeItem()" class="text-[#E95151] hover:text-red-700 transition-colors duration-200 font-[Nunito]">
+    Eliminar
+  </button>
+</div>

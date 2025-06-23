@@ -1,39 +1,44 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CartIcon } from '../shared/cart-icon/cart-icon';
+import { RouterModule } from '@angular/router';
+import { CartService } from '../shared/services/cart';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-header-navigation',
-  imports: [CartIcon],
-  templateUrl: './header-navigation.html',
-  styleUrl: './header-navigation.css'
+    selector: 'app-header-navigation',
+    standalone: true,
+    imports: [CartIcon, RouterModule, CommonModule],
+    templateUrl: './header-navigation.html',
+    styleUrl: './header-navigation.css'
 })
-export class HeaderNavigation {
-  cartItemCount = 3; // Example cart item count
-  isMobileMenuOpen = false;
+export class HeaderNavigation implements OnInit {
+    cartItemCount = 0;
+    isMobileMenuOpen = false;
 
-  onSearchClick(): void {
-    console.log('Search clicked');
-    // TODO: Implement search functionality
-  }
+    constructor(private cartService: CartService) { }
 
-  onFavoritesClick(): void {
-    console.log('Favorites clicked');
-    // TODO: Implement favorites functionality
-  }
+    ngOnInit(): void {
+        this.cartService.getCartItemCount().subscribe(
+            count => this.cartItemCount = count
+        );
+    }
 
-  onCartClick(): void {
-    console.log('Cart clicked');
-    // TODO: Implement cart functionality
-  }
+    onSearchClick(): void {
+        console.log('Search clicked');
+        // TODO: Implement search functionality
+    }
 
-  onProfileClick(): void {
-    console.log('Profile clicked');
-    // TODO: Implement profile functionality
-    //<a routerLink="/register" class="text-primary hover:underline">Register</a>
+    onFavoritesClick(): void {
+        console.log('Favorites clicked');
+        // TODO: Implement favorites functionality
+    }
 
-  }
+    onProfileClick(): void {
+        console.log('Profile clicked');
+        // TODO: Implement profile functionality
+    }
 
-  toggleMobileMenu(): void {
-    this.isMobileMenuOpen = !this.isMobileMenuOpen;
-  }
+    toggleMobileMenu(): void {
+        this.isMobileMenuOpen = !this.isMobileMenuOpen;
+    }
 }

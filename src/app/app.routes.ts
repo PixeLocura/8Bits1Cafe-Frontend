@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { BecomeDeveloper } from './become-developer/become-developer';
 import { DeveloperApplication } from './developer-application/developer-application';
+import { CartPage } from './cart/cart-page/cart-page';
 
 export const appRoutes: Routes = [
   {
@@ -35,6 +36,11 @@ export const appRoutes: Routes = [
   {
     path: 'login',
     component: Login
+  },
+
+  {
+    path: 'cart',
+    component: CartPage,
   },
 
   { path: '', redirectTo: '/register', pathMatch: 'full' },

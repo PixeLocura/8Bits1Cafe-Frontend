@@ -1,0 +1,75 @@
+<div class="min-h-screen flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto w-full py-8">
+    <!-- Cart Title -->
+    <h1 class="font-['Press_Start_2P'] text-[35px] text-[#504940] mb-8">
+      Tu carrito ({{cartItems.length}})
+    </h1>
+
+    @if (loading) {
+    <div class="flex justify-center items-center min-h-[200px]">
+      <div class="font-[Nunito] text-[#7F776C]">Cargando carrito...</div>
+    </div>
+    } @else if (error) {
+    <div class="text-center text-red-500 font-[Nunito] p-4">
+      {{ error }}
+    </div>
+    } @else if (cartItems.length === 0) {
+    <div class="text-center font-[Nunito] text-[#7F776C] p-4">
+      Tu carrito está vacío
+      <div class="mt-4">
+        <a routerLink="/tienda"
+          class="inline-block py-2.5 px-4 text-lg font-['Press_Start_2P'] text-white bg-[#E5A277] hover:bg-[#D89267] rounded-lg transition-colors duration-200">
+          Ir a la tienda
+        </a>
+      </div>
+    </div>
+    } @else {
+    <!-- Main Content -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Cart Items List -->
+      <div class="lg:col-span-2 space-y-4">
+        @for (item of cartItems; track item.id) {
+        <app-cart-item [id]="item.id" [name]="item.name" [price]="item.price" [quantity]="item.quantity"
+          [imageUrl]="item.imageUrl" (quantityChange)="updateQuantity(item.id, $event)"
+          (remove)="removeItem(item.id)"></app-cart-item>
+        }
+      </div>
+
+      <!-- Summary Card -->
+      <div class="lg:col-span-1">
+        <div class="bg-white p-6 rounded-2xl shadow-lg">
+          <h2 class="font-['Press_Start_2P'] text-xl text-[#504940] mb-6">Resumen</h2>
+
+          <!-- Summary Details -->
+          <div class="space-y-4 font-[Nunito]">
+            <div class="flex justify-between">
+              <span class="text-[#7F776C]">Subtotal</span>
+              <span class="font-semibold">${{subtotal.toFixed(2)}}</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-[#7F776C]">Impuestos (10%)</span>
+              <span class="font-semibold">${{tax.toFixed(2)}}</span>
+            </div>
+            <div class="border-t border-gray-200 pt-4 flex justify-between">
+              <span class="font-semibold">Total</span>
+              <span class="font-semibold">${{total.toFixed(2)}}</span>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="space-y-3 mt-6">
+            <button routerLink="/checkout"
+              class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-white bg-[#E5A277] hover:bg-[#D89267] rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] disabled:opacity-50 transition-colors duration-200">
+              Pagar
+            </button>
+            <button routerLink="/tienda"
+              class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-[#7F776C] bg-transparent hover:bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors duration-200">
+              Continua comprando
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
