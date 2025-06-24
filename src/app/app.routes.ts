@@ -28,11 +28,22 @@ export const appRoutes: Routes = [
   },
 
   {
+    path: 'review',
+    loadComponent: () =>
+      import('./resena/resena.component').then(m => m.ResenaComponent),
+  },
+  {
     path: 'orders',
     loadComponent: () =>
       import('./orders/orders.component').then(m => m.OrdersComponent),
   },
 
+  {
+    path: 'developer/dashboard',
+    loadComponent: () =>
+      import('./developer-dashboard/developer-dashboard.component').then(m => m.DeveloperDashboardComponent),
+  },
+  
   {
     path: 'register',
     loadComponent: () =>
@@ -43,12 +54,15 @@ export const appRoutes: Routes = [
     path: 'login',
     component: Login
   },
-
   {
     path: 'cart',
     component: CartPage,
   },
-
+  {
+    path: 'buscar-juegos',
+    loadComponent: () =>
+      import('./buscar-juegos/buscar-juegos.component').then(m => m.BuscarJuegosComponent),
+  },
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
 

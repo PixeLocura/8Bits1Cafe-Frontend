@@ -1,8 +1,15 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+  FormGroup,
+  ValidatorFn,
+  AbstractControl,
+  ValidationErrors
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +21,7 @@ export class RegisterComponent {
   isSubmitting = false;
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group(
       {
         username: ['', [Validators.required, Validators.minLength(3)]],
@@ -30,24 +37,31 @@ export class RegisterComponent {
         confirmPassword: ['', Validators.required],
         agreeTerms: [false, Validators.requiredTrue],
       },
-      { validators: this.passwordsMatch }
+      { validators: this.passwordsMatchValidator() }
     );
   }
 
-  passwordsMatch(group: FormGroup) {
-    const password = group.get('password')?.value;
-    const confirm = group.get('confirmPassword')?.value;
-    return password === confirm ? null : { mismatch: true };
+  private passwordsMatchValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const group = control as FormGroup;
+      const password = group.get('password')?.value;
+      const confirm = group.get('confirmPassword')?.value;
+      return password === confirm ? null : { mismatch: true };
+    };
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.isSubmitting = true;
     setTimeout(() => {
       console.log(this.form.value);
-      alert('Account created! Check your email.');
+      alert('¡Cuenta creada! Revisa tu correo.');
       this.isSubmitting = false;
+      this.router.navigate(['/login']);
     }, 1500);
   }
 }
