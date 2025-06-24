@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResenaComponent } from '../resena/resena.component';
 import { RouterModule } from '@angular/router';
 
 import { Game } from '../shared/models/game.model';
@@ -11,7 +10,7 @@ import { MOCK_GAMES } from '../shared/mock/mock-games';
 @Component({
   selector: 'app-buscar-juegos',
   standalone: true,
-  imports: [CommonModule, FormsModule, ResenaComponent, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './buscar-juegos.component.html',
 })
 export class BuscarJuegosComponent {

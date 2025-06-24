@@ -63,27 +63,39 @@
       <button class="px-4 py-2 border-b-2" [ngClass]="{ 'border-coffee-terracotta font-bold': tabSeleccionado === 'resenas' }" (click)="seleccionarTab('resenas')">Reseñas</button>
     </div>
 
-    <!-- Contenido del tab -->
-    <div class="border p-4 rounded">
-      <ng-container [ngSwitch]="tabSeleccionado">
-        <p *ngSwitchCase="'descripcion'">{{ j.description }}</p>
+        <!-- Contenido del tab -->
+<div class="border p-4 rounded" [ngSwitch]="tabSeleccionado">
+  <p *ngSwitchCase="'descripcion'">{{ j.description }}</p>
 
-        <pre *ngSwitchCase="'requisitos'" class="whitespace-pre-wrap text-sm">{{ j.requisitos?.join('\n') || 'No hay requisitos disponibles' }}</pre>
+  <pre *ngSwitchCase="'requisitos'" class="whitespace-pre-wrap text-sm">
+    {{ j.requisitos?.join('\n') || 'No hay requisitos disponibles' }}
+  </pre>
 
-        <div *ngSwitchCase="'resenas'">
-          <div *ngIf="j.reviews?.length; else sinResenas">
-            <div *ngFor="let review of j.reviews" class="mb-4 border-b pb-2">
-              <p class="text-sm font-semibold">{{ review.autor }}:</p>
-              <p class="text-sm">{{ review.comentario }}</p>
-              <p class="text-yellow-500 text-xs">{{ '⭐'.repeat(review.rating) }}</p>
-            </div>
-          </div>
-          <ng-template #sinResenas>
-            <p class="text-sm text-muted-foreground">Aún no hay reseñas.</p>
-          </ng-template>
-        </div>
-      </ng-container>
+  <div *ngSwitchCase="'resenas'">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold">Reseñas de jugadores</h3>
+      <button
+        class="text-sm text-coffee-terracotta underline hover:text-coffee-brown"
+        (click)="abrirModal(j)">
+        Escribir reseña
+      </button>
     </div>
+
+    <div *ngIf="j.reviews?.length; else sinResenas">
+      <div *ngFor="let review of j.reviews" class="mb-4 border-b pb-2">
+        <p class="text-sm font-semibold">{{ review.autor }}:</p>
+        <p class="text-sm">{{ review.comentario }}</p>
+        <p class="text-yellow-500 text-xs">{{ '⭐'.repeat(review.rating) }}</p>
+      </div>
+    </div>
+
+    <ng-template #sinResenas>
+      <p class="text-sm text-muted-foreground">Aún no hay reseñas.</p>
+    </ng-template>
+  </div>
+</div>
+
+
 
     <!-- Más de este desarrollador -->
     <div class="border p-4 rounded" *ngIf="juegosDelMismoDev.length">
@@ -99,4 +111,12 @@
       </div>
     </div>
   </section>
+  <!-- Modal reseña -->
+  <app-resena
+    *ngIf="mostrarModal"
+    [gameTitle]="juego.title"
+    [show]="mostrarModal"
+    (close)="cerrarModal()"
+    (submitReview)="guardarResena($event)">
+  </app-resena>
 </div>

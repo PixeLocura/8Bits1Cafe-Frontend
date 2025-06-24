@@ -16,10 +16,6 @@ export const appRoutes: Routes = [
     component: DeveloperApplication,
   },
 
-  {
-    path: 'juego/:id',
-    component: GamePageComponent,
-  },
 
   {
     path: 'favorites',

@@ -18,10 +18,12 @@ export class ResenaComponent {
   comentario: string = '';
   rating: number = 0;
 
-  enviarResena() {
+  enviarResena(event: Event) {
+    event.preventDefault(); // previene el comportamiento del formulario
     this.submitReview.emit({ comentario: this.comentario, rating: this.rating });
     this.cerrarModal();
   }
+
 
   cerrarModal() {
     this.comentario = '';
