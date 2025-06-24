@@ -1,7 +1,19 @@
-<div class="min-h-screen flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto w-full py-8">
+<div class="min-h-screen flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-10">
+  <div class="max-w-[1500px] mx-auto w-full py-8">
     <!-- Cart Title -->
-    <h1 class="font-['Press_Start_2P'] text-[35px] text-[#504940] mb-8">
+    <h1 class="flex items-center gap-4 font-['Press_Start_2P'] text-[35px] text-[#504940] mb-8">
+      <svg width="45" height="45" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_75_1084)">
+          <path
+            d="M1.6665 1.66675H8.33317L12.7998 23.9834C12.9522 24.7507 13.3697 25.44 13.9791 25.9306C14.5885 26.4211 15.351 26.6817 16.1332 26.6667H32.3332C33.1153 26.6817 33.8779 26.4211 34.4873 25.9306C35.0967 25.44 35.5141 24.7507 35.6665 23.9834L38.3332 10.0001H9.99984M16.6665 35.0001C16.6665 35.9206 15.9203 36.6667 14.9998 36.6667C14.0794 36.6667 13.3332 35.9206 13.3332 35.0001C13.3332 34.0796 14.0794 33.3334 14.9998 33.3334C15.9203 33.3334 16.6665 34.0796 16.6665 35.0001ZM34.9998 35.0001C34.9998 35.9206 34.2536 36.6667 33.3332 36.6667C32.4127 36.6667 31.6665 35.9206 31.6665 35.0001C31.6665 34.0796 32.4127 33.3334 33.3332 33.3334C34.2536 33.3334 34.9998 34.0796 34.9998 35.0001Z"
+            stroke="#464039" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        </g>
+        <defs>
+          <clipPath id="clip0_75_1084">
+            <rect width="40" height="40" fill="white" />
+          </clipPath>
+        </defs>
+      </svg>
       Tu carrito ({{cartItems.length}})
     </h1>
 
@@ -27,42 +39,63 @@
     <!-- Main Content -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
       <!-- Cart Items List -->
-      <div class="lg:col-span-2 space-y-4">
-        @for (item of cartItems; track item.id) {
-        <app-cart-item [id]="item.id" [name]="item.name" [price]="item.price" [imageUrl]="item.imageUrl"
-          (remove)="removeItem(item.id)"></app-cart-item>
-        }
+      <div class="lg:col-span-2">
+        <div
+          class="bg-[#FEFBF3] border-2 border-[#F2E9DC] p-10 rounded-[28px] shadow-[0px_1px_3px_1px_rgba(0,0,0,0.1)]">
+          <h2 class="font-['Press_Start_2P'] text-[24px] leading-[24px] tracking-[0.5px] text-[#464039] mb-[33px]">
+            Items ({{cartItems.length}})
+          </h2>
+          <div class="space-y-[35px]">
+            @for (item of cartItems; track item.id; let last = $last) {
+            <app-cart-item [id]="item.id" [name]="item.name" [price]="item.price" [imageUrl]="item.imageUrl"
+              [isLast]="last" (remove)="removeItem(item.id)"></app-cart-item>
+            }
+          </div>
+        </div>
       </div>
 
       <!-- Summary Card -->
       <div class="lg:col-span-1">
-        <div class="bg-white p-6 rounded-2xl shadow-lg">
-          <h2 class="font-['Press_Start_2P'] text-xl text-[#504940] mb-6">Resumen</h2>
+        <div class="bg-[#FEFBF3] border-2 border-[#F2E9DC] p-8 rounded-[28px] shadow-[0px_1px_3px_1px_rgba(0,0,0,0.1)]">
+          <h2 class="font-['Press_Start_2P'] text-[32px] text-[#464039] tracking-[0.5px] mb-[33px] text-center">Resumen
+          </h2>
 
           <!-- Summary Details -->
-          <div class="space-y-4 font-[Nunito]">
-            <div class="flex justify-between">
-              <span class="text-[#7F776C]">Subtotal</span>
-              <span class="font-semibold">${{subtotal.toFixed(2)}}</span>
+          <div class="space-y-[19px] w-full">
+            <div class="flex justify-between items-center">
+              <span
+                class="font-[Nunito] font-medium text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">Subtotal</span>
+              <span
+                class="font-[Nunito] font-medium text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">${{subtotal.toFixed(2)}}</span>
             </div>
-            <div class="flex justify-between">
-              <span class="text-[#7F776C]">Impuestos (10%)</span>
-              <span class="font-semibold">${{tax.toFixed(2)}}</span>
+            <div class="flex justify-between items-center">
+              <span
+                class="font-[Nunito] font-medium text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">Impuestos
+                (10%)</span>
+              <span
+                class="font-[Nunito] font-medium text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">${{tax.toFixed(2)}}</span>
             </div>
-            <div class="border-t border-gray-200 pt-4 flex justify-between">
-              <span class="font-semibold">Total</span>
-              <span class="font-semibold">${{total.toFixed(2)}}</span>
+            <div class="w-full border-t border-[#F2E9DC]"></div>
+            <div class="flex justify-between items-center">
+              <span
+                class="font-[Nunito] font-semibold text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">Total</span>
+              <span
+                class="font-[Nunito] font-semibold text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">${{total.toFixed(2)}}</span>
             </div>
           </div>
 
           <!-- Buttons -->
-          <div class="space-y-3 mt-6">
+          <div class="space-y-[25px] mt-[46px] flex flex-col items-center">
             <button routerLink="/checkout"
-              class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-white bg-[#E5A277] hover:bg-[#D89267] rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] disabled:opacity-50 transition-colors duration-200">
-              Pagar
+              class="w-full max-w-[351.94px] h-[62px] flex justify-center items-center gap-[13px] font-['Press_Start_2P'] text-[20px] leading-[20px] tracking-[0.5px] text-white bg-[#DFAD88] hover:bg-[#D89267] rounded-[16px] shadow-[0px_1px_3px_rgba(0,0,0,0.25)] transition-colors duration-200">
+              <span>Pagar</span>
+              <svg width="20" height="20" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.97998 7.99984H16.5633M11.1466 13.8332L16.98 7.99984L11.1466 2.1665" stroke="white"
+                  stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </button>
             <button routerLink="/tienda"
-              class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-[#7F776C] bg-transparent hover:bg-gray-50 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition-colors duration-200">
+              class="w-full max-w-[351.94px] h-[62px] flex justify-center items-center font-[Nunito] font-medium text-[24px] leading-[33px] tracking-[0.5px] text-[#464039] bg-transparent border-2 border-[#F2E9DC] hover:bg-gray-50 rounded-[16px] transition-colors duration-200">
               Continua comprando
             </button>
           </div>

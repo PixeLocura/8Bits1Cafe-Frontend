@@ -24,7 +24,10 @@ export class CartService {
     this.loadCartFromStorage();
     // Add test item if cart is empty
     if (this.cartItemIds.value.length === 0) {
-      this.addToCart('5a0cfad9-50f0-469b-8420-0269e117b34c');
+      // this.clearCart();
+      this.addToCart('db52995c-b859-4220-9e14-ad0b60183c3d');
+      this.addToCart('b057d590-1bee-4ff2-8e9f-73a0b028dd6a');
+      this.addToCart('e4404cc4-cbaa-4293-955c-4abbd7a56bff');
     }
   }
 

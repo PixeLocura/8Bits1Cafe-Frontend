@@ -13,6 +13,7 @@ export class CartItem {
   @Input() name!: string;
   @Input() price!: number;
   @Input() imageUrl!: string;
+  @Input() isLast: boolean = false;
 
   @Output() remove = new EventEmitter<void>();
 
