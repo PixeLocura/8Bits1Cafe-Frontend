@@ -1,0 +1,138 @@
+<div class="container mx-auto px-4 py-8">
+  <!-- Título principal -->
+  <div class="mb-4">
+    <h1 class="text-2xl md:text-3xl font-press-start text-coffee-terracotta">Buscar Juegos</h1>
+    <p class="text-sm text-muted-foreground mt-1">Encuentra tu siguiente aventura</p>
+  </div>
+
+  <!-- Input de búsqueda y orden -->
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+      <input
+        type="text"
+        placeholder="Busca juegos o desarrolladores"
+        [(ngModel)]="searchTerm"
+        class="w-full md:w-2/3 px-4 py-2 border border-coffee-brown/40 rounded focus:outline-none focus:ring-2 focus:ring-coffee-terracotta placeholder:text-gray-400"
+      />
+
+    <div class="flex items-center">
+      <label for="orden" class="mr-2 text-sm text-muted-foreground">Ordenar por:</label>
+      <select id="orden"  [(ngModel)]="sortOption" class="border border-coffee-brown/40 px-3 py-2 rounded focus:outline-none">
+        <option value="relevancia">Relevancia</option>
+        <option value="titulo-az">A - Z</option>
+        <option value="precio-menor">Precio: Menor a Mayor</option>
+        <option value="precio-mayor">Precio: Mayor a Menor</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Filtros y Resultados -->
+  <div class="flex flex-col md:flex-row gap-6">
+    <!-- Filtros -->
+    <aside class="w-full md:w-1/4 bg-coffee-cream border border-coffee-brown/20 rounded p-4">
+      <h2 class="text-lg font-semibold mb-3">Filtros</h2>
+
+      <!-- Rango de Precio -->
+      <div class="mb-4">
+        <label class="block text-sm font-semibold mb-1">Rango de Precio</label>
+        <input type="range" min="0" max="100" [(ngModel)]="minPrice" class="w-full mb-1" />
+        <input type="range" min="0" max="100" [(ngModel)]="maxPrice" class="w-full mb-1" />
+        <div class="flex justify-between text-xs text-muted-foreground">
+          <span>Min: ${{ minPrice }}</span>
+          <span>Max: ${{ maxPrice }}</span>
+        </div>
+      </div>
+
+      <!-- Género -->
+      <div class="mb-4">
+        <label class="block text-sm font-semibold mb-1">Género</label>
+        <div class="space-y-1 text-sm">
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Acción']"> Acción</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Arcade']"> Arcade</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Aventura']"> Aventura</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Puzzle']"> Puzzle</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Racing']"> Racing</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['RPG']">RPG</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Shooter']"> Shooter</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Tower Defense']">Tower Defense</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Strategy']"> Strategy</div>
+          <div><input type="checkbox" [(ngModel)]="selectedGenres['Simulation']"> Simulation</div>
+        </div>
+      </div>
+
+      <!-- Plataforma -->
+      <div class="mb-4">
+        <label class="block text-sm font-semibold mb-1">Plataforma</label>
+        <div class="space-y-1 text-sm">
+          <div><input type="checkbox" [(ngModel)]="selectedPlatforms['Windows']"> Windows</div>
+          <div><input type="checkbox" [(ngModel)]="selectedPlatforms['Mac']"> Mac</div>
+          <div><input type="checkbox" [(ngModel)]="selectedPlatforms['Linux']"> Linux</div>
+          <div><input type="checkbox" [(ngModel)]="selectedPlatforms['Web Browser']"> Web Browser</div>
+          <div><input type="checkbox" [(ngModel)]="selectedPlatforms['Android']"> Android</div>
+          <div><input type="checkbox" [(ngModel)]="selectedPlatforms['iOS']"> iOS</div>
+        </div>
+      </div>
+
+      <!-- Idioma -->
+      <div class="mb-4">
+        <label class="block text-sm font-semibold mb-1">Idioma</label>
+        <div class="space-y-1 text-sm">
+          <div><input type="checkbox" [(ngModel)]="selectedLanguages['Español']"> Español</div>
+          <div><input type="checkbox" [(ngModel)]="selectedLanguages['Inglés']"> Inglés</div>
+          <div><input type="checkbox" [(ngModel)]="selectedLanguages['Chino']"> Chino</div>
+          <div><input type="checkbox" [(ngModel)]="selectedLanguages['Árabe']"> Árabe</div>
+          <div><input type="checkbox" [(ngModel)]="selectedLanguages['Ruso']"> Ruso</div>
+        </div>
+      </div>
+
+      <!-- Valoración -->
+      <div>
+        <label class="block text-sm font-semibold mb-1">Valoración</label>
+        <div class="space-y-1 text-sm">
+          <div><input type="checkbox" [(ngModel)]="selectedRatings[1]"> ⭐</div>
+          <div><input type="checkbox" [(ngModel)]="selectedRatings[2]"> ⭐⭐</div>
+          <div><input type="checkbox" [(ngModel)]="selectedRatings[3]"> ⭐⭐⭐</div>
+          <div><input type="checkbox" [(ngModel)]="selectedRatings[4]"> ⭐⭐⭐⭐</div>
+          <div><input type="checkbox" [(ngModel)]="selectedRatings[5]"> ⭐⭐⭐⭐⭐</div>
+
+        </div>
+      </div>
+    </aside>
+
+    <!-- Resultados (placeholder por ahora) -->
+    <section class="w-full md:w-3/4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Aquí van las tarjetas de juegos -->
+        <div *ngFor="let game of filteredGames" class="bg-white rounded-lg shadow p-4 border border-gray-200">
+          <div class="h-48 w-full mb-3 overflow-hidden rounded">
+            <img [src]="game.coverImage" [alt]="game.title" class="w-full h-full object-cover">
+          </div>
+          <h3 class="font-semibold text-lg mb-1">{{ game.title }}</h3>
+          <p class="text-sm text-muted-foreground mb-1">Desarrollador: {{ game.developer }}</p>
+          <p class="text-sm text-muted-foreground mb-1">Plataformas: {{ game.platforms.join(', ') }}</p>
+          <p class="text-sm text-muted-foreground mb-1">Géneros: {{ game.genres.join(', ') }}</p>
+          <p class="text-sm text-muted-foreground mb-1">Idiomas: {{ game.languages.join(', ') }}</p>
+          <p class="text-sm text-muted-foreground mb-1">Valoración:
+            <span *ngFor="let star of [].constructor(game.rating)">⭐</span>
+          </p>
+          <p class="font-bold mt-1">${{ game.price }}</p>
+
+          <!-- ✅ Este botón va AQUÍ -->
+          <div class="text-right mt-2">
+            <button
+              class="text-sm text-coffee-terracotta underline hover:text-coffee-brown"
+              (click)="abrirModal(game)">
+              Escribir resena
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+    <app-resena
+      *ngIf="mostrarModal"
+      [gameTitle]="juegoSeleccionado?.title || ''"
+      [show]="mostrarModal"
+      (close)="cerrarModal()"
+      (submitReview)="guardarResena($event)">
+    </app-resena>
+</div>
