@@ -1,0 +1,166 @@
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between mb-8">
+      <div class="mb-4 md:mb-0">
+        <h1 class="text-2xl font-press-start">Panel de Desarrollador</h1>
+        <p class="text-muted-foreground mt-2">
+          Gestiona tus juegos y analiza el rendimiento
+        </p>
+      </div>
+      <div class="flex gap-4">
+        <a [routerLink]="['/developer/upload']">
+          <button
+            class="inline-flex items-center gap-2 rounded px-4 py-2 text-sm font-press-start bg-coffee-yellow text-black border border-coffee-brown transition-colors hover:bg-coffee-terracotta hover:text-white"
+          >
+            <app-lucide-icon name="upload" [size]="16" customClass="mr-2" />
+            Subir Nuevo Juego
+          </button>
+        </a>
+      </div>
+    </div>
+  
+    <!-- Tabs (botones) -->
+    <div class="flex mb-6 bg-coffee-beige border border-coffee-brown/10 rounded-lg overflow-hidden">
+      <button
+        class="px-4 py-2 text-sm font-medium transition-colors"
+        [class.bg-primary]="activeTab === 'overview'"
+        [class.text-primary-foreground]="activeTab === 'overview'"
+        (click)="activeTab = 'overview'"
+      >
+        <app-lucide-icon name="bar-chart-3" [size]="16" customClass="mr-2" />
+        Vista General
+      </button>
+  
+      <button
+        class="px-4 py-2 text-sm font-medium transition-colors"
+        [class.bg-primary]="activeTab === 'games'"
+        [class.text-primary-foreground]="activeTab === 'games'"
+        (click)="activeTab = 'games'"
+      >
+        <app-lucide-icon name="gamepad" [size]="16" customClass="mr-2" />
+        Mis Juegos
+      </button>
+  
+      <button
+        class="px-4 py-2 text-sm font-medium transition-colors"
+        [class.bg-primary]="activeTab === 'analytics'"
+        [class.text-primary-foreground]="activeTab === 'analytics'"
+        (click)="activeTab = 'analytics'"
+      >
+        <app-lucide-icon name="users" [size]="16" customClass="mr-2" />
+        Analíticas
+      </button>
+  
+      <button
+        class="px-4 py-2 text-sm font-medium transition-colors"
+        [class.bg-primary]="activeTab === 'earnings'"
+        [class.text-primary-foreground]="activeTab === 'earnings'"
+        (click)="activeTab = 'earnings'"
+      >
+        <app-lucide-icon name="dollar-sign" [size]="16" customClass="mr-2" />
+        Ganancias
+      </button>
+    </div>
+  
+    <!-- Vista General -->
+    <div *ngIf="activeTab === 'overview'">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-coffee-cream p-4 rounded-lg border border-coffee-brown/20">
+          <p class="text-sm text-muted-foreground">Total de Juegos</p>
+          <p class="text-3xl font-bold">{{ developerGames.length }}</p>
+        </div>
+        <div class="bg-coffee-cream p-4 rounded-lg border border-coffee-brown/20">
+          <p class="text-sm text-muted-foreground">Ingresos Totales</p>
+          <p class="text-3xl font-bold">${{ totalRevenue.toLocaleString() }}</p>
+        </div>
+        <div class="bg-coffee-cream p-4 rounded-lg border border-coffee-brown/20">
+          <p class="text-sm text-muted-foreground">Descargas Totales</p>
+          <p class="text-3xl font-bold">{{ totalDownloads }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Mis Juegos -->
+    <div *ngIf="activeTab === 'games'" class="space-y-6">
+      <div *ngFor="let game of developerGames" class="border border-coffee-brown/10 rounded-lg p-4 bg-coffee-beige">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-1 text-xs rounded-full" [class.bg-green-500]="game.status === 'published'" [class.bg-yellow-500]="game.status === 'in-review'" [class.bg-slate-500]="game.status === 'draft'">
+                {{ getStatusText(game.status) }}
+              </span>
+              <h3 class="font-medium">{{ game.title }}</h3>
+            </div>
+            <p class="text-sm text-muted-foreground mt-1">Subido el {{ game.date }}</p>
+          </div>
+  
+          <div *ngIf="game.status === 'published'" class="flex flex-col md:flex-row gap-4">
+            <div class="text-center">
+              <div class="text-lg font-bold">{{ game.downloads }}</div>
+              <div class="text-xs text-muted-foreground">Descargas</div>
+            </div>
+            <div class="text-center">
+              <div class="text-lg font-bold">{{ game.revenue }}</div>
+              <div class="text-xs text-muted-foreground">Ingresos</div>
+            </div>
+            <div class="text-center">
+              <div class="text-lg font-bold">{{ game.rating }}</div>
+              <div class="text-xs text-muted-foreground">Valoración</div>
+            </div>
+          </div>
+  
+          <div *ngIf="game.status === 'in-review'" class="flex items-center gap-2">
+            <div class="h-2 w-32 bg-gray-200 rounded-full overflow-hidden">
+              <div class="h-full bg-yellow-500" style="width: 65%"></div>
+            </div>
+            <span class="text-xs text-muted-foreground">En proceso de revisión</span>
+          </div>
+  
+          <div *ngIf="game.status === 'draft'">
+            <a [routerLink]="['/developer/upload']" class="text-primary hover:underline text-sm">
+              Finalizar borrador
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Tabs vacíos -->
+    <div *ngIf="activeTab === 'analytics'">
+        <div class="bg-coffee-cream border border-coffee-brown/20 rounded-lg p-6">
+          <h2 class="text-xl font-semibold mb-2">Analíticas</h2>
+          <p class="text-sm text-muted-foreground mb-6">
+            Información detallada sobre el rendimiento de tus juegos
+          </p>
+          <div class="h-64 flex items-center justify-center">
+            <div class="text-center">
+              <app-lucide-icon name="bar-chart-3" [size]="48" customClass="text-muted-foreground opacity-20 mb-2 mx-auto" />
+              <h3 class="font-medium">Gráficos de Analíticas</h3>
+              <p class="text-sm text-muted-foreground">
+                Aquí se mostrarán gráficos detallados de tus estadísticas
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="activeTab === 'earnings'">
+        <div class="bg-coffee-cream border border-coffee-brown/20 rounded-lg p-6">
+          <h2 class="text-xl font-semibold mb-2">Ganancias</h2>
+          <p class="text-sm text-muted-foreground mb-6">
+            Resumen de tus ingresos por ventas
+          </p>
+          <div class="h-64 flex items-center justify-center">
+            <div class="text-center">
+              <app-lucide-icon name="dollar-sign" [size]="48" customClass="text-muted-foreground opacity-20 mb-2 mx-auto" />
+              <h3 class="font-medium">Resumen de Ingresos</h3>
+              <p class="text-sm text-muted-foreground">
+                Aquí se mostrarán los detalles de tus ganancias
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+  </div>
+  
