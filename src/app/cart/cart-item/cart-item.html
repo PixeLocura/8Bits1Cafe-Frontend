@@ -1,0 +1,26 @@
+<div class="flex items-center gap-[30px] px-2">
+  <!-- Product Image -->
+  <img [src]="imageUrl" [alt]="name" class="w-[150px] h-[200px] object-cover rounded-[21px]">
+
+  <!-- Product Details -->
+  <div class="flex flex-col justify-center gap-[15px] h-[200px] min-w-[320px]">
+    <h3 class="font-['Press_Start_2P'] text-[24px] leading-[24px] tracking-[0.5px] text-[#464039]">{{ name }}</h3>
+
+    <p class="font-[Nunito] font-semibold text-[24px] leading-[33px] tracking-[0.7px] text-[#464039]">${{
+      price.toFixed(2) }}</p>
+
+    <!-- Remove Button -->
+    <button (click)="removeItem()" class="flex items-center gap-[10px] group">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M2.5 4.5H13.5M12.5 4.5V13C12.5 13.8284 11.8284 14.5 11 14.5H5C4.17157 14.5 3.5 13.8284 3.5 13V4.5M6 4.5V3.5C6 2.67157 6.67157 2 7.5 2H8.5C9.32843 2 10 2.67157 10 3.5V4.5"
+          stroke="#DD524C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span
+        class="font-[Nunito] font-semibold text-[20px] leading-[27px] tracking-[0.7px] text-[#DD524C]">Eliminar</span>
+    </button>
+  </div>
+</div>
+@if (!isLast) {
+<div class="border-t border-[#F2E9DC] my-6 mx-2"></div>
+}

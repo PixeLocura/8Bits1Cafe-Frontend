@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { BecomeDeveloper } from './become-developer/become-developer';
 import { DeveloperApplication } from './developer-application/developer-application';
+import { CartPage } from './cart/cart-page/cart-page';
+import { SuccessfulPurchase } from './successful-purchase/successful-purchase';
 
 export const appRoutes: Routes = [
   {
@@ -12,6 +14,11 @@ export const appRoutes: Routes = [
   {
     path: 'developer-application',
     component: DeveloperApplication,
+  },
+
+  {
+    path: 'successful-purchase',
+    component: SuccessfulPurchase,
   },
 
   {
@@ -47,13 +54,15 @@ export const appRoutes: Routes = [
     path: 'login',
     component: Login
   },
-
+  {
+    path: 'cart',
+    component: CartPage,
+  },
   {
     path: 'buscar-juegos',
     loadComponent: () =>
       import('./buscar-juegos/buscar-juegos.component').then(m => m.BuscarJuegosComponent),
   },
-
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
 
