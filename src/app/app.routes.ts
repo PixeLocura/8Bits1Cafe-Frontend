@@ -43,6 +43,12 @@ export const appRoutes: Routes = [
       import('./buscar-juegos/buscar-juegos.component').then(m => m.BuscarJuegosComponent),
   },
 
+  {
+    path: 'categories',
+    loadComponent: () =>
+      import('./categories/categories.component').then(m => m.CategoriesComponent),
+  },
+
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
 
