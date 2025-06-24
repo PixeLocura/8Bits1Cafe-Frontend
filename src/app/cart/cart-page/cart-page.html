@@ -14,7 +14,7 @@
           </clipPath>
         </defs>
       </svg>
-      Tu carrito ({{cartItems.length}})
+      Tu carrito
     </h1>
 
     @if (loading) {
@@ -86,7 +86,7 @@
 
           <!-- Buttons -->
           <div class="space-y-[25px] mt-[46px] flex flex-col items-center">
-            <button routerLink="/checkout"
+            <button (click)="comprar()"
               class="w-full max-w-[351.94px] h-[62px] flex justify-center items-center gap-[13px] font-['Press_Start_2P'] text-[20px] leading-[20px] tracking-[0.5px] text-white bg-[#DFAD88] hover:bg-[#D89267] rounded-[16px] shadow-[0px_1px_3px_rgba(0,0,0,0.25)] transition-colors duration-200">
               <span>Pagar</span>
               <svg width="20" height="20" viewBox="0 0 19 16" fill="none" xmlns="http://www.w3.org/2000/svg">

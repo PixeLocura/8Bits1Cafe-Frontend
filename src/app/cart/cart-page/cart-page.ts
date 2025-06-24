@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CartItem } from '../cart-item/cart-item';
 import { CartService, CartProduct } from '../../shared/services/cart';
 
@@ -16,7 +16,10 @@ export class CartPage implements OnInit {
   loading: boolean = true;
   error: string | null = null;
 
-  constructor(private cartService: CartService) { }
+  constructor(
+    private cartService: CartService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.loadCartItems();
@@ -52,5 +55,17 @@ export class CartPage implements OnInit {
   removeItem(itemId: string): void {
     this.cartService.removeFromCart(itemId);
     this.cartItems = this.cartItems.filter(item => item.id !== itemId);
+  }
+
+  async comprar(): Promise<void> {
+    try {
+      // TODO: Implement actual purchase logic here
+      // For now, we'll just simulate a successful purchase
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      this.router.navigate(['/successful-purchase']);
+    } catch (error) {
+      console.error('Error during purchase:', error);
+      this.error = 'Error al procesar la compra. Por favor intente nuevamente.';
+    }
   }
 }
