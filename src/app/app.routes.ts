@@ -21,6 +21,11 @@ export const appRoutes: Routes = [
   },
 
   {
+    path: 'review',
+    loadComponent: () =>
+      import('./resena/resena.component').then(m => m.ResenaComponent),
+  },
+  {
     path: 'orders',
     loadComponent: () =>
       import('./orders/orders.component').then(m => m.OrdersComponent),
