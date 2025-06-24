@@ -19,6 +19,7 @@ export class SuccessfulPurchase implements OnInit, OnDestroy {
     this.intervalId = setInterval(() => {
       this.timeLeft--;
       if (this.timeLeft === 0) {
+        clearInterval(this.intervalId);
         this.router.navigate(['/']);
       }
     }, 1000);
