@@ -8,7 +8,7 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div *ngFor="let game of gamesPorCategoria[categoria]" class="bg-white rounded-lg shadow p-4 border border-gray-200">
+      <a *ngFor="let game of gamesPorCategoria[categoria]" [routerLink]="['/juego', game.id]" class="block bg-white rounded-lg shadow p-4 border border-gray-200 hover:shadow-md transition-shadow">
         <div class="h-48 w-full mb-3 overflow-hidden rounded">
           <img [src]="game.coverImage" [alt]="game.title" class="w-full h-full object-cover">
         </div>
@@ -16,7 +16,7 @@
         <p class="text-sm text-muted-foreground mb-1">Desarrollador: {{ game.developer }}</p>
         <p class="text-sm text-muted-foreground mb-1">Plataformas: {{ game.platforms.join(', ') }}</p>
         <p class="text-sm text-muted-foreground mb-1">Precio: ${{ game.price }}</p>
-      </div>
+      </a>
     </div>
   </div>
 </div>

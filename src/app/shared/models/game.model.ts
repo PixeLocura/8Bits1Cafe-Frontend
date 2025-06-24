@@ -1,11 +1,22 @@
 export interface Game {
-  id: string;
+  id: number;
   title: string;
   developer: string;
-  coverImage: string;
   price: number;
-  genres: string[];
-  platforms: string[];
-  languages: string[];
   rating: number;
+  platforms: string[];
+  genres: string[];
+  languages: string[];
+  coverImage: string;
+
+  // ? indica que son opcionales
+  releaseDate?: string;
+  images?: string[];
+  description?: string;
+  requisitos?: string[];
+  reviews?: {
+    autor: string;
+    comentario: string;
+    rating: number;
+  }[];
 }

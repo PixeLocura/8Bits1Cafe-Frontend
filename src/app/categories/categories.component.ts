@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {RouterModule} from '@angular/router';
+
 import { Game } from '../shared/models/game.model';
 import { MOCK_GAMES } from '../shared/mock/mock-games';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './categories.component.html',
 })
 export class CategoriesComponent {
