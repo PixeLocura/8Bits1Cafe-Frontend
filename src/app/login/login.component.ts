@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { FormGroup } from '@angular/forms';
-import { RouterModule, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/services/auth.service';
 
 @Component({
@@ -12,34 +12,42 @@ import { AuthService } from '../auth/services/auth.service';
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
-  isSubmitting = false;
   form: FormGroup;
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) {
     this.form = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      password: ['', Validators.required]
     });
   }
 
   onSubmit() {
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
 
     this.isSubmitting = true;
 
     this.authService.login(this.form.value).subscribe({
       next: () => {
-        this.isSubmitting = false;
-        this.router.navigate(['/']); // Navigate to home after successful login
+        this.snackBar.open('Sesión iniciada con éxito', 'Cerrar', {
+          duration: 3000
+        });
+        this.router.navigate(['/']);
       },
       error: (error) => {
         console.error('Login error:', error);
+        this.snackBar.open('Error al iniciar sesión', 'Cerrar', {
+          duration: 3000
+        });
         this.isSubmitting = false;
-        alert('Error al iniciar sesión. Por favor, intente nuevamente.');
       }
     });
   }

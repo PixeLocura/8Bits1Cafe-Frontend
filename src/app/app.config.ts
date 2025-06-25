@@ -5,10 +5,11 @@ import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { appRoutes } from './app.routes';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    importProvidersFrom(BrowserModule, ReactiveFormsModule),
+    importProvidersFrom(BrowserModule, ReactiveFormsModule, MatSnackBarModule),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),

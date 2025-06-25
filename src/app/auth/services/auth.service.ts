@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `${environment.backendEndpoint}/auth`;
+  private apiUrl = `https://eightbits.onrender.com/api/v1/auth`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -24,6 +24,8 @@ export class AuthService {
       console.log('Found existing token and user');
       this.currentUserSubject.next(JSON.parse(user));
     }
+
+    
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
@@ -84,4 +86,16 @@ export class AuthService {
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
+
+  register(userData: {
+    name: string;
+    lastname: string;
+    username: string;
+    email: string;
+    password: string;
+    countryIso: string;
+  }): Observable<{ token: string }> {
+    return this.http.post<{ token: string }>(`${this.apiUrl}/register/admin`, userData);
+  }
+  
 }
