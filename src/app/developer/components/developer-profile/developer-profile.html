@@ -1,0 +1,61 @@
+<div class="min-h-screen bg-[#F8F7F1] py-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Back Button -->
+    <button routerLink="/"
+      class="flex items-center gap-2 text-[#CCB396] hover:text-[#E95151] transition-colors duration-200 p-4 mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+          clip-rule="evenodd" />
+      </svg>
+      <span class="font-[Nunito]">Volver al Inicio</span>
+    </button>
+
+    @if (loading) {
+    <div class="flex justify-center items-center min-h-[200px]">
+      <div class="font-[Nunito] text-[#7F776C]">Cargando perfil del desarrollador...</div>
+    </div>
+    } @else if (error) {
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600 font-[Nunito]">
+      {{ error }}
+    </div>
+    } @else {
+    <!-- Developer Info Section -->
+    <div class="bg-white rounded-2xl p-8 mb-12 shadow-lg">
+      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+        <!-- Developer Details -->
+        <div class="flex-1">
+          <h1 class="font-['Press_Start_2P'] text-[#504940] text-3xl mb-4">{{ developer.name }}</h1>
+
+          <div class="space-y-4 font-[Nunito] text-[#7F776C]">
+            <p class="text-lg">{{ developer.description }}</p>
+
+            <div class="flex items-center gap-2">
+              <app-lucide-icon name="globe" class="text-[#E5A277]"></app-lucide-icon>
+              <a [href]="developer.website" target="_blank" class="text-[#E5A277] hover:underline">
+                {{ developer.website }}
+              </a>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <app-lucide-icon name="map-pin" class="text-[#E5A277]"></app-lucide-icon>
+              <span>{{ developer.country }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <app-lucide-icon name="calendar" class="text-[#E5A277]"></app-lucide-icon>
+              <span>Se unió el {{ developer.creationDate | date:'longDate' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Section -->
+    <div class="bg-white rounded-2xl p-8 shadow-lg">
+      <h2 class="font-['Press_Start_2P'] text-[#504940] text-2xl mb-6">Juegos</h2>
+      <app-developer-games-list [games]="developer.games"></app-developer-games-list>
+    </div>
+    }
+  </div>
+</div>

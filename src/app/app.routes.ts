@@ -43,7 +43,7 @@ export const appRoutes: Routes = [
     loadComponent: () =>
       import('./developer-dashboard/developer-dashboard.component').then(m => m.DeveloperDashboardComponent),
   },
-  
+
   {
     path: 'register',
     loadComponent: () =>
@@ -65,7 +65,11 @@ export const appRoutes: Routes = [
   },
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
-
+  {
+    path: 'developer',
+    loadChildren: () =>
+      import('./developer/developer.routes').then(m => m.developerRoutes),
+  },
   // Página 404 - ruta comodín
   {
     path: '**',
