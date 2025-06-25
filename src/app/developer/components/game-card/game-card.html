@@ -1,0 +1,59 @@
+<a [routerLink]="['/game', game.id]" class="block group focus:outline-none">
+  <div
+    class="bg-white rounded-lg shadow-md overflow-hidden border border-coffee-brown/10 hover:shadow-lg transition-shadow group-hover:scale-[1.02] group-active:scale-[0.98] duration-150 cursor-pointer">
+    <img [src]="game.coverUrl" [alt]="game.title" class="w-full h-48 object-cover" />
+
+    <div class="p-4">
+      <h3 class="font-['Press_Start_2P'] text-[#504940] text-lg mb-2">{{ game.title }}</h3>
+
+      <p class="font-[Nunito] text-[#7F776C] text-sm mb-4 line-clamp-2">{{ game.description }}</p>
+
+      <div class="flex justify-between items-center">
+        <span class="font-[Nunito] text-[#E5A277] text-lg font-bold">
+          {{ game.price | currency:'USD' }}
+        </span>
+        <span class="text-sm text-[#7F776C]">
+          {{ game.releaseDate | date:'mediumDate' }}
+        </span>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <!-- Platforms -->
+        <div class="flex flex-col items-start gap-1.5">
+          <span class="font-[Nunito] font-semibold text-[15px] leading-[20px] text-[#7C7368] mb-1">Plataformas</span>
+          <div class="flex flex-row flex-wrap gap-[5px]">
+            @for (platform of game.platforms; track platform) {
+            <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#E7F0FA] border border-[#B7D4EF] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#6A8BAA]">
+              {{ platformInfo[platform].name || platform }}
+            </span>
+            }
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="flex flex-col items-start gap-1.5">
+          <span class="font-[Nunito] font-semibold text-[15px] leading-[20px] text-[#7C7368] mb-1">Categorías</span>
+          <div class="flex flex-row flex-wrap gap-[5px]">
+            @for (category of game.categories; track category) {
+            <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#FEF9E2] border border-[#F6F0D4] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#C2A382]">
+              {{ categoryInfo[category].name || category }}
+            </span>
+            }
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="flex flex-col items-start gap-1.5">
+          <span class="font-[Nunito] font-semibold text-[15px] leading-[20px] text-[#7C7368] mb-1">Idiomas</span>
+          <div class="flex flex-row flex-wrap gap-[5px]">
+            @for (language of game.languages; track language) {
+            <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#F4F0E6] border border-[#EDE3CA] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#C2A382]">
+              {{ languageInfo[language].name || language }}
+            </span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</a>

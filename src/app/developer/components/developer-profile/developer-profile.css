@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  font-family: 'Nunito', sans-serif;
+}
+
+.dev-flag {
+  width: 2rem; /* 32px */
+  height: 1.5rem; /* 24px */
+  border-radius: 0.25rem;
+  object-fit: cover;
+  display: inline-block;
+  vertical-align: middle;
+}
