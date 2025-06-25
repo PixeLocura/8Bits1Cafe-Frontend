@@ -21,27 +21,37 @@
     </div>
     } @else {
     <!-- Developer Info Section -->
-    <div class="bg-white rounded-2xl p-8 mb-12 shadow-lg">
-      <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-8">
+    <div class="bg-[#FEFBF3] border-2 border-[#F2E9DC] rounded-2xl p-8 mb-12 shadow-[0px_1px_3px_1px_rgba(0,0,0,0.07)]">
+      <div class="flex flex-col md:flex-row md:items-center gap-8">
+        <!-- Avatar -->
+        <div class="flex-shrink-0 flex justify-center md:justify-start">
+          <div
+            class="w-32 h-32 rounded-full bg-gradient-to-br from-[#E5A277] to-[#CCB396] border-4 border-[#F2E9DC] shadow-md flex items-center justify-center overflow-hidden">
+            <img *ngIf="developer.avatarUrl" [src]="developer.avatarUrl" alt="Avatar"
+              class="w-full h-full object-cover" />
+            <ng-container *ngIf="!developer.avatarUrl">
+              <app-lucide-icon name="user" class="text-white text-6xl"></app-lucide-icon>
+            </ng-container>
+          </div>
+        </div>
         <!-- Developer Details -->
         <div class="flex-1">
-          <h1 class="font-['Press_Start_2P'] text-[#504940] text-3xl mb-4">{{ developer.name }}</h1>
-
-          <div class="space-y-4 font-[Nunito] text-[#7F776C]">
-            <p class="text-lg">{{ developer.description }}</p>
-
-            <div class="flex items-center gap-2">
+          <h1 class="font-['Press_Start_2P'] text-[#504940] text-3xl mb-4 leading-tight">{{ developer.name }}</h1>
+          <p class="font-[Nunito] text-[#7F776C] text-lg mb-6">{{ developer.description }}</p>
+          <div class="flex flex-col gap-3 font-[Nunito] text-[#7F776C]">
+            <div class="flex items-center gap-2" *ngIf="developer.website">
               <app-lucide-icon name="globe" class="text-[#E5A277]"></app-lucide-icon>
-              <a [href]="developer.website" target="_blank" class="text-[#E5A277] hover:underline">
+              <a [href]="developer.website" target="_blank" class="text-[#E5A277] hover:underline break-all">
                 {{ developer.website }}
               </a>
             </div>
-
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2" *ngIf="developer.country">
               <app-lucide-icon name="map-pin" class="text-[#E5A277]"></app-lucide-icon>
-              <span>{{ developer.country }}</span>
+              <img [src]="COUNTRY_INFO_MAP[developer.country]?.flag" [alt]="COUNTRY_INFO_MAP[developer.country]?.es"
+                class="dev-flag border border-[#F2E9DC] shadow-sm object-cover"
+                *ngIf="COUNTRY_INFO_MAP[developer.country]?.flag" />
+              <span>{{ COUNTRY_INFO_MAP[developer.country]?.es }}</span>
             </div>
-
             <div class="flex items-center gap-2">
               <app-lucide-icon name="calendar" class="text-[#E5A277]"></app-lucide-icon>
               <span>Se unió el {{ developer.creationDate | date:'longDate' }}</span>
@@ -52,8 +62,10 @@
     </div>
 
     <!-- Games Section -->
-    <div class="bg-white rounded-2xl p-8 shadow-lg">
-      <h2 class="font-['Press_Start_2P'] text-[#504940] text-2xl mb-6">Juegos</h2>
+    <div class="bg-[#FEFBF3] border-2 border-[#F2E9DC] rounded-2xl p-8 shadow-[0px_1px_3px_1px_rgba(0,0,0,0.07)]">
+      <div class="flex items-end mb-2">
+        <h2 class="font-['Press_Start_2P'] text-[#504940] text-2xl ml-4 mb-2">Juegos</h2>
+      </div>
       <app-developer-games-list [games]="developer.games"></app-developer-games-list>
     </div>
     }

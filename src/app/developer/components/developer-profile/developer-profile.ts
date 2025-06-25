@@ -3,7 +3,7 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { LucideIconComponent } from '../../../component/lucide-icon.component';
 import { DeveloperGamesListComponent } from '../developer-games-list/developer-games-list';
-import { Developer } from '../../interfaces/developer.interfaces';
+import { Developer, Country, COUNTRY_INFO_MAP } from '../../interfaces/developer.interfaces';
 import { DeveloperService } from '../../services/developer.service';
 
 @Component({
@@ -20,13 +20,14 @@ import { DeveloperService } from '../../services/developer.service';
   styleUrl: './developer-profile.css'
 })
 export class DeveloperProfileComponent implements OnInit {
+  public COUNTRY_INFO_MAP = COUNTRY_INFO_MAP;
   developer: Developer = {
     id: '',
     name: '',
     description: '',
     website: '',
     creationDate: '',
-    country: '',
+    country: null, // Use null for no country, or e.g. Country.ES for Spain
     games: []
   };
   loading = true;
