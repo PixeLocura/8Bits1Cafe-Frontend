@@ -93,7 +93,9 @@
         <div *ngFor="let game of filteredGames"
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:shadow-md transition-all duration-300">
           <div class="h-48 w-full mb-3 overflow-hidden rounded">
-            <img [src]="game.coverImage" [alt]="game.title" class="w-full h-full object-cover" />
+            <a [routerLink]="['/juego', game.id]">
+              <img [src]="game.coverImage" [alt]="game.title" class="w-full h-full object-cover" />
+            </a>
           </div>
           <h3 class="font-semibold text-lg mb-1">{{ game.title }}</h3>
           <p class="text-sm text-muted-foreground">Desarrollador: {{ game.developer }}</p>
@@ -106,25 +108,12 @@
           </p>
           <p class="font-bold text-coffee-terracotta mt-1">${{ game.price }}</p>
 
-          <!-- Botón reseña -->
-          <div class="text-right mt-2">
-            <button
-              class="text-sm text-coffee-terracotta underline hover:text-coffee-brown"
-              (click)="abrirModal(game)">
-              Escribir reseña
-            </button>
-          </div>
         </div>
       </div>
     </section>
+    <!--  No hay juegos que coincidan con los filtros -->
+    <div *ngIf="filteredGames.length === 0" class="text-center text-sm text-muted-foreground">
+      No se encontraron juegos con los filtros aplicados.
+    </div>
   </div>
-
-  <!-- Modal reseña -->
-  <app-resena
-    *ngIf="mostrarModal"
-    [gameTitle]="juegoSeleccionado?.title || ''"
-    [show]="mostrarModal"
-    (close)="cerrarModal()"
-    (submitReview)="guardarResena($event)">
-  </app-resena>
 </div>

@@ -1,95 +1,20 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ResenaComponent } from '../resena/resena.component';
+import { RouterModule } from '@angular/router';
 
-interface Game {
-  id: string;
-  title: string;
-  developer: string;
-  coverImage: string;
-  price: number;
-  genres: string[];
-  platforms: string[];
-  languages: string[];
-  rating: number;
-}
+import { Game } from '../shared/models/game.model';
+import { MOCK_GAMES } from '../shared/mock/mock-games';
+
 
 @Component({
   selector: 'app-buscar-juegos',
   standalone: true,
-  imports: [CommonModule, FormsModule, ResenaComponent],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './buscar-juegos.component.html',
 })
 export class BuscarJuegosComponent {
-  games: Game[] = [
-    {
-      id: '1',
-      title: 'Pixel Dungeon',
-      developer: 'RetroWare Studios',
-      coverImage: 'https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?auto=format&fit=crop&w=400&q=60',
-      price: 14.99,
-      genres: ['Aventura', 'Puzzle'],
-      platforms: ['Windows', 'Mac'],
-      languages: ['Español', 'Inglés'],
-      rating: 4,
-    },
-    {
-      id: '2',
-      title: 'Coffee Shop Tycoon',
-      developer: 'Cozy Games Inc.',
-      coverImage: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=400&q=60',
-      price: 9.99,
-      genres: ['Simulación', 'Gestión'],
-      platforms: ['Windows', 'Linux'],
-      languages: ['Inglés'],
-      rating: 5,
-    },
-    {
-      id: '3',
-      title: 'Bit Racer',
-      developer: '8Bit Gaming',
-      coverImage: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=400&q=60',
-      price: 4.99,
-      genres: ['Carreras', 'Arcade'],
-      platforms: ['Windows'],
-      languages: ['Español'],
-      rating: 3,
-    },
-    {
-      id: '4',
-      title: 'Cyber Tower',
-      developer: 'Digital Pulse',
-      coverImage: 'https://images.unsplash.com/photo-1508779018996-601f3d6b9d56?auto=format&fit=crop&w=400&q=60',
-      price: 12.49,
-      genres: ['Shooter', 'Tower Defense'],
-      platforms: ['Mac', 'Linux'],
-      languages: ['Inglés', 'Chino'],
-      rating: 4,
-    },
-    {
-      id: '5',
-      title: 'SimFarm',
-      developer: 'VintageSoft',
-      coverImage: 'https://images.unsplash.com/photo-1614109387374-2d3a74ec87b9?auto=format&fit=crop&w=400&q=60',
-      price: 6.99,
-      genres: ['Simulación', 'Estrategia'],
-      platforms: ['Web Browser', 'Android'],
-      languages: ['Español', 'Ruso'],
-      rating: 5,
-    },
-    {
-      id: '6',
-      title: 'Puzzle World',
-      developer: 'Smart Pixel',
-      coverImage: 'https://images.unsplash.com/photo-1618498082410-92a88a0a4fdb?auto=format&fit=crop&w=400&q=60',
-      price: 3.49,
-      genres: ['Puzzle'],
-      platforms: ['iOS'],
-      languages: ['Español', 'Árabe'],
-      rating: 2,
-    }
-  ];
+  games: Game[] = MOCK_GAMES;
 
   // Filtros
   minPrice: number = 0;
@@ -149,6 +74,12 @@ export class BuscarJuegosComponent {
     filtered = filtered.filter(
       game => game.price >= this.minPrice && game.price <= this.maxPrice
     );
+
+    if (this.minPrice > this.maxPrice) {
+      const temp = this.minPrice;
+      this.minPrice = this.maxPrice;
+      this.maxPrice = temp;
+    }
 
     // Género
     const activeGenres = Object.keys(this.selectedGenres).filter(g => this.selectedGenres[g]);

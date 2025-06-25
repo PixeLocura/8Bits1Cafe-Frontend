@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { Login } from './auth/login/login';
 import { BecomeDeveloper } from './become-developer/become-developer';
 import { DeveloperApplication } from './developer-application/developer-application';
+import { GamePageComponent } from './game-page/game-page.component';
+
 import { CartPage } from './cart/cart-page/cart-page';
 import { SuccessfulPurchase } from './successful-purchase/successful-purchase';
 
@@ -20,6 +22,7 @@ export const appRoutes: Routes = [
     path: 'successful-purchase',
     component: SuccessfulPurchase,
   },
+
 
   {
     path: 'favorites',
@@ -63,6 +66,19 @@ export const appRoutes: Routes = [
     loadComponent: () =>
       import('./buscar-juegos/buscar-juegos.component').then(m => m.BuscarJuegosComponent),
   },
+
+  {
+    path: 'categories',
+    loadComponent: () =>
+      import('./categories/categories.component').then(m => m.CategoriesComponent),
+  },
+
+
+  {
+    path: 'juego/:id',
+    loadComponent: () => import('./game-page/game-page.component').then(m => m.GamePageComponent),
+  },
+
   { path: '', redirectTo: '/register', pathMatch: 'full' },
 
   {
