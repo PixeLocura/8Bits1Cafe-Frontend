@@ -54,7 +54,7 @@
             </div>
             <div class="flex items-center gap-2">
               <app-lucide-icon name="calendar" class="text-[#E5A277]"></app-lucide-icon>
-              <span>Se unió el {{ developer.creationDate | date:'longDate' }}</span>
+              <span>Se unió el {{ developer.creationDate | date:"d 'de' MMMM 'del' y":'es-ES' }}</span>
             </div>
           </div>
         </div>
