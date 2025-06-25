@@ -16,41 +16,41 @@
       </span>
     </div>
 
-    <div class="mt-4 space-y-2">
+    <div class="mt-4 space-y-4">
       <!-- Platforms -->
-      <div>
-        <span class="font-[Nunito] text-xs text-[#504940] mr-2">Plataformas:</span>
-        <span class="flex flex-wrap gap-2">
+      <div class="flex flex-col items-start gap-1.5">
+        <span class="font-[Nunito] font-semibold text-[15px] leading-[20px] text-[#7C7368] mb-1">Plataformas</span>
+        <div class="flex flex-row flex-wrap gap-[5px]">
           @for (platform of game.platforms; track platform) {
-          <span class="px-2 py-1 text-xs rounded-full bg-[#F8F7F1] text-[#7F776C]">
+          <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#E7F0FA] border border-[#B7D4EF] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#6A8BAA]">
             {{ platform }}
           </span>
           }
-        </span>
+        </div>
       </div>
 
       <!-- Categories -->
-      <div>
-        <span class="font-[Nunito] text-xs text-[#504940] mr-2">Categorías:</span>
-        <span class="flex flex-wrap gap-2">
+      <div class="flex flex-col items-start gap-1.5">
+        <span class="font-[Nunito] font-semibold text-[15px] leading-[20px] text-[#7C7368] mb-1">Categorías</span>
+        <div class="flex flex-row flex-wrap gap-[5px]">
           @for (category of game.categories; track category) {
-          <span class="px-2 py-1 text-xs rounded-full bg-[#F8F7F1] text-[#7F776C]">
+          <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#FEF9E2] border border-[#F6F0D4] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#C2A382]">
             {{ category }}
           </span>
           }
-        </span>
+        </div>
       </div>
 
       <!-- Languages -->
-      <div>
-        <span class="font-[Nunito] text-xs text-[#504940] mr-2">Idiomas:</span>
-        <span class="flex flex-wrap gap-2">
+      <div class="flex flex-col items-start gap-1.5">
+        <span class="font-[Nunito] font-semibold text-[15px] leading-[20px] text-[#7C7368] mb-1">Idiomas</span>
+        <div class="flex flex-row flex-wrap gap-[5px]">
           @for (language of game.languages; track language) {
-          <span class="px-2 py-1 text-xs rounded-full bg-[#F8F7F1] text-[#7F776C]">
+          <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#F4F0E6] border border-[#EDE3CA] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#C2A382]">
             {{ language }}
           </span>
           }
-        </span>
+        </div>
       </div>
     </div>
   </div>
