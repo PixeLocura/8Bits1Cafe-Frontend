@@ -1,3 +1,5 @@
+import type { Platform, Category, Language } from '../../shared/interfaces/game.interfaces';
+
 export interface Game {
   id: string;
   developer_id: string | null;
@@ -6,9 +8,9 @@ export interface Game {
   price: number;
   coverUrl: string;
   releaseDate: string;
-  platforms: string[] | null;
-  categories: string[] | null;
-  languages: string[] | null;
+  platforms: Platform[] | null;
+  categories: Category[] | null;
+  languages: Language[] | null;
   creationDate: string;
   updateDate: string;
 }

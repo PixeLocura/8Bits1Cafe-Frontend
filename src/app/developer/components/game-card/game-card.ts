@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule, CurrencyPipe, DatePipe } from '@angular/common';
 import { Game } from '../../interfaces/developer.interfaces';
+import { CategoryInfo, LanguageInfo, PlatformInfo, Category, Language, Platform } from '../../../shared/interfaces/game.interfaces';
 
 @Component({
   selector: 'app-game-card',
@@ -11,4 +12,11 @@ import { Game } from '../../interfaces/developer.interfaces';
 })
 export class GameCardComponent {
   @Input() game!: Game;
+
+  categoryInfo = CategoryInfo;
+  languageInfo = LanguageInfo;
+  platformInfo = PlatformInfo;
+  Category = Category;
+  Language = Language;
+  Platform = Platform;
 }

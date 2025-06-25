@@ -23,7 +23,7 @@
         <div class="flex flex-row flex-wrap gap-[5px]">
           @for (platform of game.platforms; track platform) {
           <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#E7F0FA] border border-[#B7D4EF] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#6A8BAA]">
-            {{ platform }}
+            {{ platformInfo[platform].name || platform }}
           </span>
           }
         </div>
@@ -35,7 +35,7 @@
         <div class="flex flex-row flex-wrap gap-[5px]">
           @for (category of game.categories; track category) {
           <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#FEF9E2] border border-[#F6F0D4] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#C2A382]">
-            {{ category }}
+            {{ categoryInfo[category].name || category }}
           </span>
           }
         </div>
@@ -47,7 +47,7 @@
         <div class="flex flex-row flex-wrap gap-[5px]">
           @for (language of game.languages; track language) {
           <span class="relative flex items-center justify-center px-3 h-[24px] bg-[#F4F0E6] border border-[#EDE3CA] rounded-[12px] font-[Nunito] font-semibold text-[13px] leading-[18px] text-[#C2A382]">
-            {{ language }}
+            {{ languageInfo[language].name || language }}
           </span>
           }
         </div>
