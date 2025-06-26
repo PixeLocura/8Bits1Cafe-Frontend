@@ -27,10 +27,12 @@
         <div class="flex-shrink-0 flex justify-center md:justify-start">
           <div
             class="w-32 h-32 rounded-full bg-gradient-to-br from-[#E5A277] to-[#CCB396] border-4 border-[#F2E9DC] shadow-md flex items-center justify-center overflow-hidden">
-            <img *ngIf="developer.avatarUrl" [src]="developer.avatarUrl" alt="Avatar"
+            <img *ngIf="developer.profilePictureUrl" [src]="developer.profilePictureUrl" alt="Avatar"
               class="w-full h-full object-cover" />
-            <ng-container *ngIf="!developer.avatarUrl">
-              <app-lucide-icon name="user" class="text-white text-6xl"></app-lucide-icon>
+            <ng-container *ngIf="!developer.profilePictureUrl">
+              <span class="text-white text-5xl font-bold select-none">
+                {{ developer.name ? (developer.name[0] | uppercase) : '?' }}
+              </span>
             </ng-container>
           </div>
         </div>
