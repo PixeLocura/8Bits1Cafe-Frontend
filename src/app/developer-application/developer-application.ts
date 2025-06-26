@@ -22,6 +22,7 @@ export interface DeveloperApplicationData {
 export class DeveloperApplication implements OnInit {
   applicationForm: FormGroup;
   errorMessage: string = '';
+  loading = true;
 
   constructor(private fb: FormBuilder, private developerService: DeveloperService, private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
     this.applicationForm = this.fb.group({
@@ -36,10 +37,12 @@ export class DeveloperApplication implements OnInit {
       next: (developerId) => {
         if (developerId) {
           this.router.navigate([`/developer/${developerId}`]);
+        } else {
+          this.loading = false;
         }
       },
       error: (err) => {
-        // If error, do nothing
+        this.loading = false;
       }
     });
   }

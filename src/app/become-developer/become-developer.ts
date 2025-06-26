@@ -47,6 +47,7 @@ export class BecomeDeveloper implements OnInit {
   ];
 
   buttonText = 'Convertirse en Desarrollador';
+  loading = true;
 
   constructor(private developerService: DeveloperService, private router: Router) { }
 
@@ -55,10 +56,12 @@ export class BecomeDeveloper implements OnInit {
       next: (developerId) => {
         if (developerId) {
           this.router.navigate([`/developer/${developerId}`]);
+        } else {
+          this.loading = false;
         }
       },
       error: (err) => {
-        // If error, do nothing
+        this.loading = false;
       }
     });
   }
