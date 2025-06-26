@@ -1,0 +1,29 @@
+<section class="py-12 bg-gradient-to-b from-coffee-cream to-coffee-yellow/30">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-press-start">News & Updates</h2>
+      <a routerLink="/news" class="inline-flex items-center text-primary hover:underline">
+        All News <lucide-icon name="chevron-right" class="w-4 h-4 ml-1"></lucide-icon>
+      </a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <ng-container *ngFor="let item of newsItems">
+        <a [routerLink]="['/news', item.id]" class="group block h-full">
+          <div class="bg-coffee-cream border border-coffee-brown/20 rounded-lg overflow-hidden flex flex-col h-full hover:shadow transition">
+            <div class="aspect-w-16 aspect-h-9 overflow-hidden">
+              <img [src]="item.image" [alt]="item.title"
+                   class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" />
+            </div>
+            <div class="p-5 flex-1 flex flex-col">
+              <p class="text-xs text-muted-foreground mb-2">{{ item.date }}</p>
+              <h3 class="font-press-start text-sm mb-2 group-hover:text-primary transition">
+                {{ item.title }}
+              </h3>
+              <p class="text-sm text-muted-foreground flex-1">{{ item.excerpt }}</p>
+            </div>
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</section>

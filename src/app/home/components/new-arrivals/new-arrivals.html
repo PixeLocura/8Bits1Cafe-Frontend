@@ -1,0 +1,29 @@
+<section class="py-12 bg-coffee-cream">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-press-start">New Arrivals</h2>
+      <a routerLink="/new-releases" class="inline-flex items-center text-primary hover:underline">
+        View All <lucide-icon name="chevron-right" class="w-4 h-4 ml-1"></lucide-icon>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <ng-container *ngFor="let a of arrivals.slice(-5, -1)">
+        <a [routerLink]="['/juego', a.id]" class="group block aspect-square">
+          <div class="bg-coffee-cream border border-coffee-brown/20 rounded-lg overflow-hidden group-hover:shadow transition">
+            <div class="aspect-square relative overflow-hidden">
+              <img [src]="a.coverImage" [alt]="a.title"
+                   class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" />
+              <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white">
+                <div class="truncate font-medium">{{ a.title }}</div>
+                <div class="flex justify-between items-center mt-1">
+                  <span class="text-sm">{{ a.price }}</span>
+                  <span class="text-xs bg-primary/80 px-2 py-0.5 rounded">New!</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</section>
