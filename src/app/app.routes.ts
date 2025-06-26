@@ -6,6 +6,7 @@ import { GamePageComponent } from './game-page/game-page.component';
 
 import { CartPage } from './cart/cart-page/cart-page';
 import { SuccessfulPurchase } from './successful-purchase/successful-purchase';
+import {Home} from './home/pages/home/home';
 
 export const appRoutes: Routes = [
   {
@@ -79,12 +80,17 @@ export const appRoutes: Routes = [
     loadComponent: () => import('./game-page/game-page.component').then(m => m.GamePageComponent),
   },
 
-  { path: '', redirectTo: '/register', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   {
     path: 'developer',
     loadChildren: () =>
       import('./developer/developer.routes').then(m => m.developerRoutes),
+  },
+  {
+    path: 'home',
+    component: Home
+
   },
   // Página 404 - ruta comodín
   {
