@@ -31,7 +31,18 @@ export class DeveloperApplication implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.developerService.checkHasDeveloperProfile().subscribe({
+      next: (developerId) => {
+        if (developerId) {
+          this.router.navigate([`/developer/${developerId}`]);
+        }
+      },
+      error: (err) => {
+        // If error, do nothing
+      }
+    });
+  }
 
   onSubmit() {
     if (this.applicationForm.valid) {

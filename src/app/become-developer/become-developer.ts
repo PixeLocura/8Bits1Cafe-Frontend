@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { DeveloperService } from '../developer/services/developer.service';
 
 interface FeatureBox {
   title: string;
@@ -14,7 +15,7 @@ interface FeatureBox {
   templateUrl: './become-developer.html',
   styleUrl: './become-developer.css'
 })
-export class BecomeDeveloper {
+export class BecomeDeveloper implements OnInit {
   mainTitle = 'Conviértete en Desarrollador';
   subtitle = 'De Jugador a Creador';
   description = 'Da el paso y comparte tus creaciones con miles de jugadores en nuestra plataforma';
@@ -46,4 +47,19 @@ export class BecomeDeveloper {
   ];
 
   buttonText = 'Convertirse en Desarrollador';
+
+  constructor(private developerService: DeveloperService, private router: Router) { }
+
+  ngOnInit(): void {
+    this.developerService.checkHasDeveloperProfile().subscribe({
+      next: (developerId) => {
+        if (developerId) {
+          this.router.navigate([`/developer/${developerId}`]);
+        }
+      },
+      error: (err) => {
+        // If error, do nothing
+      }
+    });
+  }
 }
