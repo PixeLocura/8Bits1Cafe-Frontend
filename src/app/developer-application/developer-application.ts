@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { DeveloperService } from '../developer/services/developer.service';
+import { AuthService } from '../auth/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface DeveloperApplicationData {
   developerName: string;
@@ -19,8 +22,9 @@ export interface DeveloperApplicationData {
 export class DeveloperApplication implements OnInit {
   applicationForm: FormGroup;
   errorMessage: string = '';
+  loading = true;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private developerService: DeveloperService, private authService: AuthService, private snackBar: MatSnackBar, private router: Router) {
     this.applicationForm = this.fb.group({
       developerName: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(50)]],
@@ -28,12 +32,38 @@ export class DeveloperApplication implements OnInit {
     });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.developerService.checkHasDeveloperProfile().subscribe({
+      next: (developerId) => {
+        if (developerId) {
+          this.router.navigate([`/developer/${developerId}`]);
+        } else {
+          this.loading = false;
+        }
+      },
+      error: (err) => {
+        this.loading = false;
+      }
+    });
+  }
 
   onSubmit() {
     if (this.applicationForm.valid) {
-      // TODO: Implement the API call to submit developer application
-      console.log('Form submitted:', this.applicationForm.value);
+      const { developerName, description, websiteUrl } = this.applicationForm.value;
+      this.developerService.createDeveloper({
+        name: developerName,
+        description,
+        website: websiteUrl
+      }).subscribe({
+        next: (dev) => {
+          this.snackBar.open('Perfil de desarrollador creado con éxito', 'Cerrar', { duration: 3000 });
+          this.router.navigate([`/developer/${dev.id}`]);
+        },
+        error: (error) => {
+          this.errorMessage = 'Error al crear el perfil de desarrollador.';
+          this.snackBar.open('Error al crear el perfil', 'Cerrar', { duration: 3000 });
+        }
+      });
     } else {
       this.errorMessage = 'Por favor, complete todos los campos correctamente.';
     }
