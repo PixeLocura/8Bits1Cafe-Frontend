@@ -8,7 +8,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `https://eightbits.onrender.com/api/v1/auth`;
+  private apiUrl = environment.backendEndpoint;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -25,14 +25,16 @@ export class AuthService {
       this.currentUserSubject.next(JSON.parse(user));
     }
 
-    
+
   }
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
+    // The login endpoint must match: http://rp5.local:8080/api/v1/auth/login
+    // See cURL reference in documentation.
     console.log('Login attempt with:', { email: credentials.email, attempt: true });
     console.log('API URL:', this.apiUrl);
 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials)
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
       .pipe(
         tap({
           next: (response) => {
@@ -97,5 +99,5 @@ export class AuthService {
   }): Observable<{ token: string }> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/register/admin`, userData);
   }
-  
+
 }

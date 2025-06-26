@@ -43,7 +43,7 @@ export class DeveloperApplication implements OnInit {
       }).subscribe({
         next: (dev) => {
           this.snackBar.open('Perfil de desarrollador creado con éxito', 'Cerrar', { duration: 3000 });
-          this.router.navigate(['/developer-dashboard']);
+          this.router.navigate([`/developer/${dev.id}`]);
         },
         error: (error) => {
           this.errorMessage = 'Error al crear el perfil de desarrollador.';

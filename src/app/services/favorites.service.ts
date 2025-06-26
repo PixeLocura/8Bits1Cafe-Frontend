@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export interface Game {
   id: string;
@@ -17,7 +18,7 @@ export interface Game {
   providedIn: 'root'
 })
 export class FavoritesService {
-  private apiUrl = 'https://eightbits.onrender.com/api/v1/favorites'; 
+  private apiUrl = environment.backendEndpoint + '/favorites';
 
   constructor(private http: HttpClient) {}
 
