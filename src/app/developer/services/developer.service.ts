@@ -31,4 +31,20 @@ export class DeveloperService {
         })
       );
   }
+
+  createDeveloper(data: { name: string; description: string; website: string }): Observable<Developer> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    });
+    return this.http.post<Developer>(`${this.apiUrl}/developers`, data, { headers })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error creating developer:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 }
