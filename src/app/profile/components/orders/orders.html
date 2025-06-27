@@ -1,0 +1,29 @@
+<!-- src/app/profile/orders/orders.component.html -->
+<section class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10 space-y-4">
+  <h2 class="text-lg font-press-start mb-4">Order History</h2>
+
+  <div *ngFor="let o of orders"
+       class="flex items-center justify-between p-4 bg-[inherit] rounded-lg bg-[#F2EFDF] bg">
+    <div class="space-y-1">
+      <p class="font-medium">{{ o.id }}</p>
+      <p class="text-sm text-muted-foreground">{{ o.date }}</p>
+    </div>
+
+    <span
+      class="px-3 py-1 rounded-full text-xs font-medium"
+      [ngClass]="{
+        'bg-green-500 text-white': o.status === 'Delivered',
+        'bg-amber-400 text-white': o.status === 'Completed',
+        'bg-gray-400 text-white': o.status === 'Pending'
+      }">
+      {{ o.status }}
+    </span>
+
+    <div class="text-right space-y-1">
+      <p class="font-medium">${{ o.total.toFixed(2) }}</p>
+      <p class="text-xs text-muted-foreground">{{ o.items }} item{{ o.items > 1 ? 's' : '' }}</p>
+    </div>
+
+    <button class="btn btn-outline">View Order</button>
+  </div>
+</section>
