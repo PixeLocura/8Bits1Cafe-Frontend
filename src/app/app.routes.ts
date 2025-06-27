@@ -74,7 +74,6 @@ export const appRoutes: Routes = [
       import('./categories/categories.component').then(m => m.CategoriesComponent),
   },
 
-
   {
     path: 'juego/:id',
     loadComponent: () => import('./game-page/game-page.component').then(m => m.GamePageComponent),
@@ -90,7 +89,10 @@ export const appRoutes: Routes = [
   {
     path: 'home',
     component: Home
-
+  },
+  {
+    path: 'profile',
+    loadChildren: ()=> import('./profile/profile-module').then(m=>m.ProfileModule)
   },
   // Página 404 - ruta comodín
   {
