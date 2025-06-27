@@ -82,4 +82,8 @@ export class Login {
   get password() {
     return this.loginForm.get('password');
   }
+
+  continueWithGoogle() {
+    window.location.href = 'http://rp5.local:8080/api/v1/oauth2/authorization/google';
+  }
 }
