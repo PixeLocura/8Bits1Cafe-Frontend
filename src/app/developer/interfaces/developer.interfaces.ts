@@ -46,6 +46,6 @@ export interface Developer {
   website: string;
   creationDate: string;
   country: Country | null;
-  avatarUrl?: string | null; // Optional avatar/profile image URL
+  profilePictureUrl?: string | null; // Profile picture URL from backend
   games: Game[];
 }

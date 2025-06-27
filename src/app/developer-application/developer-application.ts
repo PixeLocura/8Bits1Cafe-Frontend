@@ -28,7 +28,8 @@ export class DeveloperApplication implements OnInit {
     this.applicationForm = this.fb.group({
       developerName: ['', [Validators.required, Validators.minLength(3)]],
       description: ['', [Validators.required, Validators.minLength(50)]],
-      websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]]
+      websiteUrl: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      profilePictureUrl: ['', [Validators.pattern('https?://.+')]]
     });
   }
 
@@ -49,19 +50,19 @@ export class DeveloperApplication implements OnInit {
 
   onSubmit() {
     if (this.applicationForm.valid) {
-      const { developerName, description, websiteUrl } = this.applicationForm.value;
+      const { developerName, description, websiteUrl, profilePictureUrl } = this.applicationForm.value;
       this.developerService.createDeveloper({
         name: developerName,
         description,
-        website: websiteUrl
+        website: websiteUrl,
+        profilePictureUrl: profilePictureUrl || undefined
       }).subscribe({
         next: (dev) => {
           this.snackBar.open('Perfil de desarrollador creado con éxito', 'Cerrar', { duration: 3000 });
           this.router.navigate([`/developer/${dev.id}`]);
         },
-        error: (error) => {
+        error: (err) => {
           this.errorMessage = 'Error al crear el perfil de desarrollador.';
-          this.snackBar.open('Error al crear el perfil', 'Cerrar', { duration: 3000 });
         }
       });
     } else {

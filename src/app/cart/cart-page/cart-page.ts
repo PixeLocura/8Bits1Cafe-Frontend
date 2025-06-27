@@ -59,11 +59,29 @@ export class CartPage implements OnInit {
 
   async comprar(): Promise<void> {
     try {
-      // TODO: Implement actual purchase logic here
-      // For now, we'll just simulate a successful purchase
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      this.router.navigate(['/successful-purchase']);
+      // Try both possible token keys for compatibility
+      let authToken = localStorage.getItem('auth_token') || localStorage.getItem('token');
+      if (!authToken) {
+        this.error = 'No autenticado. Por favor inicia sesión.';
+        return;
+      }
+      const gameIds = this.cartItems.map(item => item.id);
+      this.loading = true;
+      this.cartService.purchaseGames(gameIds, authToken).subscribe({
+        next: (result) => {
+          this.loading = false;
+          // Optionally clear cart and redirect
+          this.cartService.clearCart();
+          this.router.navigate(['/successful-purchase'], { state: { transaction: result } });
+        },
+        error: (err) => {
+          this.loading = false;
+          this.error = 'Error al procesar la compra. Por favor intente nuevamente.';
+          console.error('Error during purchase:', err);
+        }
+      });
     } catch (error) {
+      this.loading = false;
       console.error('Error during purchase:', error);
       this.error = 'Error al procesar la compra. Por favor intente nuevamente.';
     }

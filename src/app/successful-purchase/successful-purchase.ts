@@ -10,10 +10,17 @@ import { RouterModule, Router } from '@angular/router';
   styleUrls: ['./successful-purchase.css']
 })
 export class SuccessfulPurchase implements OnInit, OnDestroy {
-  timeLeft: number = 5;
+  timeLeft: number = 10;
   private intervalId: any;
+  transaction: any = null;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    // Try to get transaction data from navigation state
+    const nav = this.router.getCurrentNavigation();
+    if (nav && nav.extras && nav.extras.state && nav.extras.state['transaction']) {
+      this.transaction = nav.extras.state['transaction'];
+    }
+  }
 
   ngOnInit() {
     this.intervalId = setInterval(() => {
