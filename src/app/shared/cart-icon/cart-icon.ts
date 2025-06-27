@@ -1,24 +1,20 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-cart-icon',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './cart-icon.html',
-  styleUrl: './cart-icon.css'
+    selector: 'app-cart-icon',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './cart-icon.html',
+    styleUrl: './cart-icon.css'
 })
 export class CartIcon {
-  // TODO: Implement cart functionality
-  // - Connect to CartService
-  // - Handle cart navigation
-  // - Manage cart count updates
-  // - Add animations for count changes
+    @Input() itemCount: number = 0;
 
-  @Input() itemCount: number = 0;
+    constructor(private router: Router) { }
 
-  onClick(): void {
-    // TODO: Implement cart navigation
-    console.log('Cart clicked');
-  }
+    onClick(): void {
+        this.router.navigate(['/cart']);
+    }
 }

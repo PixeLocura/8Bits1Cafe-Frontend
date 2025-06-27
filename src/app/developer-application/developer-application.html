@@ -21,12 +21,6 @@
         </div>
       </div>
 
-      @if (errorMessage) {
-      <div class="text-center text-red-500 font-[Nunito] text-sm">
-        {{errorMessage}}
-      </div>
-      }
-
       <!-- Form -->
       <form class="space-y-6" [formGroup]="applicationForm" (ngSubmit)="onSubmit()">
         <!-- Developer Name -->
@@ -66,6 +60,10 @@
             class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-white bg-[#E5A277] hover:bg-[#D89267] rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition-colors duration-200">
             Crear Perfil
           </button>
+          <div *ngIf="errorMessage" class="text-center text-red-500 font-[Nunito] text-sm">
+            {{ errorMessage }}
+          </div>
+
         </div>
       </form>
 

@@ -25,6 +25,7 @@ export class ResenaComponent {
   }
 
 
+
   cerrarModal() {
     this.comentario = '';
     this.rating = 0;

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 
-import { Game } from '../shared/models/game.model';
-import { MOCK_GAMES } from '../shared/mock/mock-games';
+import { GameService } from '../services/game.service';
+import { Game, GameConUsername } from '../shared/interfaces/game.interfaces';
+import { Developer } from '../shared/interfaces/developer.interfaces';
 
 @Component({
   selector: 'app-categories',
@@ -11,23 +12,43 @@ import { MOCK_GAMES } from '../shared/mock/mock-games';
   imports: [CommonModule, RouterModule],
   templateUrl: './categories.component.html',
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
+  gamesPorCategoria: Record<string, GameConUsername[]> = {};
+  developers: Developer[] = [];
 
-  gamesPorCategoria: Record<string, Game[]> = {};
+  constructor(private gameService: GameService) {}
 
-  constructor() {
-    this.generarCategorias();
+  ngOnInit(): void {
+    this.cargarJuegosDesdeBackend();
   }
 
-  generarCategorias(): void {
-    for (const game of MOCK_GAMES) {
-      for (const genero of game.genres) {
-        if (!this.gamesPorCategoria[genero]) {
-          this.gamesPorCategoria[genero] = [];
-        }
-        this.gamesPorCategoria[genero].push(game);
-      }
-    }
+  cargarJuegosDesdeBackend(): void {
+    this.gameService.getAllDevelopers().subscribe({
+      next: (devs) => {
+        this.developers = devs;
+
+        this.gameService.getAllGames().subscribe({
+          next: (games: Game[]) => {
+            for (const game of games) {
+              const developer = this.developers.find(d => d.id === game.developer_id);
+              const gameConUsername: GameConUsername = {
+                ...game,
+                developerUsername: developer?.name || 'Desconocido',
+              };
+
+              for (const genero of game.categories ?? []) {
+                if (!this.gamesPorCategoria[genero]) {
+                  this.gamesPorCategoria[genero] = [];
+                }
+                this.gamesPorCategoria[genero].push(gameConUsername);
+              }
+            }
+          },
+          error: (err) => console.error('Error al obtener juegos:', err)
+        });
+      },
+      error: (err) => console.error('Error al obtener developers:', err)
+    });
   }
 
   getCategorias(): string[] {

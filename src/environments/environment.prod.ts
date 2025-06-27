@@ -1,4 +1,4 @@
-// export const environment = {
-//   production: true,
-//   backendEndpoint: ''
-// };
+export const environment = {
+  production: false,
+  backendEndpoint: 'https://eightbits.onrender.com/api/v1'
+};

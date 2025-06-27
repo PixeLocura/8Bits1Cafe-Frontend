@@ -76,7 +76,15 @@
   .pixel-border {
     position: relative;
   }
-
+  ::ng-deep .snackbar-success {
+    background-color: #4caf50;
+    color: white;
+    font-family: 'Press Start 2P', cursive;
+  }
+  ::ng-deep .mat-mdc-snack-bar-container {
+    border-radius: 8px;
+  }
+  
   .pixel-border::after {
     content: '';
     position: absolute;

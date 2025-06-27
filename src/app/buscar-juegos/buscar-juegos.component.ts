@@ -3,10 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { Game } from '../shared/models/game.model';
-import { MOCK_GAMES } from '../shared/mock/mock-games';
-
-
+import { Game } from '../shared/interfaces/game.interfaces';
+import { GameService } from '../services/game.service';
+//SERA USADO PARA CONECTAR USER_ID con GAME_ID y -------------------------
+//extraer el username para mostrarlo en la infor de un juego--------------
+import { Developer } from '../shared/interfaces/developer.interfaces';
+import { GameConUsername } from '../shared/interfaces/game.interfaces';
+//------------------------------------------------------------------------
 @Component({
   selector: 'app-buscar-juegos',
   standalone: true,
@@ -14,7 +17,8 @@ import { MOCK_GAMES } from '../shared/mock/mock-games';
   templateUrl: './buscar-juegos.component.html',
 })
 export class BuscarJuegosComponent {
-  games: Game[] = MOCK_GAMES;
+  games: GameConUsername[] = [];
+  developers: Developer[] = [];
 
   // Filtros
   minPrice: number = 0;
@@ -22,27 +26,88 @@ export class BuscarJuegosComponent {
   sortOption: string = 'relevancia';
   searchTerm: string = '';
 
-  // Filtros seleccionados (estado)
+  // Estado de filtros seleccionados
   selectedGenres: { [key: string]: boolean } = {};
   selectedPlatforms: { [key: string]: boolean } = {};
   selectedLanguages: { [key: string]: boolean } = {};
   selectedRatings: { [key: number]: boolean } = {};
 
-  // Opciones disponibles (para usar en *ngFor)
-  availableGenres: string[] = [
-    'Acción', 'Arcade', 'Aventura', 'Puzzle', 'Carreras', 'RPG',
-    'Shooter', 'Tower Defense', 'Estrategia', 'Simulación', 'Gestión'
-  ];
-  availablePlatforms: string[] = [
-    'Windows', 'Mac', 'Linux', 'Web Browser', 'Android', 'iOS'
-  ];
-  availableLanguages: string[] = [
-    'Español', 'Inglés', 'Chino', 'Árabe', 'Ruso'
+  // Opciones de filtros
+  availableGenres = [
+    { value: 'ACTION', display: 'Acción' },
+    { value: 'ADVENTURE', display: 'Aventura' },
+    { value: 'RPG', display: 'RPG' },
+    { value: 'STRATEGY', display: 'Estrategia' },
+    { value: 'SIMULATION', display: 'Simulación' },
+    { value: 'SPORTS', display: 'Deportes' },
+    { value: 'RACING', display: 'Carreras' },
+    { value: 'PUZZLE', display: 'Puzzle' },
+    { value: 'PLATFORMER', display: 'Plataformas' },
+    { value: 'SHOOTER', display: 'Shooter' },
+    { value: 'HORROR', display: 'Horror' },
+    { value: 'CASUAL', display: 'Casual' },
+    { value: 'FANTASY', display: 'Fantasía' },
+    { value: 'ARCADE', display: 'Arcade' },
+    { value: 'ROGUELIKE', display: 'Roguelike' }
   ];
 
-  // Modal reseña
+  availablePlatforms = [
+    { value: 'WINDOWS', display: 'Windows' },
+    { value: 'MAC_OS', display: 'MacOS' },
+    { value: 'LINUX', display: 'Linux' },
+    { value: 'ANDROID', display: 'Android' },
+    { value: 'IOS', display: 'iOS' }
+  ];
+
+  availableLanguages = [
+    { value: 'EN', display: 'Inglés' },
+    { value: 'ES', display: 'Español' },
+    { value: 'FR', display: 'Francés' },
+    { value: 'DE', display: 'Alemán' },
+    { value: 'IT', display: 'Italiano' },
+    { value: 'PT', display: 'Portugués' },
+    { value: 'RU', display: 'Ruso' },
+    { value: 'JA', display: 'Japonés' },
+    { value: 'ZH', display: 'Chino' },
+    { value: 'KO', display: 'Coreano' }
+  ];
+
+
   mostrarModal: boolean = false;
   juegoSeleccionado: Game | null = null;
+
+  constructor(private gameService: GameService) {
+    this.cargarDatos();
+  }
+
+  cargarDatos() {
+    this.gameService.getAllDevelopers().subscribe({
+      next: (developers) => {
+        this.developers = developers;
+
+        this.gameService.getAllGames().subscribe({
+          next: (games) => {
+            this.games = games.map(game => {
+              const dev = this.developers.find(d => d.id === game.developer_id);
+              return {
+                ...game,
+                developerUsername: dev?.name ?? 'Desconocido',
+                rating: Math.floor(Math.random() * 5) + 1
+              };
+            });
+          },
+          error: (err) => {
+            console.error('Error al obtener juegos:', err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error al obtener developers:', err);
+      }
+    });
+  }
+
+
 
   abrirModal(game: Game) {
     if (!this.isLoggedIn()) {
@@ -58,71 +123,64 @@ export class BuscarJuegosComponent {
     this.juegoSeleccionado = null;
   }
 
-  guardarResena(data: { comentario: string, rating: number }) {
+  guardarResena(data: { comentario: string; rating: number }) {
     console.log('reseña guardada:', data);
     this.cerrarModal();
   }
 
   isLoggedIn(): boolean {
-    return true; // Simulación
+    return !!localStorage.getItem('token');
   }
 
-  get filteredGames(): Game[] {
+  get filteredGames(): GameConUsername[] {
     let filtered = [...this.games];
 
-    // Filtro por precio
-    filtered = filtered.filter(
-      game => game.price >= this.minPrice && game.price <= this.maxPrice
+    // Arreglo de rango invertido
+    if (this.minPrice > this.maxPrice) {
+      [this.minPrice, this.maxPrice] = [this.maxPrice, this.minPrice];
+    }
+
+    filtered = filtered.filter(game =>
+      game.price >= this.minPrice && game.price <= this.maxPrice
     );
 
-    if (this.minPrice > this.maxPrice) {
-      const temp = this.minPrice;
-      this.minPrice = this.maxPrice;
-      this.maxPrice = temp;
-    }
-
-    // Género
     const activeGenres = Object.keys(this.selectedGenres).filter(g => this.selectedGenres[g]);
+    const activePlatforms = Object.keys(this.selectedPlatforms).filter(p => this.selectedPlatforms[p]);
+    const activeLanguages = Object.keys(this.selectedLanguages).filter(l => this.selectedLanguages[l]);
+    const activeRatings = Object.keys(this.selectedRatings).filter(r => this.selectedRatings[+r]);
+
     if (activeGenres.length > 0) {
       filtered = filtered.filter(game =>
-        game.genres.some(genre => activeGenres.includes(genre))
+        (game.categories || []).some(genre => activeGenres.includes(genre))
       );
     }
 
-    // Plataforma
-    const activePlatforms = Object.keys(this.selectedPlatforms).filter(p => this.selectedPlatforms[p]);
     if (activePlatforms.length > 0) {
       filtered = filtered.filter(game =>
-        game.platforms.some(platform => activePlatforms.includes(platform))
+        (game.platforms || []).some(platform => activePlatforms.includes(platform))
       );
     }
 
-    // Idioma
-    const activeLanguages = Object.keys(this.selectedLanguages).filter(l => this.selectedLanguages[l]);
     if (activeLanguages.length > 0) {
       filtered = filtered.filter(game =>
-        game.languages.some(lang => activeLanguages.includes(lang))
+        (game.languages || []).some(lang => activeLanguages.includes(lang))
       );
     }
 
-    // Valoración
-    const activeRatings = Object.keys(this.selectedRatings).filter(r => this.selectedRatings[+r]);
     if (activeRatings.length > 0) {
       filtered = filtered.filter(game =>
-        activeRatings.includes(game.rating.toString())
+        activeRatings.includes((game.rating ?? 0).toString())
       );
     }
 
-    // Búsqueda por texto
     const term = this.searchTerm.trim().toLowerCase();
     if (term !== '') {
       filtered = filtered.filter(game =>
         game.title.toLowerCase().includes(term) ||
-        game.developer.toLowerCase().includes(term)
+        (game.developerUsername?.toLowerCase()?.includes(term) ?? false)
       );
     }
 
-    // Ordenar
     switch (this.sortOption) {
       case 'titulo-az':
         filtered.sort((a, b) => a.title.localeCompare(b.title));
@@ -137,4 +195,6 @@ export class BuscarJuegosComponent {
 
     return filtered;
   }
+
+
 }
