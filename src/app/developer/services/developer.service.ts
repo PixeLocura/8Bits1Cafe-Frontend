@@ -21,7 +21,7 @@ export class DeveloperService {
             'Content-Type': 'application/json'
         });
 
-        return this.http.get<Developer>(`${this.apiUrl}/developers/${id}`, { headers })
+        return this.http.get<Developer>(`${this.apiUrl}developers/${id}`, { headers })
             .pipe(
                 catchError((error: HttpErrorResponse) => {
                     console.error('Error fetching developer:', error);
@@ -39,7 +39,7 @@ export class DeveloperService {
             'Content-Type': 'application/json',
             ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         });
-        return this.http.post<Developer>(`${this.apiUrl}/developers`, data, { headers })
+        return this.http.post<Developer>(`${this.apiUrl}developers`, data, { headers })
             .pipe(
                 catchError((error: HttpErrorResponse) => {
                     console.error('Error creating developer:', error);
@@ -55,7 +55,7 @@ export class DeveloperService {
             'Content-Type': 'application/json',
             ...(token ? { 'Authorization': `Bearer ${token}` } : {})
         };
-        return this.http.get(`${this.apiUrl}/developers/me/exists`, { headers, responseType: 'text' })
+        return this.http.get(`${this.apiUrl}developers/me/exists`, { headers, responseType: 'text' })
             .pipe(
                 map((id: unknown) => typeof id === 'string' && id.length > 0 ? id : null),
                 catchError((error: HttpErrorResponse) => {
