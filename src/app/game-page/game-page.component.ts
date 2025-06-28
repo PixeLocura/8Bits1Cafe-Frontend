@@ -4,13 +4,14 @@ import { CommonModule } from '@angular/common';
 
 import { LucideIconComponent } from '../component/lucide-icon.component';
 import { ResenaComponent } from '../resena/resena.component';
+import { FavoritesService } from '../services/favorites.service';
+import { AuthService } from '../auth/services/auth.service';
 
 import { Game } from '../shared/interfaces/game.interfaces';
 import { Review } from '../shared/interfaces/review.interface';
 import { ReviewService } from '../services/review.service';
 import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
-import { FavoritesService } from '../services/favorites.service';
 
 
 @Component({
@@ -225,20 +226,21 @@ export class GamePageComponent implements OnInit {
       alert('Debes iniciar sesión para añadir a favoritos');
       return;
     }
-
+  
     const token = localStorage.getItem('token');
     const userEmail = this.getEmailFromToken(token!);
     const gameId = this.juego?.id;
-
+  
     if (!userEmail || !gameId) {
       alert('No se pudo añadir a favoritos. Inténtalo de nuevo.');
       return;
     }
-
+  
     this.reviewService.getUserIdByEmail(userEmail).subscribe({
-      next: (res) => {
-        const userId = res.id;
-        this.favoritesService.addFavorite(userId, { gameId }).subscribe({
+      next: (response) => {
+        const userId = response.id; // ✅ ahora SÍ tienes userId
+  
+        this.favoritesService.addFavorite(userId, gameId).subscribe({
           next: () => alert('💖 Juego agregado a favoritos'),
           error: (err) => {
             console.error('Error al agregar a favoritos:', err);
@@ -246,9 +248,12 @@ export class GamePageComponent implements OnInit {
           }
         });
       },
-      error: () => alert('Error al identificar usuario')
+      error: () => {
+        alert('No se pudo identificar el usuario.');
+      }
     });
   }
+  
 
   compartir() {
     this.copiarLinkDelJuego();

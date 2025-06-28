@@ -1,71 +1,72 @@
 import { Component, OnInit } from '@angular/core';
-import { FavoritesService, Game } from '../services/favorites.service';
-import { ReviewService } from '../services/review.service';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FavoritesService } from '../services/favorites.service';
+import { CommonModule } from '@angular/common';
+import { AuthService } from '../auth/services/auth.service';
+// Interfaz coherente con tu DTO real
+export interface FavoriteGame {
+  userId: string;
+  gameId: string;
+  title: string;
+  developerName: string;
+  coverUrl: string;
+  price: number;
+}
 
 @Component({
   selector: 'app-favorites',
-  standalone: true,
+  standalone: true, // ✅ Si es standalone, debe importar CommonModule
+  imports: [CommonModule], // ✅ Aquí debe estar
   templateUrl: './favorites.component.html',
 })
 export class FavoritesComponent implements OnInit {
-  favorites: Game[] = [];
-  userId: string = '';
+  favorites: FavoriteGame[] = [];
+  userId: string | null = null;
 
   constructor(
     private favoritesService: FavoritesService,
-    private reviewService: ReviewService,
-    private router: Router
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('Debes iniciar sesión para ver tus favoritos');
-      this.router.navigate(['/login']);
+    this.userId = this.authService.getUserId();
+    if (!this.userId) {
+      console.error('No userId found');
       return;
     }
-
-    const email = this.getEmailFromToken(token);
-    if (!email) {
-      alert('Token inválido');
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    this.reviewService.getUserIdByEmail(email).subscribe({
-      next: (res) => {
-        this.userId = res.id;
-        this.loadFavorites(); // ✅ Cargar favoritos una vez tengamos el ID
+    this.loadFavorites(this.userId); 
+  }
+  
+  loadFavorites(userId: string): void {
+    this.favoritesService.getFavorites(userId).subscribe({
+      next: (data) => {
+        this.favorites = data;
       },
-      error: () => {
-        alert('No se pudo obtener el usuario');
-        this.router.navigate(['/login']);
-      }
-    });
-  }
-
-  loadFavorites(): void {
-    this.favoritesService.getFavorites(this.userId).subscribe({
-      next: (data) => this.favorites = data,
       error: (err) => {
-        console.error('Error al cargar favoritos', err);
-        this.favorites = [];
+        console.error('Error fetching favorites:', err);
       }
     });
   }
+  
 
-  removeFavorite(gameId: string): void {
-    this.favoritesService.removeFavorite(this.userId, gameId).subscribe({
+  removeFavorite(userId: string, gameId: string): void {
+    this.favoritesService.removeFavorite(userId, gameId).subscribe({
       next: () => {
-        this.favorites = this.favorites.filter(fav => fav.id !== gameId);
+        this.snackBar.open('Juego eliminado de favoritos', 'Cerrar', {
+          duration: 3000,
+          panelClass: 'snackbar-success',
+        });
+        this.loadFavorites(userId); // Recarga la lista después de borrar
       },
       error: (err) => {
-        console.error('Error al eliminar favorito', err);
-        alert('No se pudo eliminar el juego de favoritos.');
+        console.error('Error removing favorite:', err);
       }
     });
   }
+  
 
   goHome(): void {
     this.router.navigate(['/buscar-juegos']);

@@ -98,4 +98,23 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.apiUrl}/register/admin`, userData);
   }
 
+
+getUserId(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('No token found in localStorage');
+      return null;
+    }
+  
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Decoded JWT payload:', payload);
+      return payload.userId;
+    } catch (err) {
+      console.error('Error decoding JWT:', err);
+      return null;
+    }
+  }
+  
+
 }
