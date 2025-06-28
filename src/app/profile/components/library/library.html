@@ -1,0 +1,24 @@
+<!-- src/app/profile/library/library.component.html -->
+<div class="space-y-6">
+  <!-- My Game Library -->
+  <section class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10">
+    <h2 class="text-lg font-press-start mb-4">My Game Library</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-game-card
+        *ngFor="let game of ownedGames"
+        [game]="game">
+      </app-game-card>
+    </div>
+  </section>
+
+  <!-- Recently Viewed -->
+  <section class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10">
+    <h2 class="text-lg font-press-start mb-4">Recently Viewed</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-game-card
+        *ngFor="let game of recentlyViewed"
+        [game]="game">
+      </app-game-card>
+    </div>
+  </section>
+</div>

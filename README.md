@@ -54,6 +54,32 @@ ng e2e
 
 Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
 
+## Google OAuth2 Login Integration
+
+This app supports login and registration with Google via OAuth2. The flow is as follows:
+
+1. User clicks the **Google** button on the login page.
+2. The app redirects to the backend OAuth2 endpoint (`/api/v1/oauth2/authorization/google`).
+3. After Google authentication, the backend issues a JWT and redirects to `/login-success?token=...`.
+4. The Angular app captures the token, stores it in `localStorage`, and redirects the user to the home page.
+5. All API requests automatically include the JWT via an HTTP interceptor.
+
+**Note:** For production, update the backend URL in the Google button handler.
+
+## Discord OAuth2 Login Integration
+
+This app now supports login and registration with Discord via OAuth2. The flow is as follows:
+
+1. User clicks the **Discord** button on the login page.
+2. The app redirects to the backend OAuth2 endpoint (`/api/v1/oauth2/authorization/discord`).
+3. After Discord authentication, the backend issues a JWT and redirects to `/login-success?token=...`.
+4. The Angular app captures the token, stores it in `localStorage`, and redirects the user to the home page.
+5. All API requests automatically include the JWT via an HTTP interceptor.
+
+**Note:** The backend must be configured to support Discord as an OAuth2 provider. For production, update the backend URL in the Discord button handler if needed.
+
+---
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

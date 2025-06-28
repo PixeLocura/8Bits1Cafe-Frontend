@@ -1,0 +1,116 @@
+<div class="flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-8">
+  <!-- Back Button -->
+  <button routerLink="/"
+    class="flex items-center gap-2 text-[#CCB396] hover:text-[#E95151] transition-colors duration-200 p-4">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+      <path fill-rule="evenodd"
+        d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+        clip-rule="evenodd" />
+    </svg>
+    <span class="font-[Nunito]">Volver al Inicio</span>
+  </button>
+
+  <!-- Main Content -->
+  <div class="flex justify-center items-start pb-8">
+    <div class="max-w-md w-full bg-white space-y-6 p-8 rounded-2xl shadow-lg">
+      <!-- Heading -->
+      <div class="space-y-2">
+        <div class="text-center font-['Press_Start_2P'] text-[35px] tracking-[-0.5px] leading-[44px] text-[#504940]">
+          <div>Bienvenido</div>
+          <div>de nuevo</div>
+        </div>
+      </div>
+
+      @if (errorMessage) {
+      <div class="text-center text-red-500 font-[Nunito] text-sm">
+        {{errorMessage}}
+      </div>
+      }
+
+      <!-- Form -->
+      <form class="space-y-5" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Email -->
+        <div>
+          <label for="email" class="block text-[14px] font-[Nunito] font-medium text-gray-700 mb-1">
+            Email
+          </label>
+          <input id="email" type="email" formControlName="email"
+            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E95151] focus:border-transparent"
+            placeholder="Ingrese su email">
+        </div>
+
+        <!-- Password -->
+        <div>
+          <label for="password" class="block text-[14px] font-[Nunito] font-medium text-gray-700 mb-1">
+            Contraseña
+          </label>
+          <input id="password" type="password" formControlName="password"
+            class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E95151] focus:border-transparent"
+            placeholder="Ingrese su contraseña">
+        </div>
+
+        <!-- Remember Me and Forgot Password -->
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <input id="remember" type="checkbox" formControlName="remember"
+              class="h-4 w-4 text-[#E95151] focus:ring-[#E95151] border-gray-300 rounded cursor-pointer">
+            <label for="remember" class="ml-2 block text-sm font-[Nunito] text-gray-700 cursor-pointer">
+              Recuérdame
+            </label>
+          </div>
+          <a routerLink="/forgot-password"
+            class="font-[Nunito] text-sm text-[#E5A277] hover:text-[#D89267] transition-colors duration-200">
+            Olvidaste tu contraseña?
+          </a>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="mt-6">
+          <button type="submit" [disabled]="!loginForm.valid"
+            class="w-full py-2.5 px-4 text-lg font-['Press_Start_2P'] text-white bg-[#E5A277] hover:bg-[#D89267] rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] disabled:opacity-50 disabled:cursor-not-allowed hover:cursor-pointer transition-colors duration-200">
+            Log In
+          </button>
+        </div>
+
+        <!-- Divider -->
+        <div class="relative my-4">
+          <div class="absolute inset-0 flex items-center">
+            <div class="w-full border-t border-gray-300"></div>
+          </div>
+          <div class="relative flex justify-center text-sm">
+            <span class="px-2 bg-white text-gray-500 font-[Nunito]">or continue with</span>
+          </div>
+        </div>
+
+        <!-- Social Login -->
+        <div class="grid grid-cols-2 gap-4">
+          <button type="button" (click)="continueWithGoogle()"
+            class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
+            <svg class="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="currentColor"
+                d="M12.545,10.239v3.821h5.445c-0.712,2.315-2.647,3.972-5.445,3.972c-3.332,0-6.033-2.701-6.033-6.032s2.701-6.032,6.033-6.032c1.498,0,2.866,0.549,3.921,1.453l2.814-2.814C17.503,2.988,15.139,2,12.545,2C7.021,2,2.543,6.477,2.543,12s4.478,10,10.002,10c8.396,0,10.249-7.85,9.426-11.748L12.545,10.239z" />
+            </svg>
+            <span class="font-[Nunito] font-medium">Google</span>
+          </button>
+          <button type="button" (click)="continueWithDiscord()"
+            class="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 hover:cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-200">
+            <svg class="w-5 h-5" viewBox="0 0 24 24">
+              <path fill="currentColor"
+                d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z" />
+            </svg>
+            <span class="font-[Nunito] font-medium">Discord</span>
+          </button>
+        </div>
+
+        <!-- Register Link -->
+        <div class="text-center">
+          <span class="font-[Nunito] text-sm text-[#7F776C]">No tienes una cuenta? </span>
+          <a routerLink="/register"
+            class="font-[Nunito] text-sm text-[#E5A277] hover:text-[#D89267] transition-colors duration-200">
+            Regístrate
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

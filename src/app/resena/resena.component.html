@@ -1,0 +1,42 @@
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+  <form
+    (ngSubmit)="enviarResena($event)"
+    class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+    novalidate
+  >
+    <h2 class="text-xl font-semibold mb-4">Escribir reseña para "{{ gameTitle }}"</h2>
+
+    <!-- Comentario -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Comentario</label>
+      <textarea [(ngModel)]="comentario"
+                name="comentario"
+                rows="4"
+                class="resize-none w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coffee-terracotta"></textarea>
+    </div>
+
+    <!-- Valoración -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 mb-1">Valoración</label>
+      <select [(ngModel)]="rating"
+              name="rating"
+              class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-coffee-terracotta">
+        <option value="0">Selecciona una opción</option>
+        <option *ngFor="let r of [1,2,3,4,5]" [value]="r">{{ r }} ⭐</option>
+      </select>
+      <small *ngIf="rating === 0" class="text-red-500">Selecciona una valoración.</small>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end gap-2">
+      <button type="button" (click)="cerrarModal()" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">
+        Cancelar
+      </button>
+      <button type="submit"
+              [disabled]="!comentario || rating === 0"
+              class="px-4 py-2 bg-coffee-terracotta text-white rounded hover:bg-coffee-brown disabled:opacity-50 disabled:cursor-not-allowed">
+        Enviar
+      </button>
+    </div>
+  </form>
+</div>

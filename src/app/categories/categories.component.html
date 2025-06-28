@@ -1,0 +1,21 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl md:text-3xl font-press-start text-coffee-terracotta mb-6">Categorías de Juego</h1>
+
+  <div *ngFor="let categoria of getCategorias()" class="bg-coffee-cream border border-coffee-brown rounded-lg p-6 mb-8">
+    <div class="flex items-center mb-4">
+      <h2 class="text-xl font-bold text-coffee-brown">{{ categoria }}</h2>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <a *ngFor="let game of gamesPorCategoria[categoria]" [routerLink]="['/juego', game.id]" class="block bg-white rounded-lg shadow p-4 border border-gray-200 hover:shadow-md transition-shadow">
+        <div class="h-48 w-full mb-3 overflow-hidden rounded">
+          <img [src]="game.coverUrl" [alt]="game.title" class="w-full h-full object-cover">
+        </div>
+        <h3 class="font-semibold text-lg mb-1">{{ game.title }}</h3>
+        <p class="text-sm text-muted-foreground mb-1">Desarrollador: {{ game.developerUsername }}</p>
+        <p class="text-sm text-muted-foreground mb-1">Plataformas: {{ game.platforms.join(', ') }}</p>
+        <p class="text-sm text-muted-foreground mb-1">Precio: ${{ game.price }}</p>
+      </a>
+    </div>
+  </div>
+</div>

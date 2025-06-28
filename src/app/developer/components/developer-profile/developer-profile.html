@@ -1,0 +1,76 @@
+<div class="min-h-screen bg-[#F8F7F1] py-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Back Button -->
+    <button routerLink="/"
+      class="flex items-center gap-2 text-[#CCB396] hover:text-[#E95151] transition-colors duration-200 p-4 mb-6">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd"
+          d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+          clip-rule="evenodd" />
+      </svg>
+      <span class="font-[Nunito]">Volver al Inicio</span>
+    </button>
+
+    @if (loading) {
+    <div class="flex justify-center items-center min-h-[200px]">
+      <div class="font-[Nunito] text-[#7F776C]">Cargando perfil del desarrollador...</div>
+    </div>
+    } @else if (error) {
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 text-red-600 font-[Nunito]">
+      {{ error }}
+    </div>
+    } @else {
+    <!-- Developer Info Section -->
+    <div class="bg-[#FEFBF3] border-2 border-[#F2E9DC] rounded-2xl p-8 mb-12 shadow-[0px_1px_3px_1px_rgba(0,0,0,0.07)]">
+      <div class="flex flex-col md:flex-row md:items-center gap-8">
+        <!-- Avatar -->
+        <div class="flex-shrink-0 flex justify-center md:justify-start">
+          <div
+            class="w-32 h-32 rounded-full bg-gradient-to-br from-[#E5A277] to-[#CCB396] border-4 border-[#F2E9DC] shadow-md flex items-center justify-center overflow-hidden">
+            <img *ngIf="developer.profilePictureUrl" [src]="developer.profilePictureUrl" alt="Avatar"
+              class="w-full h-full object-cover" />
+            <ng-container *ngIf="!developer.profilePictureUrl">
+              <span class="text-white text-5xl font-bold select-none">
+                {{ developer.name ? (developer.name[0] | uppercase) : '?' }}
+              </span>
+            </ng-container>
+          </div>
+        </div>
+        <!-- Developer Details -->
+        <div class="flex-1 flex flex-col justify-center items-start text-left">
+          <h1 class="font-['Press_Start_2P'] text-[#504940] text-3xl mb-4 leading-tight">{{ developer.name }}</h1>
+          <p class="font-[Nunito] text-[#7F776C] text-lg mb-6 pl-1 break-all break-words">{{ developer.description }}
+          </p>
+          <div class="flex flex-col gap-3 font-[Nunito] text-[#7F776C] w-full">
+            <div class="flex items-center gap-2" *ngIf="developer.website">
+              <app-lucide-icon name="globe" class="text-[#E5A277]"></app-lucide-icon>
+              <a [href]="developer.website" target="_blank" class="text-[#E5A277] hover:underline break-all">
+                {{ developer.website }}
+              </a>
+            </div>
+            <div class="flex items-center gap-2" *ngIf="developer.country">
+              <app-lucide-icon name="map-pin" class="text-[#E5A277]"></app-lucide-icon>
+              <img [src]="COUNTRY_INFO_MAP[developer.country].flag" [alt]="COUNTRY_INFO_MAP[developer.country].es"
+                class="dev-flag border border-[#F2E9DC] shadow-sm object-cover"
+                *ngIf="COUNTRY_INFO_MAP[developer.country].flag" />
+              <span>{{ COUNTRY_INFO_MAP[developer.country].es }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <app-lucide-icon name="calendar" class="text-[#E5A277]"></app-lucide-icon>
+              <span>Se unió el {{ developer.creationDate | date:"d 'de' MMMM 'del' y":'es-ES' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Games Section -->
+    <div class="bg-[#FEFBF3] border-2 border-[#F2E9DC] rounded-2xl p-8 shadow-[0px_1px_3px_1px_rgba(0,0,0,0.07)]">
+      <div class="flex items-end mb-2">
+        <h2 class="font-['Press_Start_2P'] text-[#504940] text-2xl ml-4 mb-2">Juegos</h2>
+      </div>
+      <app-developer-games-list [games]="developer.games"></app-developer-games-list>
+    </div>
+    }
+  </div>
+</div>
