@@ -1,70 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FavoritesService } from '../services/favorites.service';
 import { CommonModule } from '@angular/common';
-
-interface Game {
-  id: string;
+import { AuthService } from '../auth/services/auth.service';
+// Interfaz coherente con tu DTO real
+export interface FavoriteGame {
+  userId: string;
+  gameId: string;
   title: string;
-  developer: string;
-  coverImage: string;
-  rating: number;
-  category: string[];
-  platforms: string[];
-  price: string;
+  developerName: string;
+  coverUrl: string;
+  price: number;
 }
 
 @Component({
-  standalone: true,
   selector: 'app-favorites',
+  standalone: true, // ✅ Si es standalone, debe importar CommonModule
+  imports: [CommonModule], // ✅ Aquí debe estar
   templateUrl: './favorites.component.html',
-  imports: [CommonModule],
 })
-export class FavoritesComponent {
-  favorites: Game[] = [
-    {
-      id: '1',
-      title: 'Pixel Dungeon',
-      developer: 'RetroWare Studios',
-      coverImage: 'https://images.unsplash.com/photo-1585620385456-4759f9b5c7d9?auto=format&fit=crop&w=500&q=60',
-      rating: 4.8,
-      category: ['Aventura', 'Puzzle'],
-      platforms: ['Windows', 'Mac'],
-      price: '$14.99',
-    },
-    {
-      id: '2',
-      title: 'Coffee Shop Tycoon',
-      developer: 'Cozy Games Inc.',
-      coverImage: 'https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=500&q=60',
-      rating: 4.5,
-      category: ['Simulación', 'Gestión'],
-      platforms: ['Windows', 'Mac', 'Linux'],
-      price: '$9.99',
-    },
-    {
-      id: '3',
-      title: 'Bit Racer',
-      developer: '8Bit Gaming',
-      coverImage: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=500&q=60',
-      rating: 4.2,
-      category: ['Carreras', 'Arcade'],
-      platforms: ['Windows'],
-      price: '$4.99',
-    },
-  ];
+export class FavoritesComponent implements OnInit {
+  favorites: FavoriteGame[] = [];
+  userId: string | null = null;
 
-  constructor(private snackBar: MatSnackBar, private router: Router) {}
+  constructor(
+    private favoritesService: FavoritesService,
+    private snackBar: MatSnackBar,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
-  removeFavorite(id: string): void {
-    this.favorites = this.favorites.filter(game => game.id !== id);
-    this.snackBar.open('Juego eliminado de favoritos', 'Cerrar', {
-      duration: 3000,
-      panelClass: 'snackbar-success',
+  ngOnInit(): void {
+    this.userId = this.authService.getUserId();
+    if (!this.userId) {
+      console.error('No userId found');
+      return;
+    }
+    this.loadFavorites(this.userId); 
+  }
+  
+  loadFavorites(userId: string): void {
+    this.favoritesService.getFavorites(userId).subscribe({
+      next: (data) => {
+        this.favorites = data;
+      },
+      error: (err) => {
+        console.error('Error fetching favorites:', err);
+      }
     });
   }
+  
+
+  removeFavorite(userId: string, gameId: string): void {
+    this.favoritesService.removeFavorite(userId, gameId).subscribe({
+      next: () => {
+        this.snackBar.open('Juego eliminado de favoritos', 'Cerrar', {
+          duration: 3000,
+          panelClass: 'snackbar-success',
+        });
+        this.loadFavorites(userId); // Recarga la lista después de borrar
+      },
+      error: (err) => {
+        console.error('Error removing favorite:', err);
+      }
+    });
+  }
+  
 
   goHome(): void {
-    this.router.navigateByUrl('/');
+    this.router.navigate(['/buscar-juegos']);
+  }
+
+  getEmailFromToken(token: string): string | null {
+    try {
+      const payload = token.split('.')[1];
+      const decoded = atob(payload);
+      const parsed = JSON.parse(decoded);
+      return parsed.sub || null;
+    } catch (error) {
+      console.error('Error al decodificar token:', error);
+      return null;
+    }
   }
 }

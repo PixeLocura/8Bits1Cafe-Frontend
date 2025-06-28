@@ -1,4 +1,3 @@
-<!-- game-page.component.html -->
 <div *ngIf="juego as j" class="container mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-8">
   <!-- Columna Izquierda -->
   <aside class="md:col-span-1 space-y-6">
@@ -8,9 +7,9 @@
       Volver a juegos
     </button>
 
-    <!-- Imagen del juego -->
-    <div class="border rounded overflow-hidden" *ngIf="j.images?.length">
-      <img [src]="j.images![0]" [alt]="j.title" class="w-full object-cover" />
+    <!-- Imagen principal con coverUrl -->
+    <div class="border rounded overflow-hidden" *ngIf="j.coverUrl">
+      <img [src]="j.coverUrl" [alt]="j.title" class="w-full object-cover" />
     </div>
 
     <!-- Acciones -->
@@ -25,24 +24,27 @@
       </button>
     </div>
 
-    <!-- Precio y estrellas -->
+    <!-- Precio y valoración -->
     <div class="border rounded p-4 space-y-2">
       <h3 class="text-sm text-muted-foreground">Precio</h3>
       <p class="text-2xl font-bold text-coffee-terracotta">${{ j.price }}</p>
-      <p class="text-yellow-500 text-sm">⭐ {{ j.rating }}</p>
+      <p class="text-yellow-500 text-sm">⭐ {{ promedioEstrellas }}</p>
 
-      <button class="w-full bg-coffee-terracotta text-white py-2 mt-2 rounded-none" (click)="comprar()">Comprar ahora</button>
-      <button class="w-full border py-2 mt-2" (click)="jugarDemo()">Juega la demo</button>
+      <button class="w-full bg-coffee-terracotta text-white py-2 mt-2 rounded-none" (click)="comprar()">Añadir al carrito</button>
+      <a
+        href="assets/fonts/juego_demo.exe"
+        download
+        class="w-full border py-2 mt-2 block text-center bg-blue-600 text-white hover:bg-blue-700 transition-colors">Juega la demo</a>
       <button class="w-full border py-2 mt-2" (click)="descargarJuego()">Descargar</button>
     </div>
 
-    <!-- Información del juego -->
+    <!-- Info del juego -->
     <div class="border rounded p-4">
       <h3 class="text-lg font-semibold mb-2">Información del Juego</h3>
-      <p><span class="font-semibold">Desarrollador:</span> {{ j.developer }}</p>
+      <p><span class="font-semibold">Desarrollador:</span> {{ getDeveloperNameById(j.developer_id) }}</p>
       <p><span class="font-semibold">Fecha de estreno:</span> {{ j.releaseDate }}</p>
-      <p><span class="font-semibold">Plataforma:</span> {{ j.platforms.join(', ') }}</p>
-      <p><span class="font-semibold">Categorías:</span> {{ j.genres.join(', ') }}</p>
+      <p><span class="font-semibold">Plataformas:</span> {{ j.platforms.join(', ') }}</p>
+      <p><span class="font-semibold">Categorías:</span> {{ j.categories.join(', ') }}</p>
       <p><span class="font-semibold">Idiomas:</span> {{ j.languages.join(', ') }}</p>
     </div>
   </aside>
@@ -51,10 +53,7 @@
   <section class="md:col-span-2 space-y-6">
     <h1 class="text-3xl font-bold">{{ j.title }}</h1>
 
-    <!-- Imágenes extra -->
-    <div *ngIf="tieneMasDeUnaImagen(j)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <img *ngFor="let img of j.images!.slice(1)" [src]="img" [alt]="j.title" class="rounded border w-full h-40 object-cover" />
-    </div>
+
 
     <!-- Tabs -->
     <div class="flex gap-4 border-b pb-2">
@@ -63,55 +62,56 @@
       <button class="px-4 py-2 border-b-2" [ngClass]="{ 'border-coffee-terracotta font-bold': tabSeleccionado === 'resenas' }" (click)="seleccionarTab('resenas')">Reseñas</button>
     </div>
 
-        <!-- Contenido del tab -->
-<div class="border p-4 rounded" [ngSwitch]="tabSeleccionado">
-  <p *ngSwitchCase="'descripcion'">{{ j.description }}</p>
+    <!-- Contenido del tab -->
+    <div class="border p-4 rounded" [ngSwitch]="tabSeleccionado">
+      <p *ngSwitchCase="'descripcion'">{{ j.description }}</p>
 
-  <pre *ngSwitchCase="'requisitos'" class="whitespace-pre-wrap text-sm">
-    {{ j.requisitos?.join('\n') || 'No hay requisitos disponibles' }}
-  </pre>
+      <pre *ngSwitchCase="'requisitos'" class="whitespace-pre-wrap text-sm">
+        Plataforma: {{ j.platforms.join(', ') }}
+      </pre>
 
-  <div *ngSwitchCase="'resenas'">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-semibold">Reseñas de jugadores</h3>
-      <button
-        class="text-sm text-coffee-terracotta underline hover:text-coffee-brown"
-        (click)="abrirModal(j)">
-        Escribir reseña
-      </button>
-    </div>
+      <div *ngSwitchCase="'resenas'">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-lg font-semibold">Reseñas de jugadores</h3>
+          <button class="text-sm text-coffee-terracotta underline hover:text-coffee-brown" (click)="abrirModal()">
+            Escribir reseña
+          </button>
+        </div>
 
-    <div *ngIf="j.reviews?.length; else sinResenas">
-      <div *ngFor="let review of j.reviews" class="mb-4 border-b pb-2">
-        <p class="text-sm font-semibold">{{ review.autor }}:</p>
-        <p class="text-sm">{{ review.comentario }}</p>
-        <p class="text-yellow-500 text-xs">{{ '⭐'.repeat(review.rating) }}</p>
+        <div *ngIf="resenas.length > 0; else sinResenas">
+          <div *ngFor="let review of resenas" class="mb-4 border-b pb-2">
+            <p class="text-sm font-semibold">{{ review.userName || 'Usuario anónimo' }}:</p>
+            <p class="text-sm">{{ review.comment }}</p>
+            <p class="text-yellow-500 text-xs">
+              <ng-container *ngFor="let star of createStars(review.rating)">
+                ⭐
+              </ng-container>
+            </p>
+          </div>
+        </div>
+
+        <ng-template #sinResenas>
+          <p class="text-sm text-muted-foreground">Aún no hay reseñas.</p>
+        </ng-template>
       </div>
     </div>
 
-    <ng-template #sinResenas>
-      <p class="text-sm text-muted-foreground">Aún no hay reseñas.</p>
-    </ng-template>
-  </div>
-</div>
-
-
-
-    <!-- Más de este desarrollador -->
+    <!-- Otros juegos del desarrollador -->
     <div class="border p-4 rounded" *ngIf="juegosDelMismoDev.length">
       <h3 class="text-lg font-bold">Más de este desarrollador</h3>
-      <p class="text-sm text-muted-foreground">Otros juegos hechos por {{ j.developer }}</p>
+      <p class="text-sm text-muted-foreground">Otros juegos hechos por este desarrollador</p>
 
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
-        <div *ngFor="let g of juegosDelMismoDev" class="border rounded p-2">
-          <img [src]="g.coverImage" [alt]="g.title" class="w-full h-32 object-cover rounded" />
+        <div *ngFor="let g of juegosDelMismoDev" class="border rounded p-2 cursor-pointer hover:shadow" (click)="irAGamePage(g.id)">
+          <img [src]="g.coverUrl" [alt]="g.title" class="w-full h-32 object-cover rounded" />
           <h4 class="text-sm font-semibold mt-1">{{ g.title }}</h4>
           <p class="text-sm text-coffee-terracotta">${{ g.price }}</p>
         </div>
       </div>
     </div>
   </section>
-  <!-- Modal reseña -->
+
+  <!-- Modal de reseñas -->
   <app-resena
     *ngIf="mostrarModal"
     [gameTitle]="juego.title"

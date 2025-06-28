@@ -22,7 +22,15 @@ import {
   LucideAngularModule,
   TrendingUp,
   Monitor,
-  Clock
+  Clock,
+  User,
+  Settings,
+  Gamepad,
+  BarChart,
+  LucideShoppingCart,
+  ShoppingCartIcon,
+  Box,
+  LogOut
 } from 'lucide-angular';
 
 export const appConfig: ApplicationConfig = {
@@ -42,7 +50,15 @@ export const appConfig: ApplicationConfig = {
       Package,
       TrendingUp,
       Monitor,
-      Clock
+      Clock,
+      User,
+      Settings,
+      Gamepad,
+      BarChart,
+      LucideShoppingCart,
+      ShoppingCartIcon,
+      Box,
+      LogOut
     })),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),

@@ -3,34 +3,42 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-export interface Game {
-  id: string;
+export interface FavoriteGame {
+  userId: string;
+  gameId: string;
   title: string;
-  developer: string;
-  coverImage: string;
-  rating: number;
-  category: string[];
-  platforms: string[];
-  price: string;
+  developerName: string;
+  coverUrl: string;
+  price: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavoritesService {
-  private apiUrl = environment.backendEndpoint + 'favorites';
+  private apiUrl = environment.backendEndpoint;
 
   constructor(private http: HttpClient) {}
 
-  getFavorites(): Observable<Game[]> {
-    return this.http.get<Game[]>(this.apiUrl);
+  getFavorites(userId: string): Observable<FavoriteGame[]> {
+    return this.http.get<FavoriteGame[]>(`${this.apiUrl}/${userId}/favorites`);
   }
 
-  addFavorite(game: Game): Observable<any> {
-    return this.http.post(this.apiUrl, game);
+  removeFavorite(userId: string, gameId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${userId}/favorites/${gameId}`, {
+      responseType: 'text'
+    });
   }
 
-  removeFavorite(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  addFavorite(userId: string, gameId: string): Observable<any> {
+    return this.http.post(
+      `${environment.backendEndpoint}/${userId}/favorites`,
+      { gameId },
+      { responseType: 'text' }
+    );
   }
+  
+  
+  
+  
 }

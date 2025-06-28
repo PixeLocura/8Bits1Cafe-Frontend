@@ -45,12 +45,13 @@
         </div>
       </div>
 
-      <!-- Género -->
+      <!-- Género / Categorías -->
       <div>
-        <label class="block text-sm font-semibold mb-1">Género</label>
+        <label class="block text-sm font-semibold mb-1">Categorías</label>
         <div class="grid grid-cols-2 gap-1 text-sm">
           <label *ngFor="let genre of availableGenres">
-            <input type="checkbox" [(ngModel)]="selectedGenres[genre]" class="mr-1" /> {{ genre }}
+            <input type="checkbox" [(ngModel)]="selectedGenres[genre.value]" class="mr-1" />
+            {{ genre.display }}
           </label>
         </div>
       </div>
@@ -60,7 +61,8 @@
         <label class="block text-sm font-semibold mb-1">Plataforma</label>
         <div class="grid grid-cols-2 gap-1 text-sm">
           <label *ngFor="let platform of availablePlatforms">
-            <input type="checkbox" [(ngModel)]="selectedPlatforms[platform]" class="mr-1" /> {{ platform }}
+            <input type="checkbox" [(ngModel)]="selectedPlatforms[platform.value]" class="mr-1" />
+            {{ platform.display }}
           </label>
         </div>
       </div>
@@ -70,7 +72,8 @@
         <label class="block text-sm font-semibold mb-1">Idioma</label>
         <div class="space-y-1 text-sm">
           <label *ngFor="let lang of availableLanguages">
-            <input type="checkbox" [(ngModel)]="selectedLanguages[lang]" class="mr-1" /> {{ lang }}
+            <input type="checkbox" [(ngModel)]="selectedLanguages[lang.value]" class="mr-1" />
+            {{ lang.display }}
           </label>
         </div>
       </div>
@@ -94,26 +97,26 @@
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:shadow-md transition-all duration-300">
           <div class="h-48 w-full mb-3 overflow-hidden rounded">
             <a [routerLink]="['/juego', game.id]">
-              <img [src]="game.coverImage" [alt]="game.title" class="w-full h-full object-cover" />
+              <!-- ✅ Usa coverUrl directamente -->
+              <img [src]="game.coverUrl" [alt]="game.title" class="w-full h-full object-cover" />
             </a>
           </div>
           <h3 class="font-semibold text-lg mb-1">{{ game.title }}</h3>
-          <p class="text-sm text-muted-foreground">Desarrollador: {{ game.developer }}</p>
+          <p class="text-sm text-muted-foreground">Desarrollado por: {{ game.developerUsername }}</p>
           <p class="text-sm text-muted-foreground">Plataformas: {{ game.platforms.join(', ') }}</p>
-          <p class="text-sm text-muted-foreground">Géneros: {{ game.genres.join(', ') }}</p>
+          <p class="text-sm text-muted-foreground">Categorías: {{ game.categories.join(', ') }}</p>
           <p class="text-sm text-muted-foreground">Idiomas: {{ game.languages.join(', ') }}</p>
           <p class="text-sm text-muted-foreground">
             Valoración:
-            <span class="text-yellow-500">{{ '⭐'.repeat(game.rating) }}</span>
+            <span class="text-yellow-500">{{ '⭐'.repeat(game.rating || 0) }}</span>
           </p>
           <p class="font-bold text-coffee-terracotta mt-1">${{ game.price }}</p>
-
         </div>
       </div>
+
+      <div *ngIf="filteredGames.length === 0" class="text-center text-sm text-muted-foreground mt-8">
+        No se encontraron juegos con los filtros aplicados.
+      </div>
     </section>
-    <!--  No hay juegos que coincidan con los filtros -->
-    <div *ngIf="filteredGames.length === 0" class="text-center text-sm text-muted-foreground">
-      No se encontraron juegos con los filtros aplicados.
-    </div>
   </div>
 </div>
