@@ -18,7 +18,7 @@ export interface Game {
   providedIn: 'root'
 })
 export class FavoritesService {
-  private apiUrl = environment.backendEndpoint + '/favorites';
+  private apiUrl = environment.backendEndpoint + 'favorites';
 
   constructor(private http: HttpClient) {}
 

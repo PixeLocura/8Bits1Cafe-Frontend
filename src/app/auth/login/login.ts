@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -84,6 +85,10 @@ export class Login {
   }
 
   continueWithGoogle() {
-    window.location.href = 'http://rp5.local:8080/api/v1/oauth2/authorization/google';
+    window.location.href = `${environment.backendEndpoint}oauth2/authorization/google`;
+  }
+
+  continueWithDiscord() {
+    window.location.href = `${environment.backendEndpoint}oauth2/authorization/discord`;
   }
 }

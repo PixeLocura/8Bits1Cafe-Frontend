@@ -34,7 +34,7 @@ export class AuthService {
     console.log('Login attempt with:', { email: credentials.email, attempt: true });
     console.log('API URL:', this.apiUrl);
 
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
+    return this.http.post<LoginResponse>(`${this.apiUrl}auth/login`, credentials)
       .pipe(
         tap({
           next: (response) => {
@@ -97,7 +97,7 @@ export class AuthService {
     password: string;
     countryIso: string;
   }): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/register/admin`, userData);
+    return this.http.post<{ token: string }>(`${this.apiUrl}register/admin`, userData);
   }
 
 }

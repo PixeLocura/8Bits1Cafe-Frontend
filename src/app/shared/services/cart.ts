@@ -73,7 +73,7 @@ export class CartService {
 
   // Fetch game details from API
   private fetchProductDetails(id: string): Observable<CartProduct> {
-    return this.http.get<Game>(`${this.apiUrl}/games/${id}`).pipe(
+    return this.http.get<Game>(`${this.apiUrl}games/${id}`).pipe(
       map(game => ({
         id: game.id,
         name: game.title,
@@ -98,7 +98,7 @@ export class CartService {
   // Initiate a transaction with the backend
   purchaseGames(gameIds: string[], authToken: string) {
     return this.http.post<any>(
-      `${this.apiUrl}/transactions/games`,
+      `${this.apiUrl}transactions/games`,
       gameIds,
       {
         headers: {
