@@ -62,7 +62,8 @@
         <div class="grid grid-cols-2 gap-1 text-sm">
           <label *ngFor="let platform of availablePlatforms">
             <input type="checkbox" [(ngModel)]="selectedPlatforms[platform.value]" class="mr-1" />
-            {{ platform.display }}          </label>
+            {{ platform.display }}
+          </label>
         </div>
       </div>
 
@@ -72,7 +73,8 @@
         <div class="space-y-1 text-sm">
           <label *ngFor="let lang of availableLanguages">
             <input type="checkbox" [(ngModel)]="selectedLanguages[lang.value]" class="mr-1" />
-            {{ lang.display }}          </label>
+            {{ lang.display }}
+          </label>
         </div>
       </div>
 
@@ -95,6 +97,7 @@
           class="bg-white border border-gray-200 rounded-lg shadow-sm p-4 hover:shadow-md transition-all duration-300">
           <div class="h-48 w-full mb-3 overflow-hidden rounded">
             <a [routerLink]="['/juego', game.id]">
+              <!-- ✅ Usa coverUrl directamente -->
               <img [src]="game.coverUrl" [alt]="game.title" class="w-full h-full object-cover" />
             </a>
           </div>

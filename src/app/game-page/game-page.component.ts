@@ -238,7 +238,7 @@ export class GamePageComponent implements OnInit {
   
     this.reviewService.getUserIdByEmail(userEmail).subscribe({
       next: (response) => {
-        const userId = response.id; // ✅ ahora SÍ tienes userId
+        const userId = response.id;
   
         this.favoritesService.addFavorite(userId, gameId).subscribe({
           next: () => alert('💖 Juego agregado a favoritos'),

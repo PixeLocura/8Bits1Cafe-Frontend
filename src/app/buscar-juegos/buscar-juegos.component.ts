@@ -84,7 +84,7 @@ export class BuscarJuegosComponent {
     this.gameService.getAllDevelopers().subscribe({
       next: (developers) => {
         this.developers = developers;
-
+  
         this.gameService.getAllGames().subscribe({
           next: (games) => {
             this.games = games.map(game => {
@@ -92,6 +92,7 @@ export class BuscarJuegosComponent {
               return {
                 ...game,
                 developerUsername: dev?.name ?? 'Desconocido',
+                coverUrl: game.coverUrl || game.images?.[0] || 'assets/default-cover.png',
                 rating: Math.floor(Math.random() * 5) + 1
               };
             });
@@ -106,6 +107,7 @@ export class BuscarJuegosComponent {
       }
     });
   }
+  
 
 
 

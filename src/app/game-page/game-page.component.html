@@ -7,9 +7,9 @@
       Volver a juegos
     </button>
 
-    <!-- Imagen principal -->
-    <div class="border rounded overflow-hidden" *ngIf="j.images?.length">
-      <img [src]="j.images?.[0]" [alt]="j.title" class="w-full object-cover" />
+    <!-- Imagen principal con coverUrl -->
+    <div class="border rounded overflow-hidden" *ngIf="j.coverUrl">
+      <img [src]="j.coverUrl" [alt]="j.title" class="w-full object-cover" />
     </div>
 
     <!-- Acciones -->
@@ -53,10 +53,7 @@
   <section class="md:col-span-2 space-y-6">
     <h1 class="text-3xl font-bold">{{ j.title }}</h1>
 
-    <!-- Imágenes adicionales -->
-    <div *ngIf="tieneMasDeUnaImagen(j)" class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <img *ngFor="let img of j.images?.slice(1)" [src]="img" [alt]="j.title" class="rounded border w-full h-40 object-cover" />
-    </div>
+
 
     <!-- Tabs -->
     <div class="flex gap-4 border-b pb-2">
