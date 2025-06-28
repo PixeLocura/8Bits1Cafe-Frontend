@@ -4,8 +4,10 @@ import { BecomeDeveloper } from './become-developer/become-developer';
 import { DeveloperApplication } from './developer-application/developer-application';
 import { GamePageComponent } from './game-page/game-page.component';
 
+
 import { CartPage } from './cart/cart-page/cart-page';
 import { SuccessfulPurchase } from './successful-purchase/successful-purchase';
+import {Home} from './home/pages/home/home';
 
 export const appRoutes: Routes = [
   {
@@ -22,6 +24,7 @@ export const appRoutes: Routes = [
     path: 'successful-purchase',
     component: SuccessfulPurchase,
   },
+
 
   {
     path: 'favorites',
@@ -72,20 +75,26 @@ export const appRoutes: Routes = [
       import('./categories/categories.component').then(m => m.CategoriesComponent),
   },
 
-
   {
     path: 'juego/:id',
     loadComponent: () => import('./game-page/game-page.component').then(m => m.GamePageComponent),
   },
 
-  { path: '', redirectTo: '/register', pathMatch: 'full' },
-
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   {
-    path: 'profile',
-    loadComponent: () => import('./developer-dashboard/developer-dashboard.component').then(m => m.DeveloperDashboardComponent)
+    path: 'developer',
+    loadChildren: () =>
+      import('./developer/developer.routes').then(m => m.developerRoutes),
   },
-
+  {
+    path: 'home',
+    component: Home
+  },
+  {
+    path: 'profile',
+    loadChildren: ()=> import('./profile/profile-module').then(m=>m.ProfileModule)
+  },
   // Página 404 - ruta comodín
   {
     path: '**',

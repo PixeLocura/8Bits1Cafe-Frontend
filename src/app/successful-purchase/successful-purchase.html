@@ -4,7 +4,8 @@
     <div class="mb-8">
       <!-- 8-bit style checkmark -->
       <div class="mx-auto w-[64px] h-[64px]">
-        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true">
           <rect x="8" y="32" width="8" height="8" fill="#50B584" />
           <rect x="16" y="40" width="8" height="8" fill="#50B584" />
           <rect x="24" y="48" width="8" height="8" fill="#50B584" />
@@ -19,6 +20,22 @@
     <h1 class="font-['Press_Start_2P'] text-[35px] text-[#464039] mb-8 leading-relaxed">
       ¡Compra Exitosa!
     </h1>
+
+    <ng-container *ngIf="transaction">
+      <div class="mb-4 font-[Nunito] text-lg text-[#464039]">
+        <div><b>ID de transacción:</b> {{transaction.id}}</div>
+        <div><b>Fecha:</b> {{transaction.transactionDate | date:'medium'}}</div>
+        <div><b>Total:</b> ${{transaction.totalPrice}}</div>
+      </div>
+      <div class="mb-4">
+        <b>Juegos comprados:</b>
+        <ul class="list-disc list-inside text-left mx-auto max-w-md">
+          <li *ngFor="let d of transaction.details">
+            <span class="font-[Nunito]">ID: {{d.gameId}}</span> — <span class="text-[#7F776C]">${{d.price}}</span>
+          </li>
+        </ul>
+      </div>
+    </ng-container>
 
     <p class="font-[Nunito] text-lg md:text-xl text-[#7F776C] mb-4">
       Gracias por tu compra. <br>

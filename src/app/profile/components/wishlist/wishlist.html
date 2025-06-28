@@ -1,0 +1,16 @@
+<!-- src/app/profile/wishlist/wishlist.component.html -->
+<section class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10">
+  <h2 class="text-lg font-press-start mb-4">My Wishlist</h2>
+
+  <div *ngIf="wishlist.length; else empty"
+       class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <app-game-card
+      *ngFor="let game of wishlist"
+      [game]="game">
+    </app-game-card>
+  </div>
+
+  <ng-template #empty>
+    <p class="text-center text-muted-foreground">Your wishlist is empty.</p>
+  </ng-template>
+</section>

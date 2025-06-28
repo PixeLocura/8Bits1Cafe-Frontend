@@ -1,4 +1,4 @@
-<div class="min-h-screen flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-8">
+<div *ngIf="!loading" class="min-h-screen flex flex-col bg-[#F8F7F1] px-4 sm:px-6 lg:px-8">
   <!-- Back Button -->
   <button routerLink="/become-developer"
     class="flex items-center gap-2 text-[#CCB396] hover:text-[#E95151] transition-colors duration-200 p-4">
@@ -11,7 +11,7 @@
   </button>
 
   <!-- Main Content -->
-  <div class="flex justify-center items-start">
+  <div class="flex justify-center items-start mb-16">
     <div class="max-w-2xl w-full bg-white p-8 rounded-2xl shadow-lg">
       <!-- Heading -->
       <div class="space-y-2 mb-6">
@@ -31,6 +31,11 @@
           <input id="developerName" type="text" formControlName="developerName"
             class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent"
             placeholder="Ingrese el nombre de su estudio">
+          <div *ngIf="applicationForm.get('developerName')?.touched && applicationForm.get('developerName')?.invalid"
+            class="text-red-500 text-xs font-[Nunito]">
+            <span *ngIf="applicationForm.get('developerName')?.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="applicationForm.get('developerName')?.errors?.['minlength']">Mínimo 3 caracteres.</span>
+          </div>
         </div>
 
         <!-- Description -->
@@ -41,7 +46,13 @@
           <textarea id="description" formControlName="description" rows="4"
             class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent resize-none"
             placeholder="Cuéntanos sobre tu estudio y los juegos que desarrollas"></textarea>
-          <p class="text-sm text-gray-500 font-[Nunito]">Mínimo 50 caracteres</p>
+          <p class="text-sm font-[Nunito]"
+            [ngClass]="{'text-gray-500': !(applicationForm.get('description')?.touched && applicationForm.get('description')?.invalid && applicationForm.get('description')?.errors?.['minlength']), 'text-red-500': (applicationForm.get('description')?.touched && applicationForm.get('description')?.invalid && applicationForm.get('description')?.errors?.['minlength'])}">
+            Mínimo 50 caracteres</p>
+          <div *ngIf="applicationForm.get('description')?.touched && applicationForm.get('description')?.invalid"
+            class="text-red-500 text-xs font-[Nunito]">
+            <span *ngIf="applicationForm.get('description')?.errors?.['required']">Este campo es obligatorio.</span>
+          </div>
         </div>
 
         <!-- Website URL -->
@@ -52,6 +63,27 @@
           <input id="websiteUrl" type="url" formControlName="websiteUrl"
             class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent"
             placeholder="https://tusitio.com">
+          <div *ngIf="applicationForm.get('websiteUrl')?.touched && applicationForm.get('websiteUrl')?.invalid"
+            class="text-red-500 text-xs font-[Nunito]">
+            <span *ngIf="applicationForm.get('websiteUrl')?.errors?.['required']">Este campo es obligatorio.</span>
+            <span *ngIf="applicationForm.get('websiteUrl')?.errors?.['pattern']">Debe ser una URL válida (http:// o
+              https://).</span>
+          </div>
+        </div>
+
+        <!-- Profile Picture URL (optional) -->
+        <div class="space-y-2">
+          <label for="profilePictureUrl" class="block text-[14px] font-[Nunito] font-semibold text-gray-700">
+            URL de la foto de perfil (opcional)
+          </label>
+          <input id="profilePictureUrl" type="url" formControlName="profilePictureUrl"
+            class="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#E5A277] focus:border-transparent"
+            placeholder="https://ejemplo.com/mi-foto.jpg">
+          <div
+            *ngIf="applicationForm.get('profilePictureUrl')?.touched && applicationForm.get('profilePictureUrl')?.invalid"
+            class="text-red-500 text-xs font-[Nunito]">
+            <span *ngIf="applicationForm.get('profilePictureUrl')?.errors?.['pattern']">Debe ser una URL válida.</span>
+          </div>
         </div>
 
         <!-- Submit Button -->

@@ -1,50 +1,50 @@
-<div class="min-h-screen bg-[#F8F7F1] py-16 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    <!-- Hero Section -->
-    <h1 class="text-center font-['Press_Start_2P'] text-[#504940] text-3xl mb-12">{{ mainTitle }}</h1>
+<div *ngIf="!loading" class="min-h-screen bg-[#F8F7F1] py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Hero Section -->
+        <h1 class="text-center font-['Press_Start_2P'] text-[#504940] text-3xl mb-12">{{ mainTitle }}</h1>
 
-    <!-- Subtitle Section -->
-    <div class="text-center mb-16">
-      <h2 class="font-['Press_Start_2P'] text-2xl text-[#E5A277] mb-4">{{ subtitle }}</h2>
-      <p class="font-[Nunito] text-[#7F776C] text-lg">{{ description }}</p>
-    </div>
+        <!-- Subtitle Section -->
+        <div class="text-center mb-16">
+            <h2 class="font-['Press_Start_2P'] text-2xl text-[#E5A277] mb-4">{{ subtitle }}</h2>
+            <p class="font-[Nunito] text-[#7F776C] text-lg">{{ description }}</p>
+        </div>
 
-    <!-- Benefits Section -->
-    <div class="bg-white rounded-2xl p-8 mb-12 shadow-lg">
-      <h3 class="font-['Press_Start_2P'] text-xl text-[#504940] mb-6">¿Por qué convertirte en desarrollador?</h3>
-      <ul class="space-y-4">
-        @for (benefit of benefits; track benefit) {
-        <li class="flex items-start">
-          <span class="text-[#E5A277] mr-3">•</span>
-          <span class="font-[Nunito] text-[#7F776C] text-lg">{{ benefit }}</span>
-        </li>
-        }
-      </ul>
-    </div>
+        <!-- Benefits Section -->
+        <div class="bg-white rounded-2xl p-8 mb-12 shadow-lg">
+            <h3 class="font-['Press_Start_2P'] text-xl text-[#504940] mb-6">¿Por qué convertirte en desarrollador?</h3>
+            <ul class="space-y-4">
+                @for (benefit of benefits; track benefit) {
+                <li class="flex items-start">
+                    <span class="text-[#E5A277] mr-3">•</span>
+                    <span class="font-[Nunito] text-[#7F776C] text-lg">{{ benefit }}</span>
+                </li>
+                }
+            </ul>
+        </div>
 
-    <!-- Note Box -->
-    <div class="bg-white rounded-2xl p-6 mb-12 shadow-lg border border-gray-100">
-      <p class="font-[Nunito] text-[#7F776C] text-lg mb-4">{{ noteText }}</p>
-      <p class="font-[Nunito] text-[#7F776C] text-sm">{{ policyNote }}</p>
-    </div>
+        <!-- Note Box -->
+        <div class="bg-white rounded-2xl p-6 mb-12 shadow-lg border border-gray-100">
+            <p class="font-[Nunito] text-[#7F776C] text-lg mb-4">{{ noteText }}</p>
+            <p class="font-[Nunito] text-[#7F776C] text-sm">{{ policyNote }}</p>
+        </div>
 
-    <!-- Feature Boxes Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 unselectable">
-      @for (box of featureBoxes; track box.title) {
-      <div
-        class="bg-white rounded-2xl p-6 text-center hover:transform hover:scale-105 transition-transform duration-300 shadow-lg">
-        <h3 class="font-['Press_Start_2P'] text-lg text-[#504940] mb-4">{{ box.title }}</h3>
-        <p class="font-[Nunito] text-[#7F776C]">{{ box.description }}</p>
-      </div>
-      }
-    </div>
+        <!-- Feature Boxes Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 unselectable">
+            @for (box of featureBoxes; track box.title) {
+            <div
+                class="bg-white rounded-2xl p-6 text-center hover:transform hover:scale-105 transition-transform duration-300 shadow-lg">
+                <h3 class="font-['Press_Start_2P'] text-lg text-[#504940] mb-4">{{ box.title }}</h3>
+                <p class="font-[Nunito] text-[#7F776C]">{{ box.description }}</p>
+            </div>
+            }
+        </div>
 
-    <!-- Call to Action -->
-    <div class="text-center">
-      <button routerLink="/developer-application"
-        class="bg-[#E5A277] hover:bg-[#D89267] text-white font-['Press_Start_2P'] text-lg py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
-        {{ buttonText }}
-      </button>
+        <!-- Call to Action -->
+        <div class="text-center">
+            <button routerLink="/developer-application"
+                class="bg-[#E5A277] hover:bg-[#D89267] text-white font-['Press_Start_2P'] text-lg py-4 px-8 rounded-xl transition-all duration-200 flex items-center justify-center mx-auto focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E5A277] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed">
+                {{ buttonText }}
+            </button>
+        </div>
     </div>
-  </div>
 </div>

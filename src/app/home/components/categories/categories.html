@@ -1,0 +1,24 @@
+<!-- features/home/components/categories/categories.component.html -->
+<section class="py-12 bg-coffee-cream">
+  <div class="container mx-auto px-4">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-2xl font-press-start">Popular Categories</h2>
+      <a routerLink="/categories" class="inline-flex items-center text-primary hover:underline">
+        View All <lucide-icon name="chevron-right" class="w-4 h-4 ml-1"></lucide-icon>
+      </a>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <ng-container *ngFor="let cat of categories">
+        <a [routerLink]="['/search']" [queryParams]="{ category: cat.name }">
+          <div class="bg-coffee-cream border border-coffee-brown/20 p-6 text-center rounded-lg hover:shadow transition">
+            <div [ngClass]="cat.color + ' w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center'">
+              <lucide-icon [name]="cat.icon" class="w-6 h-6 text-white"></lucide-icon>
+            </div>
+            <h3 class="font-medium">{{ cat.name }}</h3>
+            <p class="text-xs text-muted-foreground">{{ cat.count }} Games</p>
+          </div>
+        </a>
+      </ng-container>
+    </div>
+  </div>
+</section>

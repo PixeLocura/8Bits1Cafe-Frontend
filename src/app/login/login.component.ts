@@ -40,10 +40,10 @@ export class LoginComponent {
         this.snackBar.open('Sesión iniciada con éxito', 'Cerrar', {
           duration: 3000
         });
-        this.router.navigate(['/']); // o a /dashboard
+        this.router.navigate(['/']);
       },
-      error: (err) => {
-        console.error(err);
+      error: (error) => {
+        console.error('Login error:', error);
         this.snackBar.open('Error al iniciar sesión', 'Cerrar', {
           duration: 3000
         });
