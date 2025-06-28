@@ -67,7 +67,7 @@ export class RegisterComponent {
     this.authService.register(userData).subscribe({
       next: (response: { token: string }) => {
 
-        localStorage.setItem('token', response.token); 
+        localStorage.setItem('token', response.token);
         this.snackBar.open('Cuenta creada exitosamente', 'Cerrar', {
           duration: 3000,
           panelClass: 'snackbar-success',
@@ -81,7 +81,7 @@ export class RegisterComponent {
         });
         this.isSubmitting = false;
       }
-      
+
     });
   }
 }

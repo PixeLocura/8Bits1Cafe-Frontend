@@ -4,6 +4,7 @@ import { BecomeDeveloper } from './become-developer/become-developer';
 import { DeveloperApplication } from './developer-application/developer-application';
 import { GamePageComponent } from './game-page/game-page.component';
 
+
 import { CartPage } from './cart/cart-page/cart-page';
 import { SuccessfulPurchase } from './successful-purchase/successful-purchase';
 import {Home} from './home/pages/home/home';

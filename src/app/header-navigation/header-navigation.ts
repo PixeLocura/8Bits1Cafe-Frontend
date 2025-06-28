@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartIcon } from '../shared/cart-icon/cart-icon';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CartService } from '../shared/services/cart';
 import { CommonModule } from '@angular/common';
 
@@ -15,7 +15,7 @@ export class HeaderNavigation implements OnInit {
     cartItemCount = 0;
     isMobileMenuOpen = false;
 
-    constructor(private cartService: CartService) { }
+    constructor(private cartService: CartService, private router: Router) {}
 
     ngOnInit(): void {
         this.cartService.getCartItemCount().subscribe(
@@ -34,8 +34,7 @@ export class HeaderNavigation implements OnInit {
     }
 
     onProfileClick(): void {
-        console.log('Profile clicked');
-        // TODO: Implement profile functionality
+      this.router.navigateByUrl('/profile');
     }
 
     toggleMobileMenu(): void {

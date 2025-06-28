@@ -84,9 +84,16 @@ export interface Game {
   price: number;
   coverUrl: string;
   releaseDate: string;
-  platforms: Platform[];
-  categories: Category[];
-  languages: Language[];
+  platforms: string[];
+  categories: string[];
+  languages: string[];
   creationDate: string;
   updateDate: string;
+  images?: string[];
+  rating?: number;
+}
+//SERA USADO PARA CONECTAR USER_ID con GAME_ID y
+//extraer el username para mostrarlo en la infor de un juego
+export interface GameConUsername extends Game {
+  developerUsername: string;
 }

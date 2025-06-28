@@ -18,19 +18,24 @@ export interface Game {
   providedIn: 'root'
 })
 export class FavoritesService {
-  private apiUrl = environment.backendEndpoint + '/favorites';
+  private apiUrl = 'https://eightbits.onrender.com/api/v1';
 
   constructor(private http: HttpClient) {}
 
-  getFavorites(): Observable<Game[]> {
-    return this.http.get<Game[]>(this.apiUrl);
+  // ✅ Obtener favoritos del usuario
+  getFavorites(userId: string): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/${userId}/favorites`);
   }
 
-  addFavorite(game: Game): Observable<any> {
-    return this.http.post(this.apiUrl, game);
+  // ✅ Agregar favorito
+  addFavorite(userId: string, body: { gameId: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${userId}/favorites`, body, {
+      responseType: 'text' as 'json'
+    });
   }
 
-  removeFavorite(id: string): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // ✅ Eliminar favorito
+  removeFavorite(userId: string, gameId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${userId}/favorites/${gameId}`);
   }
 }
