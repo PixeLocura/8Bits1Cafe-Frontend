@@ -27,7 +27,7 @@ export const appRoutes: Routes = [
 
 
   {
-    path: 'favorites',
+    path: 'profile/favorites',
     loadComponent: () =>
       import('./favorites/favorites.component').then(m => m.FavoritesComponent),
   },
