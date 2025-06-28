@@ -22,13 +22,13 @@ export class CartService {
 
   constructor(private http: HttpClient) {
     this.loadCartFromStorage();
-    // Add test item if cart is empty
-    if (this.cartItemIds.value.length === 0) {
-      // this.clearCart();
-      this.addToCart('db52995c-b859-4220-9e14-ad0b60183c3d');
-      this.addToCart('b057d590-1bee-4ff2-8e9f-73a0b028dd6a');
-      this.addToCart('e4404cc4-cbaa-4293-955c-4abbd7a56bff');
-    }
+    // // Add test item if cart is empty
+    // if (this.cartItemIds.value.length === 0) {
+    //   // this.clearCart();
+    //   this.addToCart('db52995c-b859-4220-9e14-ad0b60183c3d');
+    //   this.addToCart('b057d590-1bee-4ff2-8e9f-73a0b028dd6a');
+    //   this.addToCart('e4404cc4-cbaa-4293-955c-4abbd7a56bff');
+    // }
   }
 
   private loadCartFromStorage(): void {
