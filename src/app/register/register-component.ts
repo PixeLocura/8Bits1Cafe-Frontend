@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/services/auth.service'; // importa tu servicio
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -67,7 +68,7 @@ export class RegisterComponent {
     this.authService.register(userData).subscribe({
       next: (response: { token: string }) => {
 
-        localStorage.setItem('token', response.token); 
+        localStorage.setItem('token', response.token);
         this.snackBar.open('Cuenta creada exitosamente', 'Cerrar', {
           duration: 3000,
           panelClass: 'snackbar-success',
@@ -81,7 +82,15 @@ export class RegisterComponent {
         });
         this.isSubmitting = false;
       }
-      
+
     });
+  }
+
+  continueWithGoogle() {
+    window.location.href = `${environment.backendEndpoint}oauth2/authorization/google`;
+  }
+
+  continueWithDiscord() {
+    window.location.href = `${environment.backendEndpoint}oauth2/authorization/discord`;
   }
 }
