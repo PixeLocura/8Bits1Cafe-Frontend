@@ -14,5 +14,5 @@ import {Game} from '../../../shared/models/game.model';
   styleUrl: './game-card.css'
 })
 export class GameCard {
-@Input() game!: Game
+@Input() game!: any
 }

@@ -23,16 +23,26 @@ import {NewArrivals} from '../../components/new-arrivals/new-arrivals';
 })
 export class Home implements OnInit{
   dealOfTheDay !: Observable<Game>
-  newReleases !: Observable<Game[]>
+  newReleases : Game[] | null = null
 
   constructor(private homeService: HomeService) {
   }
 
   ngOnInit(){
     this.dealOfTheDay = this.homeService.getDealGame();
-    this.newReleases = this.homeService.getNewReleases();
-
-    console.log('FIND', this.dealOfTheDay)
+    console.log('FIND', this.dealOfTheDay);
+    this.homeService.getNewReleases().subscribe({
+      next: (games) => {
+        this.newReleases = games
+        console.log('RAW new‐releases response:', games);
+        // the tap() in the service will have already done this.newReleases.next(games)
+      },
+      error: (err) => console.error('Error fetching new releases', err)
+    });
+    this.homeService.newReleases$.subscribe(u=> {
+      this.newReleases = u;
+      console.log("GAMES", this.newReleases)
+    })
 
   }
 

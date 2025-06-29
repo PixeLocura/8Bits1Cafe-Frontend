@@ -3,8 +3,9 @@ import {environment} from '../../../environments/environment';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Game} from '../../shared/models/game.model';
 import { map } from 'rxjs/operators';
-import {catchError, Observable, of} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, of, tap} from 'rxjs';
 import {MOCK_GAMES} from '../../shared/mock/mock-games';
+import {User} from '../../auth/interfaces/auth.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,8 @@ export class HomeService {
 
   constructor(private http: HttpClient) { }
 
+  private newReleases = new BehaviorSubject<Game[] | null>(null);
+  newReleases$ = this.newReleases.asObservable()
   getDealGame(): Observable<Game>{
     const headers = new HttpHeaders({
       'Accept': 'application/json',
@@ -30,7 +33,6 @@ export class HomeService {
       }),
       catchError(err => {
         console.error('Error loading deal game:', err);
-        // return our fixed fallback game so subscribers still get a Game
         return of(MOCK_GAMES[0]);
       })
 
@@ -47,6 +49,12 @@ export class HomeService {
       catchError(err => {
         console.error('Error loading deal game:', err);
         return of(MOCK_GAMES);
+      }),
+      tap({
+        next : (response) => {
+          this.newReleases.next(response)
+          console.log("Founed", response)
+        }
       })
     );
   }

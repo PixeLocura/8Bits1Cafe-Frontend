@@ -15,8 +15,8 @@ import {NgForOf} from '@angular/common';
   templateUrl: './new-arrivals.html',
 })
 export class NewArrivals {
-  @Input({transform: (value: Game[] | null): Game[]=> {
+  @Input({transform: (value: any[] | null): any[]=> {
+      return value as any;
       if(value == null) return MOCK_GAMES;
-      return value;
-    }}) arrivals!: Game[];
+    }}) arrivals!: any[];
 }

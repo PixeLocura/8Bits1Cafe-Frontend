@@ -16,7 +16,7 @@
         </div>
         <div class="flex items-center">
           <lucide-icon name="tag" class="w-4 h-4 text-primary mr-1"></lucide-icon>
-          <span>{{ deal.genres.join(', ') }}</span>
+<!--          <span>{{ deal.genres.join(', ') }}</span>-->
         </div>
       </div>
 
@@ -47,10 +47,10 @@
     <!-- Image -->
     <div class="flex-1 relative">
       <div class="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg shadow-lg">
-        <img 
-          [src]="'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'" 
-          [alt]="deal.title" 
-          class="object-cover w-full h-full aspect-[4/3]" 
+        <img
+          [src]="'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'"
+          [alt]="deal.title"
+          class="object-cover w-full h-full aspect-[4/3]"
         />
 
         <div class="absolute top-4 right-4 transform rotate-12 bg-primary text-white font-press-start text-sm px-3 py-1.5 rounded-sm">
