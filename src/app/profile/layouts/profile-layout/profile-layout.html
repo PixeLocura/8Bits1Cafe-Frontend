@@ -2,7 +2,6 @@
   <!-- COVER + AVATAR (igual que tenías) -->
   <div class="relative mb-6"></div>
 
-  <!-- GRID: SIDEBAR (izquierda) + CONTENIDO (derecha) -->
   <div class="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-6">
 
     <!-- ← Aquí va tu left column -->
@@ -35,7 +34,7 @@
             </a>
           </li>
           <li>
-            <a routerLink="/profile/orders" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile/library/orders" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="shopping-cart" class="mr-3" [size]="18"></lucide-icon>
               Mis Pedidos
             </a>
@@ -52,12 +51,12 @@
               Favoritos
             </a>
           </li>
-          <li>
-            <a routerLink="/profile/settings" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
-              <lucide-icon name="settings" class="mr-3" [size]="18"></lucide-icon>
-              Ajustes
-            </a>
-          </li>
+<!--          <li>-->
+<!--            <a routerLink="/profile/settings" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">-->
+<!--              <lucide-icon name="settings" class="mr-3" [size]="18"></lucide-icon>-->
+<!--              Ajustes-->
+<!--            </a>-->
+<!--          </li>-->
           <li>
             <a (click)="this.authService.logout()" class="flex items-center p-2 rounded text-destructive hover:bg-destructive/10">
               <lucide-icon name="log-out" class="mr-3" [size]="18"></lucide-icon>
