@@ -4,11 +4,13 @@ import {NgForOf, NgIf} from '@angular/common';
 import {Game} from '../../../shared/models/game.model';
 import {MOCK_GAMES} from '../../../shared/mock/mock-games';
 import {HomeService} from '../../../home/services/home-service';
+import {FavoriteGame, FavoritesService} from '../../../services/favorites.service';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import {AuthService} from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-wishlist',
   imports: [
-    GameCard,
     NgForOf,
     NgIf
   ],
@@ -16,16 +18,30 @@ import {HomeService} from '../../../home/services/home-service';
   styleUrl: './wishlist.css'
 })
 export class Wishlist implements OnInit{
-  wishlist: any  = null;
+  wishlist: FavoriteGame[] = [];
 
-  constructor(private homeService: HomeService) {
+  constructor(private favoritesService: FavoritesService, private snackBar: MatSnackBar, private authService: AuthService) {
 
   }
 
   ngOnInit() {
-    this.homeService.getNewReleases().subscribe(u=>{
-      this.wishlist = u.slice(-2, -1)
+    this.favoritesService.favourites.subscribe(u=>{
+      this.wishlist = u
     })
+  }
+
+  removeFavorite(gameId: string): void {
+    this.favoritesService.removeFavorite(this.authService.getUserId()??"", gameId).subscribe({
+      next: () => {
+        this.snackBar.open('Juego eliminado de favoritos', 'Cerrar', {
+          duration: 3000,
+          panelClass: 'snackbar-success',
+        });
+      },
+      error: (err) => {
+        console.error('Error removing favorite:', err);
+      }
+    });
   }
 
 

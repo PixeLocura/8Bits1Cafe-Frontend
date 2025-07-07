@@ -9,15 +9,17 @@
       <!-- Avatar y datos básicos -->
       <div class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10 text-center">
         <img [src]="avatar" class="w-24 h-24 rounded-full mx-auto mb-4" />
-        <h2 class="font-press-start text-lg">{{ user?.name }}</h2>
-        <p class="text-sm text-muted-foreground">{{ subtitle }}</p>
+        <h2 class="font-press-start text-lg">{{ user?.username }}</h2>
+        <p class="text-sm text-muted-foreground">Miembro desde {{ user?.registrationDate
+          | date:'dd \'de\' MMMM \'de\' yyyy'
+          }}</p>
         <div class="flex justify-around mt-4">
           <div>
-            <p class="text-xl font-medium">{{ 12 }}</p>
+            <p class="text-xl font-medium">{{ numberOfGames??0 }}</p>
             <p class="text-xs">Games</p>
           </div>
           <div>
-            <p class="text-xl font-medium">{{ 212 }}</p>
+            <p class="text-xl font-medium">{{ numberOfFavourites??0 }}</p>
             <p class="text-xs">Wishlist</p>
           </div>
         </div>
@@ -46,19 +48,19 @@
             </a>
           </li>
           <li>
-            <a routerLink="/profile/favorites" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile/library/wishlist" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="heart" class="mr-3" [size]="18"></lucide-icon>
               Favoritos
             </a>
           </li>
-<!--          <li>-->
-<!--            <a routerLink="/profile/settings" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">-->
-<!--              <lucide-icon name="settings" class="mr-3" [size]="18"></lucide-icon>-->
-<!--              Ajustes-->
-<!--            </a>-->
-<!--          </li>-->
           <li>
-            <a (click)="this.authService.logout()" class="flex items-center p-2 rounded text-destructive hover:bg-destructive/10">
+            <a routerLink="/profile/settings" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+              <lucide-icon name="settings" class="mr-3" [size]="18"></lucide-icon>
+              Ajustes
+            </a>
+          </li>
+          <li>
+            <a (click)="logout()" class="flex items-center p-2 rounded text-destructive hover:bg-destructive/10">
               <lucide-icon name="log-out" class="mr-3" [size]="18"></lucide-icon>
               Cerrar Sesión
             </a>

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {MOCK_GAMES} from '../../../shared/mock/mock-games';
 import {GameCard} from '../game-card/game-card';
 import {NgForOf} from '@angular/common';
 import {HomeService} from '../../../home/services/home-service';
-import {Game} from '../../../shared/models/game.model';
+import {Game} from '../../../shared/interfaces/game.interfaces';
+import {UserService} from '../../services/user-service';
 
 @Component({
   selector: 'app-library',
@@ -15,15 +15,18 @@ import {Game} from '../../../shared/models/game.model';
   styleUrl: './library.css'
 })
 export class Library implements OnInit{
-  ownedGames: any[]|null = null;
-  recentlyViewed: any[]|null = null;
+  ownedGames: Game[]|null = null;
+  recentlyViewed: Game[]|null = null;
 
-  constructor(private homeService: HomeService) {
+  constructor(private homeService: HomeService, private userService: UserService) {
   }
   ngOnInit() {
     this.homeService.getNewReleases().subscribe(u =>{
-      this.ownedGames = u.slice(0, 3);
       this.recentlyViewed = u.slice(-4, -1)
+    })
+
+    this.userService.ownedGames.subscribe(u=>{
+      this.ownedGames = u;
     })
   }
 }
