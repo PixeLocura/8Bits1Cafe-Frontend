@@ -8,6 +8,7 @@ import { GamePageComponent } from './game-page/game-page.component';
 import { CartPage } from './cart/cart-page/cart-page';
 import { SuccessfulPurchase } from './successful-purchase/successful-purchase';
 import { Home } from './home/pages/home/home';
+import {authGuard} from './auth/guards/auth.guard';
 
 export const appRoutes: Routes = [
   {
@@ -93,7 +94,8 @@ export const appRoutes: Routes = [
   },
   {
     path: 'profile',
-    loadChildren: ()=> import('./profile/profile-module').then(m=>m.ProfileModule)
+    loadChildren: ()=> import('./profile/profile-module').then(m=>m.ProfileModule),
+    canActivateChild: [authGuard]
   },
   {
     path: 'login-success',

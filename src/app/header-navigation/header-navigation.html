@@ -18,7 +18,7 @@
 
       <!-- Navigation Links -->
       <nav class="hidden md:flex flex-1 items-center justify-center space-x-16">
-        <a href="#"
+        <a routerLink="/"
           class="flex items-center space-x-1 text-[#464039] hover:text-orange-500 transition-colors duration-200">
           <svg width="16" height="17" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="inline-block align-middle relative -mt-0.5">
@@ -28,7 +28,7 @@
           </svg>
           <span class="font-normal text-sm font-nunito leading-none align-middle">Home</span>
         </a>
-        <a href="/buscar-juegos"
+        <a routerLink="/buscar-juegos"
           class="flex items-center space-x-1 text-[#464039] hover:text-orange-500 transition-colors duration-200">
           <svg width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="inline-block align-middle" style="vertical-align: middle;">
@@ -44,7 +44,7 @@
           </svg>
           <span class="font-normal text-sm font-nunito leading-none align-middle">Tienda</span>
         </a>
-        <a href="/categories"
+        <a routerLink="/categories"
           class="flex items-center space-x-1 text-[#464039] hover:text-orange-500 transition-colors duration-200">
           <svg width="16" height="18" viewBox="0 0 21 23" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="inline-block align-middle" style="vertical-align: middle;">
@@ -61,7 +61,7 @@
         <!-- Search Icon -->
         <button
           class="text-gray-600 hover:text-orange-500 transition-colors duration-200 flex items-center justify-center w-6 h-6 relative"
-          (click)="onSearchClick()">
+          routerLink="/buscar-juegos">
           <svg width="20" height="20" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5">
             <path
@@ -72,7 +72,7 @@
         <!-- Favorites/Heart Icon -->
         <button
           class="text-gray-600 hover:text-orange-500 transition-colors duration-200 flex items-center justify-center w-6 h-6 relative"
-          (click)="onFavoritesClick()">
+          routerLink="/profile/library/wishlist">
           <svg width="20" height="18" viewBox="0 0 25 22" fill="none" xmlns="http://www.w3.org/2000/svg"
             class="w-5 h-5">
             <path
@@ -106,21 +106,21 @@
     <!-- Mobile Menu -->
     <div class="md:hidden" [class.hidden]="!isMobileMenuOpen">
       <div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200">
-        <a href="#"
+        <a routerLink="/"
           class="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z" />
           </svg>
           <span>Home</span>
         </a>
-        <a href="/buscar-juegos"
+        <a routerLink="/buscar-juegos"
           class="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2L2 7V10C2 16 6 20.5 12 22C18 20.5 22 16 22 10V7L12 2Z" />
           </svg>
           <span>Tienda</span>
         </a>
-        <a href="/categories"
+        <a routerLink="/categories"
           class="flex items-center space-x-2 px-3 py-2 text-gray-700 hover:text-orange-500 hover:bg-gray-50 rounded-md">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
             <path

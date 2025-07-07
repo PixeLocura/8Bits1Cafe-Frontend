@@ -4,10 +4,29 @@
 
   <div *ngIf="wishlist.length; else empty"
        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <app-game-card
-      *ngFor="let game of wishlist"
-      [game]="game">
-    </app-game-card>
+    <div *ngFor="let game of wishlist" class="relative bg-white rounded-lg shadow p-4">
+
+      <!-- Imagen de portada -->
+      <div class="w-full h-48 overflow-hidden rounded mb-2">
+        <img
+          [src]="game.coverUrl"
+          [alt]="game.title"
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <h2 class="text-lg font-bold">{{ game.title }}</h2>
+      <p class="text-sm text-gray-600">{{ game.developerName }}</p>
+      <p class="text-sm font-semibold">${{ game.price }}</p>
+
+      <button
+        class="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs"
+        (click)="removeFavorite(game.gameId)">
+        ✕
+      </button>
+
+
+    </div>
   </div>
 
   <ng-template #empty>

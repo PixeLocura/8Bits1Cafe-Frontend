@@ -3,6 +3,9 @@ import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
 import {AuthService} from '../../../auth/services/auth.service';
 import {User} from '../../../auth/interfaces/auth.interfaces';
 import {LucideAngularModule} from 'lucide-angular';
+import {DatePipe} from '@angular/common';
+import {UserService} from '../../services/user-service';
+import {FavoritesService} from '../../../services/favorites.service';
 
 @Component({
   selector: 'app-profile-layout',
@@ -10,25 +13,34 @@ import {LucideAngularModule} from 'lucide-angular';
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    LucideAngularModule
+    LucideAngularModule,
+    DatePipe
 
   ],
   templateUrl: './profile-layout.html',
 })
 export class ProfileLayout implements OnInit{
   user: User|null = null
-  coverImage : string = "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=8"
   avatar = 'https://i.pravatar.cc/300'
-  subtitle = "Member desde Enero 2023"
-  tabs = [
-    { label: 'Overview', href: '/profile', iconName: "user" },
-    { label: 'Favorites', href: '/profile/favorites', iconName: "heart" },
-    { label: 'Settings', href: '/profile/settings', iconName: "settings" },
-  ]
-  constructor(protected authService: AuthService) {
+  numberOfGames : number|null = null
+  numberOfFavourites: number | null = null
+
+  constructor(protected authService: AuthService, private userService: UserService, private favoritesService: FavoritesService) {
   }
 
   ngOnInit() {
     this.authService.currentUser$.subscribe(u=> this.user = u);
+    this.userService.transaction.subscribe(val=>{
+      console.log("transactioj found", val)
+      this.numberOfGames = (val??[]).length
+    })
+    this.favoritesService.favourites.subscribe(u=>{
+      this.numberOfFavourites = u.length
+    })
+  }
+
+  logout(){
+    this.authService.logout()
+    window.location.reload()
   }
 }
