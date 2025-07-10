@@ -10,6 +10,15 @@ export interface LoginResponse {
 }
 
 export interface User {
-  name: string;
+  id: string;
+  email: string;
   role: string;
+  password: string;
+  name: string;
+  lastname: string;
+  username: string;
+  country: string;
+  developerProfileId: string;
+  registrationDate: string;
+  profilePictureUrl?: string;
 }

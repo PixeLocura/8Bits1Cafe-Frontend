@@ -9,6 +9,8 @@ import { GameService } from '../services/game.service';
 //extraer el username para mostrarlo en la infor de un juego--------------
 import { Developer } from '../shared/interfaces/developer.interfaces';
 import { GameConUsername } from '../shared/interfaces/game.interfaces';
+import { CartService } from '../shared/services/cart';
+import {UserService} from '../profile/services/user-service';
 //------------------------------------------------------------------------
 @Component({
   selector: 'app-buscar-juegos',
@@ -75,16 +77,21 @@ export class BuscarJuegosComponent {
 
   mostrarModal: boolean = false;
   juegoSeleccionado: Game | null = null;
+  ownedGames : Game[] = []
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private cartService: CartService, private userService : UserService) {
     this.cargarDatos();
+    this.userService.ownedGames.subscribe(v=>{
+      if(!v) return
+      this.ownedGames = v
+    })
   }
 
   cargarDatos() {
     this.gameService.getAllDevelopers().subscribe({
       next: (developers) => {
         this.developers = developers;
-  
+
         this.gameService.getAllGames().subscribe({
           next: (games) => {
             this.games = games.map(game => {
@@ -107,7 +114,7 @@ export class BuscarJuegosComponent {
       }
     });
   }
-  
+
 
 
 
@@ -198,5 +205,12 @@ export class BuscarJuegosComponent {
     return filtered;
   }
 
+  addToCart(gameId: string) {
+    this.cartService.addToCart(gameId);
+  }
+
+  isPurchased(id: string){
+    return !!this.ownedGames.find(v=>v.id == id)
+  }
 
 }

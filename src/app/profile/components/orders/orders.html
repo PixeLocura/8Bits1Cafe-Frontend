@@ -2,28 +2,49 @@
 <section class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10 space-y-4">
   <h2 class="text-lg font-press-start mb-4">Order History</h2>
 
-  <div *ngFor="let o of orders"
-       class="flex items-center justify-between p-4 bg-[inherit] rounded-lg bg-[#F2EFDF] bg">
-    <div class="space-y-1">
-      <p class="font-medium">{{ o.id }}</p>
-      <p class="text-sm text-muted-foreground">{{ o.date }}</p>
+  <!-- Si hay órdenes, se muestran -->
+  <ng-container *ngIf="orders && orders.length > 0; else noOrders">
+    <div *ngFor="let o of orders"
+         class="flex flex-col gap-2 p-4 bg-[#F2EFDF] rounded-lg">
+
+      <!-- Fecha -->
+      <p class="text-sm text-muted-foreground">
+        {{ o.transactionDate | date:'dd \'de\' MMMM \'de\' yyyy' }}
+      </p>
+
+      <!-- Detalles -->
+      <div class="space-y-1">
+        <div *ngFor="let d of o.details" class="flex items-center justify-between">
+          <div>
+            <p class="font-medium">#{{ d.transactionId.split('-')[0] }}</p>
+            <p class="text-xs text-muted-foreground">Game ID: {{ d.gameId.split('-')[0] }}</p>
+          </div>
+          <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-500 text-white">
+            Completed
+          </span>
+        </div>
+      </div>
+
+      <!-- Total -->
+      <div class="flex justify-between items-center">
+        <p class="font-medium">${{ o.totalPrice.toFixed(2) }}</p>
+        <p class="text-xs text-muted-foreground">
+          {{ o.details.length }} {{ o.details.length === 1 ? 'item' : 'items' }}
+        </p>
+      </div>
+
+      <!-- Acción -->
+      <div class="flex justify-end">
+        <button class="btn btn-outline">View Order</button>
+      </div>
+
     </div>
+  </ng-container>
 
-    <span
-      class="px-3 py-1 rounded-full text-xs font-medium"
-      [ngClass]="{
-        'bg-green-500 text-white': o.status === 'Delivered',
-        'bg-amber-400 text-white': o.status === 'Completed',
-        'bg-gray-400 text-white': o.status === 'Pending'
-      }">
-      {{ o.status }}
-    </span>
-
-    <div class="text-right space-y-1">
-      <p class="font-medium">${{ o.total.toFixed(2) }}</p>
-      <p class="text-xs text-muted-foreground">{{ o.items }} item{{ o.items > 1 ? 's' : '' }}</p>
-    </div>
-
-    <button class="btn btn-outline">View Order</button>
-  </div>
+  <!-- Si no hay órdenes -->
+  <ng-template #noOrders>
+    <p class="text-center text-muted-foreground italic">
+      No tienes órdenes hechas
+    </p>
+  </ng-template>
 </section>

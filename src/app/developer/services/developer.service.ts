@@ -1,67 +1,71 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, catchError, throwError, map, of } from 'rxjs';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
+import {Observable, catchError, throwError, map, tap} from 'rxjs';
 import { Developer } from '../interfaces/developer.interfaces';
 import { environment } from '../../../environments/environment';
+import {UserService} from '../../profile/services/user-service';
+import {AuthService} from '../../auth/services/auth.service';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class DeveloperService {
-    private apiUrl = environment.backendEndpoint;
+  private apiUrl = environment.backendEndpoint; // 👉 Asegúrate que termine SIN slash: ej: http://localhost:8080/api/v1
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-    getDeveloper(id: string): Observable<Developer> {
-        console.log(`Fetching developer with ID: ${id}`);
-        console.log(`Using API URL: ${this.apiUrl}`);
+  getDeveloper(id: string): Observable<Developer> {
+    console.log(`Fetching developer with ID: ${id}`);
+    console.log(`Using API URL: ${this.apiUrl}`);
 
-        const headers = new HttpHeaders({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        });
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    });
 
-        return this.http.get<Developer>(`${this.apiUrl}developers/${id}`, { headers })
-            .pipe(
-                catchError((error: HttpErrorResponse) => {
-                    console.error('Error fetching developer:', error);
-                    console.error('Response:', error.error);
-                    console.error('Status:', error.status);
-                    return throwError(() => error);
-                })
-            );
-    }
+    return this.http
+      .get<Developer>(`${this.apiUrl}/developers/${id}`, { headers })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error fetching developer:', error);
+          return throwError(() => error);
+        })
+      );
+  }
 
-    createDeveloper(data: { name: string; description: string; website: string; profilePictureUrl?: string }): Observable<Developer> {
-        const token = localStorage.getItem('token');
-        const headers = new HttpHeaders({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        });
-        return this.http.post<Developer>(`${this.apiUrl}developers`, data, { headers })
-            .pipe(
-                catchError((error: HttpErrorResponse) => {
-                    console.error('Error creating developer:', error);
-                    return throwError(() => error);
-                })
-            );
-    }
+  createDeveloper(data: {
+    name: string;
+    description: string;
+    website: string;
+    profilePictureUrl?: string;
+  }): Observable<Developer> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    });
 
-    checkHasDeveloperProfile(): Observable<string | null> {
-        const token = localStorage.getItem('token');
-        const headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        };
-        return this.http.get(`${this.apiUrl}developers/me/exists`, { headers, responseType: 'text' })
-            .pipe(
-                map((id: unknown) => typeof id === 'string' && id.length > 0 ? id : null),
-                catchError((error: HttpErrorResponse) => {
-                    if (error.status === 404) return of(null);
-                    return throwError(() => error);
-                })
-            );
-    }
+    return this.http
+      .post<Developer>(`${this.apiUrl}/developers`, data, { headers })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error creating developer:', error);
+          return throwError(() => error);
+        }),
+        tap((res)=>{
+          this.authService.updateDeveloperId(res.id)
+        })
+      );
+  }
+
+  checkHasDeveloperProfile(): Observable<{ exists: boolean; developerId: string | null }> {
+    return this.http.get<{ exists: boolean; developerId: string | null }>(
+      `${this.apiUrl}/developers/me/exists`
+    );
+  }
 }

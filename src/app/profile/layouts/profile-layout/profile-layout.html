@@ -1,78 +1,116 @@
 <div class="container mx-auto px-4 py-6">
-  <!-- COVER + AVATAR (igual que tenías) -->
+  <!-- COVER + AVATAR -->
   <div class="relative mb-6"></div>
 
-  <!-- GRID: SIDEBAR (izquierda) + CONTENIDO (derecha) -->
   <div class="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-6">
 
-    <!-- ← Aquí va tu left column -->
+    <!-- LEFT COLUMN -->
     <aside class="space-y-6">
+
       <!-- Avatar y datos básicos -->
       <div class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10 text-center">
-        <img [src]="avatar" class="w-24 h-24 rounded-full mx-auto mb-4" />
-        <h2 class="font-press-start text-lg">{{ user?.name }}</h2>
-        <p class="text-sm text-muted-foreground">{{ subtitle }}</p>
+        <img [src]="user?.profilePictureUrl || avatar"
+             alt="Foto de perfil"
+             class="w-32 h-32 rounded-full object-cover mx-auto">
+
+        <h2 class="font-press-start text-lg">{{ user?.username }}</h2>
+        <p class="text-sm text-muted-foreground">
+          Miembro desde
+          {{ user?.registrationDate | date:'dd \'de\' MMMM \'de\' yyyy' }}
+        </p>
+
+        <button
+          (click)="editarPerfil()"
+          class="mt-4 inline-flex items-center justify-center w-full border border-primary text-foreground py-2 rounded-lg hover:bg-primary/10 transition-colors duration-200">
+          Editar perfil
+        </button>
+
+
+ <!-- Botón Convertirse en Desarrollador -->
+  <ng-container *ngIf="!hasDeveloperProfile; else devDashboard">
+    <a
+      routerLink="/become-developer"
+      class="mt-4 inline-block w-full text-center bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200"
+    >
+      Convertirse en Desarrollador
+    </a>
+  </ng-container>
+  <ng-template #devDashboard>
+    <button
+      [routerLink]="['/developer', user?.developerProfileId]"
+      class="mt-4 inline-flex items-center justify-center w-full bg-secondary text-secondary-foreground py-2 rounded-lg hover:bg-secondary/90 transition-colors duration-200"
+    >
+      Ir al Dashboard de Desarrollador
+    </button>
+  </ng-template>
+
         <div class="flex justify-around mt-4">
           <div>
-            <p class="text-xl font-medium">{{ 12 }}</p>
+            <p class="text-xl font-medium">{{ numberOfGames ?? 0 }}</p>
             <p class="text-xs">Games</p>
           </div>
           <div>
-            <p class="text-xl font-medium">{{ 212 }}</p>
+            <p class="text-xl font-medium">{{ numberOfFavourites ?? 0 }}</p>
             <p class="text-xs">Wishlist</p>
           </div>
         </div>
-        <button class="mt-4 btn-outline w-full">Edit Profile</button>
       </div>
 
       <!-- Sidebar nav -->
       <aside class="bg-coffee-cream rounded-lg p-4 border border-coffee-brown/10 space-y-4">
         <ul class="space-y-2">
           <li>
-            <a routerLink="/profile" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile" routerLinkActive="font-medium text-foreground"
+               class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="user" class="mr-3" [size]="18"></lucide-icon>
               Mi Cuenta
             </a>
           </li>
           <li>
-            <a routerLink="/profile/orders" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile/library/orders" routerLinkActive="font-medium text-foreground"
+               class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="shopping-cart" class="mr-3" [size]="18"></lucide-icon>
               Mis Pedidos
             </a>
           </li>
           <li>
-            <a routerLink="/profile/library" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile/library" routerLinkActive="font-medium text-foreground"
+               class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="box" class="mr-3" [size]="18"></lucide-icon>
               Mi Biblioteca
             </a>
           </li>
           <li>
-            <a routerLink="/profile/favorites" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile/library/wishlist" routerLinkActive="font-medium text-foreground"
+               class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="heart" class="mr-3" [size]="18"></lucide-icon>
               Favoritos
             </a>
           </li>
           <li>
-            <a routerLink="/profile/settings" routerLinkActive="font-medium text-foreground" class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
+            <a routerLink="/profile/settings" routerLinkActive="font-medium text-foreground"
+               class="flex items-center p-2 rounded hover:bg-coffee-brown/10">
               <lucide-icon name="settings" class="mr-3" [size]="18"></lucide-icon>
               Ajustes
             </a>
           </li>
           <li>
-            <a (click)="this.authService.logout()" class="flex items-center p-2 rounded text-destructive hover:bg-destructive/10">
+            <a (click)="logout()" class="flex items-center p-2 rounded text-destructive hover:bg-destructive/10">
               <lucide-icon name="log-out" class="mr-3" [size]="18"></lucide-icon>
               Cerrar Sesión
             </a>
           </li>
         </ul>
       </aside>
+
     </aside>
 
-    <!-- → Aquí va el contenido de la pestaña activa -->
+    <!-- RIGHT COLUMN -->
     <main>
       <div class="pt-6">
         <router-outlet></router-outlet>
       </div>
     </main>
+
   </div>
 </div>

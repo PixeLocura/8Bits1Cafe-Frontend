@@ -12,6 +12,9 @@ import { Review } from '../shared/interfaces/review.interface';
 import { ReviewService } from '../services/review.service';
 import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
+import { CartService } from '../shared/services/cart';
+import { GameConUsername } from '../shared/interfaces/game.interfaces';
+import { UserService } from '../profile/services/user-service';
 
 
 @Component({
@@ -28,17 +31,25 @@ export class GamePageComponent implements OnInit {
   juegosDelMismoDev: Game[] = [];
   developers: Developer[] = [];
   promedioEstrellas: number = 0;
+  ownedGames: Game[] = [];
 
   constructor(
     private favoritesService: FavoritesService,
     private route: ActivatedRoute,
     private router: Router,
     private reviewService: ReviewService,
-    private gameService: GameService
+    private gameService: GameService,
+    private cartService: CartService,
+    private userService: UserService
   ) {}
 
+
   ngOnInit() {
-    // Escucha cambios en el parámetro 'id'
+    this.userService.ownedGames.subscribe((v: Game[] | null) => {
+      if (!v) return;
+      this.ownedGames = v;
+    });
+
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (!id) {
@@ -49,25 +60,16 @@ export class GamePageComponent implements OnInit {
 
       this.cargarJuego(id);
     });
-
-    // Cargar developers (solo una vez)
-    this.gameService.getAllDevelopers().subscribe({
-      next: (data) => this.developers = data,
-      error: (err) => {
-        console.error('Error al cargar developers:', err);
-        this.developers = [];
-      }
-    });
   }
 
-  // 🔁 Esta función carga todo lo necesario para el juego con el ID dado
+
   private cargarJuego(id: string) {
     this.gameService.getGameById(id).subscribe({
       next: (game) => {
         this.juego = game;
         this.cargarResenas();
         this.cargarOtrosJuegosDelMismoDesarrollador(game.developer_id, game.id);
-        window.scrollTo(0, 0); // Opcional: volver arriba cuando se cambia de juego
+        window.scrollTo(0, 0);
       },
       error: () => {
         alert('Juego no encontrado');
@@ -220,26 +222,25 @@ export class GamePageComponent implements OnInit {
       .catch(() => alert('❌ No se pudo copiar el link'));
   }
 
-
   agregarAFavoritos() {
     if (!this.isLoggedIn()) {
       alert('Debes iniciar sesión para añadir a favoritos');
       return;
     }
-  
+
     const token = localStorage.getItem('token');
     const userEmail = this.getEmailFromToken(token!);
     const gameId = this.juego?.id;
-  
+
     if (!userEmail || !gameId) {
       alert('No se pudo añadir a favoritos. Inténtalo de nuevo.');
       return;
     }
-  
+
     this.reviewService.getUserIdByEmail(userEmail).subscribe({
       next: (response) => {
         const userId = response.id;
-  
+
         this.favoritesService.addFavorite(userId, gameId).subscribe({
           next: () => alert('💖 Juego agregado a favoritos'),
           error: (err) => {
@@ -253,7 +254,6 @@ export class GamePageComponent implements OnInit {
       }
     });
   }
-  
 
   compartir() {
     this.copiarLinkDelJuego();
@@ -263,15 +263,15 @@ export class GamePageComponent implements OnInit {
     alert('Juego añadido al carrito de compras');
   }
 
-  jugarDemo() {
-    alert('🎮 Juego demo descargado. ¡Empieza a jugar!');
-  }
-
   descargarJuego() {
     alert('🔒 Esta función estará disponible cuando compres el juego.');
   }
 
   irAGamePage(id: string): void {
     this.router.navigate(['/juego', id]);
+  }
+
+  addToCart(gameId: string) {
+    this.cartService.addToCart(gameId);
   }
 }

@@ -1,8 +1,9 @@
-import {Component, Input} from '@angular/core';
-import {Game} from '../../../shared/models/game.model';
+import {Component, Input, OnInit} from '@angular/core';
+import { Game } from '../../../shared/interfaces/game.interfaces';
 import {RouterLink} from '@angular/router';
 import {LucideAngularModule} from "lucide-angular"
-import {MOCK_GAMES} from '../../../shared/mock/mock-games';
+import {CartService} from '../../../shared/services/cart';
+import {UserService} from '../../../profile/services/user-service';
 
 @Component({
   selector: 'app-hero',
@@ -12,10 +13,23 @@ import {MOCK_GAMES} from '../../../shared/mock/mock-games';
   ],
   templateUrl: './hero.html',
 })
-export class Hero {
-  @Input({transform: (value: Game | null): Game =>
-    {
-      if(value == null) return MOCK_GAMES[0];
-     return value;
-    }}) deal!: Game
+export class Hero implements OnInit{
+  @Input() deal: Game|null = null
+
+  isPurchased : Boolean = false
+
+  constructor(private cartService: CartService, private userService: UserService) {
+
+  }
+  ngOnInit() {
+    this.userService.ownedGames.subscribe(()=>{
+      if(!this.deal)return
+      this.isPurchased = this.userService.isPurchased(this.deal.id)
+    })
+  }
+
+  addToCart(){
+    if(!this.deal) return
+    this.cartService.addToCart(this.deal.id)
+  }
 }

@@ -1,34 +1,102 @@
-import {Component, OnInit} from '@angular/core';
-import {RouterLink, RouterLinkActive, RouterOutlet} from '@angular/router';
-import {AuthService} from '../../../auth/services/auth.service';
-import {User} from '../../../auth/interfaces/auth.interfaces';
-import {LucideAngularModule} from 'lucide-angular';
+import { Component, OnInit } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { AuthService } from '../../../auth/services/auth.service';
+import { User } from '../../../auth/interfaces/auth.interfaces';
+import { LucideAngularModule } from 'lucide-angular';
+import { CommonModule, DatePipe } from '@angular/common';
+import { UserService } from '../../services/user-service';
+import { FavoritesService } from '../../../services/favorites.service';
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-profile-layout',
+  standalone: true,
   imports: [
+    CommonModule,
     RouterOutlet,
     RouterLink,
     RouterLinkActive,
-    LucideAngularModule
-
+    LucideAngularModule,
+    DatePipe
   ],
   templateUrl: './profile-layout.html',
 })
-export class ProfileLayout implements OnInit{
-  user: User|null = null
-  coverImage : string = "https://images.unsplash.com/photo-1551103782-8ab07afd45c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=8"
-  avatar = 'https://i.pravatar.cc/300'
-  subtitle = "Member desde Enero 2023"
-  tabs = [
-    { label: 'Overview', href: '/profile', iconName: "user" },
-    { label: 'Favorites', href: '/profile/favorites', iconName: "heart" },
-    { label: 'Settings', href: '/profile/settings', iconName: "settings" },
-  ]
-  constructor(protected authService: AuthService) {
-  }
+export class ProfileLayout implements OnInit {
+  user: User | null = null;
+  avatar = 'https://i.pravatar.cc/300';
+  numberOfGames: number | null = null;
+  numberOfFavourites: number | null = null;
+
+  hasDeveloperProfile = false;
+
+  constructor(
+    protected authService: AuthService,
+    private userService: UserService,
+    private favoritesService: FavoritesService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {
     this.authService.currentUser$.subscribe(u=> this.user = u);
+    this.userService.ownedGames.subscribe(val=>{
+      console.log("transactioj found", val)
+      this.numberOfGames = (val??[]).length
+    })
+    this.favoritesService.favourites.subscribe(u=>{
+      this.numberOfFavourites = u.length
+    })
+    this.authService.currentUser$.subscribe(u => {
+      this.user = u
+      if(!u)return
+      this.hasDeveloperProfile = !!u.developerProfileId
+    });
+
+    this.userService.transaction.subscribe(val => {
+      this.numberOfGames = (val ?? []).length;
+    });
+
+    this.favoritesService.favourites.subscribe(u => {
+      this.numberOfFavourites = u.length;
+    });
+
+  }
+
+  checkDeveloperProfile() {
+    this.http.get<{ exists: boolean, developerId: string | null }>('/api/v1/developers/me/exists')
+      .subscribe({
+        next: (res) => {
+          this.hasDeveloperProfile = res.exists;
+        },
+        error: (err) => {
+          if (err.status === 404) {
+            this.hasDeveloperProfile = false;
+          } else {
+            console.error('Error comprobando perfil de developer', err);
+          }
+        }
+      });
+  }
+
+  editarPerfil() {
+    const nuevaUrl = prompt('Ingresa la URL de tu nueva foto de perfil:');
+
+    if (nuevaUrl && nuevaUrl.trim() !== '') {
+      // Actualiza en frontend
+      if (this.user) {
+        this.user.profilePictureUrl = nuevaUrl.trim();
+      }
+
+      // Llama a backend para persistir
+      this.userService.actualizarFotoPerfil(nuevaUrl.trim()).subscribe({
+        next: () => alert('✅ Foto de perfil actualizada'),
+        error: () => alert('❌ Error al actualizar la foto')
+      });
+    }
+  }
+
+  logout() {
+    this.authService.logout();
+    window.location.reload();
   }
 }
