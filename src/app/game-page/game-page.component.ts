@@ -12,6 +12,8 @@ import { Review } from '../shared/interfaces/review.interface';
 import { ReviewService } from '../services/review.service';
 import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
+import { CartService } from '../shared/services/cart';
+import { GameConUsername } from '../shared/interfaces/game.interfaces';
 import {UserService} from '../profile/services/user-service';
 
 
@@ -29,14 +31,16 @@ export class GamePageComponent implements OnInit {
   juegosDelMismoDev: Game[] = [];
   developers: Developer[] = [];
   promedioEstrellas: number = 0;
-  ownedGames: Game[] = []
+  games: GameConUsername[] = [];
+
   constructor(
     private favoritesService: FavoritesService,
     private route: ActivatedRoute,
     private router: Router,
     private reviewService: ReviewService,
     private gameService: GameService,
-    private userService: UserService
+    private cartService: CartService
+
   ) {}
 
   ngOnInit() {
@@ -270,10 +274,6 @@ export class GamePageComponent implements OnInit {
     alert('Juego añadido al carrito de compras');
   }
 
-  jugarDemo() {
-    alert('🎮 Juego demo descargado. ¡Empieza a jugar!');
-  }
-
   descargarJuego() {
     alert('🔒 Esta función estará disponible cuando compres el juego.');
   }
@@ -282,7 +282,8 @@ export class GamePageComponent implements OnInit {
     this.router.navigate(['/juego', id]);
   }
 
-  isPurchased(){
-    return !!this.ownedGames.find(v=>v.id == this.juego?.id)
+  addToCart(gameId: string) {
+    this.cartService.addToCart(gameId);
+
   }
 }

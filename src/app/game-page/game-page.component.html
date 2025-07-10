@@ -29,13 +29,11 @@
       <h3 class="text-sm text-muted-foreground">Precio</h3>
       <p class="text-2xl font-bold text-coffee-terracotta">${{ j.price }}</p>
       <p class="text-yellow-500 text-sm">⭐ {{ promedioEstrellas }}</p>
+      <button (click)="addToCart(j.id)"
+            class="mt-3 w-full bg-coffee-terracotta text-white py-2 rounded hover:bg-coffee-brown transition-all">
+            Agregar al carrito
+          </button>
 
-      <button class="w-full bg-coffee-terracotta text-white py-2 mt-2 rounded-none" (click)="comprar()" [disabled]="isPurchased()">
-        {{ isPurchased()? "Juego Adquirido" : "Añadir al carrito"}}</button>
-      <a
-        href="assets/fonts/juego_demo.exe"
-        download
-        class="w-full border py-2 mt-2 block text-center bg-blue-600 text-white hover:bg-blue-700 transition-colors">Juega la demo</a>
       <button class="w-full border py-2 mt-2" (click)="descargarJuego()">Descargar</button>
     </div>
 
