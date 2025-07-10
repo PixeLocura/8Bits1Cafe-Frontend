@@ -13,7 +13,7 @@ export interface CartProduct {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   private readonly STORAGE_KEY = '8bits_cart_items';
@@ -39,7 +39,10 @@ export class CartService {
   }
 
   private saveCartToStorage(): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.cartItemIds.value));
+    localStorage.setItem(
+      this.STORAGE_KEY,
+      JSON.stringify(this.cartItemIds.value)
+    );
   }
 
   getCartItemIds(): Observable<string[]> {
@@ -47,9 +50,7 @@ export class CartService {
   }
 
   getCartItemCount(): Observable<number> {
-    return this.cartItemIds.pipe(
-      map(ids => ids.length)
-    );
+    return this.cartItemIds.pipe(map((ids) => ids.length));
   }
 
   addToCart(itemId: string): void {
@@ -62,7 +63,7 @@ export class CartService {
 
   removeFromCart(itemId: string): void {
     const currentIds = this.cartItemIds.value;
-    this.cartItemIds.next(currentIds.filter(id => id !== itemId));
+    this.cartItemIds.next(currentIds.filter((id) => id !== itemId));
     this.saveCartToStorage();
   }
 
@@ -73,12 +74,12 @@ export class CartService {
 
   // Fetch game details from API
   private fetchProductDetails(id: string): Observable<CartProduct> {
-    return this.http.get<Game>(`${this.apiUrl}games/${id}`).pipe(
-      map(game => ({
+    return this.http.get<Game>(`${this.apiUrl}/games/${id}`).pipe(
+      map((game) => ({
         id: game.id,
         name: game.title,
         price: game.price,
-        imageUrl: game.coverUrl
+        imageUrl: game.coverUrl,
       }))
     );
   }
@@ -86,26 +87,20 @@ export class CartService {
   // Get all cart items with their details
   getCartItems(): Observable<CartProduct[]> {
     return this.cartItemIds.pipe(
-      switchMap(ids => {
+      switchMap((ids) => {
         if (ids.length === 0) return from([[]]);
-        return forkJoin(
-          ids.map(id => this.fetchProductDetails(id))
-        );
+        return forkJoin(ids.map((id) => this.fetchProductDetails(id)));
       })
     );
   }
 
   // Initiate a transaction with the backend
   purchaseGames(gameIds: string[], authToken: string) {
-    return this.http.post<any>(
-      `${this.apiUrl}transactions/games`,
-      gameIds,
-      {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
-        }
-      }
-    );
+    return this.http.post<any>(`${this.apiUrl}/transactions/games`, gameIds, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
   }
 }
