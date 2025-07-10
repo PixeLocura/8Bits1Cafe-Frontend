@@ -53,16 +53,19 @@ export class BecomeDeveloper implements OnInit {
 
   ngOnInit(): void {
     this.developerService.checkHasDeveloperProfile().subscribe({
-      next: (developerId) => {
-        if (developerId) {
-          this.router.navigate([`/developer/${developerId}`]);
+      next: (res: any) => {
+        if (res.exists && res.developerId) {
+          this.router.navigate([`/developer/${res.developerId}`]);
         } else {
           this.loading = false;
         }
       },
-      error: (err) => {
+      error: (err: unknown) => {
+        console.error('Error comprobando perfil de developer', err);
         this.loading = false;
-      }
+      },
     });
   }
-}
+  
+  
+}  

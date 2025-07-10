@@ -24,10 +24,12 @@
   
 
  <!-- Botón Convertirse en Desarrollador -->
-<a routerLink="/become-developer"
-class="mt-2 inline-block w-full text-center bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200">
-Convertirse en Desarrollador
+ <a *ngIf="!hasDeveloperProfile"
+ routerLink="/become-developer"
+ class="mt-2 inline-block w-full text-center bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200">
+ Convertirse en Desarrollador
 </a>
+
 <div class="flex justify-around mt-4">
   <div>
     <p class="text-xl font-medium">{{ numberOfGames ?? 0 }}</p>
