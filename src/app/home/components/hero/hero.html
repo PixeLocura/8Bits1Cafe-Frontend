@@ -32,11 +32,14 @@
       </div>
 
       <div class="mt-6 flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
-        <button class="px-6 py-3 bg-primary text-white font-press-start inline-flex items-center rounded hover:bg-primary-dark transition">
+        <button class="px-6 py-3 bg-primary text-white font-press-start inline-flex items-center rounded hover:bg-primary-dark transition"
+        [disabled]="isPurchased"
+                (click)="addToCart()"
+        >
           <lucide-icon name="shopping-cart" class="w-4 h-4 mr-2"></lucide-icon>
-          Add to Cart
+          {{ isPurchased? "Juego Adquirido" : "Add to Cart" }}
         </button>
-        <a [routerLink]="['/games', deal?.id]">
+        <a [routerLink]="['/juego', deal?.id]">
           <button class="px-6 py-3 border border-coffee-brown/20 bg-coffee-cream text-coffee-brown font-medium rounded hover:shadow">
             View Details
           </button>

@@ -14,6 +14,8 @@ import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
 import { CartService } from '../shared/services/cart';
 import { GameConUsername } from '../shared/interfaces/game.interfaces';
+import {UserService} from '../profile/services/user-service';
+
 
 @Component({
   selector: 'app-game-page',
@@ -30,7 +32,6 @@ export class GamePageComponent implements OnInit {
   developers: Developer[] = [];
   promedioEstrellas: number = 0;
   games: GameConUsername[] = [];
-  
 
   constructor(
     private favoritesService: FavoritesService,
@@ -39,6 +40,7 @@ export class GamePageComponent implements OnInit {
     private reviewService: ReviewService,
     private gameService: GameService,
     private cartService: CartService
+
   ) {}
 
   ngOnInit() {
@@ -62,6 +64,11 @@ export class GamePageComponent implements OnInit {
         this.developers = [];
       }
     });
+
+    this.userService.ownedGames.subscribe(v=>{
+      if(!v)return
+      this.ownedGames = v;
+    })
   }
 
   // 🔁 Esta función carga todo lo necesario para el juego con el ID dado
@@ -230,20 +237,20 @@ export class GamePageComponent implements OnInit {
       alert('Debes iniciar sesión para añadir a favoritos');
       return;
     }
-  
+
     const token = localStorage.getItem('token');
     const userEmail = this.getEmailFromToken(token!);
     const gameId = this.juego?.id;
-  
+
     if (!userEmail || !gameId) {
       alert('No se pudo añadir a favoritos. Inténtalo de nuevo.');
       return;
     }
-  
+
     this.reviewService.getUserIdByEmail(userEmail).subscribe({
       next: (response) => {
         const userId = response.id;
-  
+
         this.favoritesService.addFavorite(userId, gameId).subscribe({
           next: () => alert('💖 Juego agregado a favoritos'),
           error: (err) => {
@@ -257,7 +264,7 @@ export class GamePageComponent implements OnInit {
       }
     });
   }
-  
+
 
   compartir() {
     this.copiarLinkDelJuego();
@@ -277,5 +284,6 @@ export class GamePageComponent implements OnInit {
 
   addToCart(gameId: string) {
     this.cartService.addToCart(gameId);
+
   }
 }

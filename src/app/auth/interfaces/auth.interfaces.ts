@@ -20,4 +20,5 @@ export interface User {
   country: string;
   developerProfileId: string;
   registrationDate: string;
+  profilePictureUrl?: string;
 }

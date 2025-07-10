@@ -2,32 +2,46 @@
 <section class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10 space-y-4">
   <h2 class="text-lg font-press-start mb-4">Order History</h2>
 
-  <!-- if there are orders, show them… -->
+  <!-- Si hay órdenes, se muestran -->
   <ng-container *ngIf="orders && orders.length > 0; else noOrders">
     <div *ngFor="let o of orders"
-         class="flex items-center justify-between p-4 bg-[#F2EFDF] rounded-lg">
+         class="flex flex-col gap-2 p-4 bg-[#F2EFDF] rounded-lg">
+
+      <!-- Fecha -->
+      <p class="text-sm text-muted-foreground">
+        {{ o.transactionDate | date:'dd \'de\' MMMM \'de\' yyyy' }}
+      </p>
+
+      <!-- Detalles -->
       <div class="space-y-1">
-        <p class="font-medium">{{ o.details.transactionId.split('-')[0] }}</p>
-        <p class="text-sm text-muted-foreground">{{ o.transactionDate | date:'dd \'de\' MMMM \'de\' yyyy' }}</p>
+        <div *ngFor="let d of o.details" class="flex items-center justify-between">
+          <div>
+            <p class="font-medium">#{{ d.transactionId.split('-')[0] }}</p>
+            <p class="text-xs text-muted-foreground">Game ID: {{ d.gameId.split('-')[0] }}</p>
+          </div>
+          <span class="px-2 py-1 rounded-full text-xs font-medium bg-green-500 text-white">
+            Completed
+          </span>
+        </div>
       </div>
 
-      <span
-        class="px-3 py-1 rounded-full text-xs font-medium bg-green-500 text-white">
-        Completed
-      </span>
-
-      <div class="text-right space-y-1">
+      <!-- Total -->
+      <div class="flex justify-between items-center">
         <p class="font-medium">${{ o.totalPrice.toFixed(2) }}</p>
         <p class="text-xs text-muted-foreground">
-          {{ o.details.gameId.split("-")[0] }} item
+          {{ o.details.length }} {{ o.details.length === 1 ? 'item' : 'items' }}
         </p>
       </div>
 
-      <button class="btn btn-outline">View Order</button>
+      <!-- Acción -->
+      <div class="flex justify-end">
+        <button class="btn btn-outline">View Order</button>
+      </div>
+
     </div>
   </ng-container>
 
-  <!-- …otherwise show this message -->
+  <!-- Si no hay órdenes -->
   <ng-template #noOrders>
     <p class="text-center text-muted-foreground italic">
       No tienes órdenes hechas

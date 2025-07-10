@@ -1,55 +1,57 @@
 <span class="text-2xl">
   Editar Perfil
 </span>
+
 <form
   [formGroup]="profileForm"
   (ngSubmit)="onSubmit()"
   class="grid gap-4 grid-cols-2 max-md:flex max-md:flex-col"
 >
+
+  <!-- Campos normales -->
   <div class="flex flex-col">
-      <span>Nombre</span>
-      <input
-        formControlName="name"
-        class="rounded-lg p-2"
-        placeholder="Nombre"
-      />
+    <span>Nombre</span>
+    <input
+      formControlName="name"
+      class="rounded-lg p-2"
+      placeholder="Nombre"
+    />
     <small *ngIf="profileForm.get('name')?.touched && profileForm.get('name')?.invalid" class="text-red-500">
       Nombre es requerido
     </small>
   </div>
 
   <div class="flex flex-col">
-      <span>Apellido</span>
-      <input
-        formControlName="lastname"
-        class="rounded-lg p-2"
-        placeholder="Apellido"
-      />
+    <span>Apellido</span>
+    <input
+      formControlName="lastname"
+      class="rounded-lg p-2"
+      placeholder="Apellido"
+    />
     <small *ngIf="profileForm.get('lastname')?.touched && profileForm.get('lastname')?.invalid" class="text-red-500">
       Apellido es requerido
     </small>
   </div>
 
   <div class="flex flex-col">
-      <span>Correo</span>
-      <input
-        formControlName="email"
-        class="rounded-lg p-2"
-        placeholder="Correo"
-      />
+    <span>Correo</span>
+    <input
+      formControlName="email"
+      class="rounded-lg p-2"
+      placeholder="Correo"
+    />
     <small *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid" class="text-red-500">
       Ingresa un correo válido
     </small>
   </div>
 
   <div class="flex flex-col">
-
-      <span>Usuario</span>
-      <input
-        formControlName="username"
-        class="rounded-lg p-2"
-        placeholder="Usuario"
-      />
+    <span>Usuario</span>
+    <input
+      formControlName="username"
+      class="rounded-lg p-2"
+      placeholder="Usuario"
+    />
     <small *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.invalid" class="text-red-500">
       Usuario es requerido
     </small>
@@ -62,4 +64,33 @@
   >
     Actualizar Información
   </button>
+
+  <!-- Bloque Foto de Perfil -->
+  <div class="mt-8 flex flex-col gap-4 col-span-2">
+    <span class="text-xl">Foto de Perfil Actual</span>
+
+    <img
+      [src]="user?.profilePictureUrl || 'https://via.placeholder.com/150'"
+      alt="Profile Picture"
+      class="w-32 h-32 rounded-full object-cover border"
+    />
+
+    <span class="text-xl">Actualizar Foto de Perfil</span>
+
+    <input
+      type="text"
+      formControlName="profilePictureUrl"
+      class="rounded-lg p-2"
+      placeholder="URL de la nueva foto"
+    />
+
+    <button
+      type="button"
+      (click)="onUpdatePicture()"
+      class="bg-primary rounded-lg p-4 text-white max-w-fit"
+    >
+      Actualizar Foto
+    </button>
+  </div>
+
 </form>

@@ -1,7 +1,7 @@
 <section class="py-12 bg-coffee-cream">
   <div class="container mx-auto px-4">
     <div class="flex justify-between items-center mb-8">
-      <h2 class="text-2xl font-press-start">New Arrivals</h2>
+      <h2 class="text-2xl font-press-start">Juegos Recomendados</h2>
       <a routerLink="/buscar-juegos" class="inline-flex items-center text-primary hover:underline">
         View All <lucide-icon name="chevron-right" class="w-4 h-4 ml-1"></lucide-icon>
       </a>
@@ -17,6 +17,7 @@
               [src]="game.coverUrl"
               [alt]="game.title"
               class="w-full h-40 object-cover"
+              [routerLink]="['/juego', game.id]"
             />
             <span
               *ngIf="game.price"
@@ -63,9 +64,11 @@
 
             <button
               class="w-full mt-3 px-4 py-2 bg-coffee-yellow/50 text-coffee-brown font-press-start rounded inline-flex items-center justify-center hover:bg-coffee-yellow transition"
+              [disabled]="isPurchased(game.id)"
+              (click)="addToCart(game.id)"
             >
               <lucide-icon name="shopping-cart" class="w-4 h-4 mr-2"></lucide-icon>
-              Añadir al Carrito
+              {{ isPurchased(game.id)? "Juego Adquirido" : "Añadir al Carrito" }}
             </button>
           </div>
         </div>

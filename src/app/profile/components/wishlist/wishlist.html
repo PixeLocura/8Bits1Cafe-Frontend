@@ -12,6 +12,7 @@
           [src]="game.coverUrl"
           [alt]="game.title"
           class="w-full h-full object-cover"
+          [routerLink]="['/juego', game.gameId]"
         />
       </div>
 

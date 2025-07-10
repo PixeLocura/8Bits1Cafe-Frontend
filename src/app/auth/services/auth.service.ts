@@ -149,4 +149,28 @@ export class AuthService {
       })
     )
   }
+
+  updateProfilePicture(newUrl: string) {
+    const userId = this.getUserId();
+    if (!userId) return;
+  
+    const payload = { profilePictureUrl: newUrl };
+  
+    return this.http.patch<void>(
+      `${environment.backendEndpoint}/user/profile/${userId}/profile-picture`,
+      payload
+    ).pipe(
+      tap(() => {
+        console.log('Profile picture updated!');
+        // Actualiza cache local
+        const current = this.currentUserSubject.value;
+        if (current) {
+          current.profilePictureUrl = newUrl;
+          localStorage.setItem('user', JSON.stringify(current));
+          this.currentUserSubject.next(current);
+        }
+      })
+    );
+  }
+  
 }

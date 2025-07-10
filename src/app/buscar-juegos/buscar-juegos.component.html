@@ -108,8 +108,9 @@
           </p>
           <p class="font-bold text-coffee-terracotta mt-1">${{ game.price }}</p>
           <button (click)="addToCart(game.id)"
+                  [disabled]="isPurchased(game.id)"
             class="mt-3 w-full bg-coffee-terracotta text-white py-2 rounded hover:bg-coffee-brown transition-all">
-            Agregar al carrito
+            {{ isPurchased(game.id)? "Juego Adquirido" :  "Agregar al carrito" }}
           </button>
         </div>
       </div>

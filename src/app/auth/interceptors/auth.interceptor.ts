@@ -1,30 +1,50 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpInterceptorFn, HttpResponse, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { environment } from '../../../environments/environment';
 import { catchError, tap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
-export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
+export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next) => {
   const authService = inject(AuthService);
-  const token = localStorage.getItem('token'); // Direct check for debugging
+  const token = localStorage.getItem('token');
 
-  console.log('Auth Interceptor - Request URL:', req.url);
-  console.log('Auth Interceptor - Request Method:', req.method);
+  // ⚙️ Si es relativa, conviértela. Si ya trae api/v1, quítalo para que no se duplique.
+  const isRelative = req.url.startsWith('/');
+  let finalUrl = req.url;
+
+  if (isRelative) {
+    if (req.url.startsWith('/api/v1')) {
+      // Elimina el primer `/api/v1` porque ya está en backendEndpoint
+      finalUrl = req.url.replace('/api/v1', '');
+    }
+    finalUrl = `${environment.backendEndpoint}${finalUrl}`;
+  }
+
+  let modifiedReq = req.clone({ url: finalUrl });
+
+  // Solo games son públicos
+  const isPublic = modifiedReq.url.includes('/games');
+
+  console.log('Auth Interceptor - Request URL:', modifiedReq.url);
+  console.log('Auth Interceptor - Is Public:', isPublic);
   console.log('Auth Interceptor - Token present:', !!token);
 
-  if (token) {
+  if (token && !isPublic) {
     console.log('Auth Interceptor - Adding token to request');
-    req = req.clone({
+    modifiedReq = modifiedReq.clone({
       setHeaders: {
         Authorization: `Bearer ${token}`
       }
     });
   }
 
-  return next(req).pipe(
+  return next(modifiedReq).pipe(
     tap({
       next: (event) => {
-        console.log('Auth Interceptor - Response event:', event);
+        if (event instanceof HttpResponse) {
+          console.log('Auth Interceptor - Response event:', event);
+        }
       },
       error: (error) => {
         console.error('Auth Interceptor - Error occurred:', {
@@ -39,9 +59,8 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     catchError(error => {
       if (error.status === 401) {
         console.error('Auth Interceptor - Unauthorized request');
-        // Could handle token refresh here if needed
       }
       return throwError(() => error);
     })
   );
-}
+};
