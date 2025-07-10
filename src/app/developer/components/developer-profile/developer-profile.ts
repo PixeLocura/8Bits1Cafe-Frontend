@@ -40,22 +40,26 @@ export class DeveloperProfileComponent implements OnInit {
 
   ngOnInit() {
     const developerId = this.route.snapshot.paramMap.get('id');
+    console.log('📌 DeveloperProfileComponent - developerId param:', developerId);
+  
     if (!developerId) {
       this.error = 'No se encontró el ID del desarrollador';
       this.loading = false;
       return;
     }
-
+  
     this.developerService.getDeveloper(developerId).subscribe({
       next: (developer) => {
+        console.log('✅ DeveloperProfileComponent - getDeveloper response:', developer);
         this.developer = developer;
         this.loading = false;
       },
       error: (error) => {
+        console.error('❌ DeveloperProfileComponent - Error fetching developer:', error);
         this.error = 'Error al cargar el perfil del desarrollador';
         this.loading = false;
-        console.error('Error fetching developer:', error);
       }
     });
   }
+  
 }

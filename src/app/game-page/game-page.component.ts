@@ -14,7 +14,7 @@ import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
 import { CartService } from '../shared/services/cart';
 import { GameConUsername } from '../shared/interfaces/game.interfaces';
-import {UserService} from '../profile/services/user-service';
+import { UserService } from '../profile/services/user-service';
 
 
 @Component({
@@ -31,7 +31,7 @@ export class GamePageComponent implements OnInit {
   juegosDelMismoDev: Game[] = [];
   developers: Developer[] = [];
   promedioEstrellas: number = 0;
-  games: GameConUsername[] = [];
+  ownedGames: Game[] = [];
 
   constructor(
     private favoritesService: FavoritesService,
@@ -39,46 +39,26 @@ export class GamePageComponent implements OnInit {
     private router: Router,
     private reviewService: ReviewService,
     private gameService: GameService,
-    private cartService: CartService
-
+    private cartService: CartService,
+    private userService: UserService
   ) {}
 
+
   ngOnInit() {
-    // Escucha cambios en el parámetro 'id'
-    this.route.paramMap.subscribe(params => {
-      const id = params.get('id');
-      if (!id) {
-        alert('ID inválido');
-        this.router.navigate(['/buscar-juegos']);
-        return;
-      }
-
-      this.cargarJuego(id);
-    });
-
-    // Cargar developers (solo una vez)
-    this.gameService.getAllDevelopers().subscribe({
-      next: (data) => this.developers = data,
-      error: (err) => {
-        console.error('Error al cargar developers:', err);
-        this.developers = [];
-      }
-    });
-
-    this.userService.ownedGames.subscribe(v=>{
-      if(!v)return
+    this.userService.ownedGames.subscribe((v: Game[] | null) => {
+      if (!v) return;
       this.ownedGames = v;
-    })
+    });
   }
+  
 
-  // 🔁 Esta función carga todo lo necesario para el juego con el ID dado
   private cargarJuego(id: string) {
     this.gameService.getGameById(id).subscribe({
       next: (game) => {
         this.juego = game;
         this.cargarResenas();
         this.cargarOtrosJuegosDelMismoDesarrollador(game.developer_id, game.id);
-        window.scrollTo(0, 0); // Opcional: volver arriba cuando se cambia de juego
+        window.scrollTo(0, 0);
       },
       error: () => {
         alert('Juego no encontrado');
@@ -231,7 +211,6 @@ export class GamePageComponent implements OnInit {
       .catch(() => alert('❌ No se pudo copiar el link'));
   }
 
-
   agregarAFavoritos() {
     if (!this.isLoggedIn()) {
       alert('Debes iniciar sesión para añadir a favoritos');
@@ -265,7 +244,6 @@ export class GamePageComponent implements OnInit {
     });
   }
 
-
   compartir() {
     this.copiarLinkDelJuego();
   }
@@ -284,6 +262,5 @@ export class GamePageComponent implements OnInit {
 
   addToCart(gameId: string) {
     this.cartService.addToCart(gameId);
-
   }
 }

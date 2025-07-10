@@ -49,23 +49,29 @@ export class DeveloperApplication implements OnInit {
 
   ngOnInit(): void {
     this.developerService.checkHasDeveloperProfile().subscribe({
-      next: (developerId) => {
-        if (developerId) {
-          this.router.navigate([`/developer/${developerId}`]);
+      next: (res) => {
+        console.log('🔍 checkHasDeveloperProfile response:', res);
+        if (res.exists && res.developerId) {
+          this.router.navigate([`/developer/${res.developerId}`]);
         } else {
           this.loading = false;
         }
       },
       error: (err) => {
+        console.error('🔍 checkHasDeveloperProfile error:', err);
         this.loading = false;
       },
     });
   }
+  
+  
+  
 
   onSubmit() {
     if (this.applicationForm.valid) {
       const { developerName, description, websiteUrl, profilePictureUrl } =
         this.applicationForm.value;
+  
       this.developerService
         .createDeveloper({
           name: developerName,
@@ -75,6 +81,7 @@ export class DeveloperApplication implements OnInit {
         })
         .subscribe({
           next: (dev) => {
+            console.log('✅ createDeveloper response:', dev);
             this.snackBar.open(
               'Perfil de desarrollador creado con éxito',
               'Cerrar',
@@ -83,6 +90,7 @@ export class DeveloperApplication implements OnInit {
             this.router.navigate([`/developer/${dev.id}`]);
           },
           error: (err) => {
+            console.error('❌ Error creando developer:', err);
             this.errorMessage = 'Error al crear el perfil de desarrollador.';
           },
         });
@@ -90,4 +98,4 @@ export class DeveloperApplication implements OnInit {
       this.errorMessage = 'Por favor, complete todos los campos correctamente.';
     }
   }
-}
+}  
