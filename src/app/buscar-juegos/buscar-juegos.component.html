@@ -7,12 +7,8 @@
 
   <!-- Barra de búsqueda y orden -->
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-    <input
-      type="text"
-      [(ngModel)]="searchTerm"
-      placeholder="Busca juegos o desarrolladores"
-      class="w-full md:w-2/3 px-4 py-2 border border-coffee-brown/40 rounded focus:outline-none focus:ring-2 focus:ring-coffee-terracotta placeholder:text-gray-400"
-    />
+    <input type="text" [(ngModel)]="searchTerm" placeholder="Busca juegos o desarrolladores"
+      class="w-full md:w-2/3 px-4 py-2 border border-coffee-brown/40 rounded focus:outline-none focus:ring-2 focus:ring-coffee-terracotta placeholder:text-gray-400" />
 
     <div class="flex items-center gap-2">
       <label for="orden" class="text-sm text-muted-foreground">Ordenar por:</label>
@@ -111,6 +107,10 @@
             <span class="text-yellow-500">{{ '⭐'.repeat(game.rating || 0) }}</span>
           </p>
           <p class="font-bold text-coffee-terracotta mt-1">${{ game.price }}</p>
+          <button (click)="addToCart(game.id)"
+            class="mt-3 w-full bg-coffee-terracotta text-white py-2 rounded hover:bg-coffee-brown transition-all">
+            Agregar al carrito
+          </button>
         </div>
       </div>
 
