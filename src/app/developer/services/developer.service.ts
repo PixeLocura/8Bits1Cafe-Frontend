@@ -1,27 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Observable, catchError, throwError, map, of } from 'rxjs';
 import { Developer } from '../interfaces/developer.interfaces';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class DeveloperService {
-    private apiUrl = environment.backendEndpoint;
+  private apiUrl = environment.backendEndpoint;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-    getDeveloper(id: string): Observable<Developer> {
-        console.log(`Fetching developer with ID: ${id}`);
-        console.log(`Using API URL: ${this.apiUrl}`);
+  getDeveloper(id: string): Observable<Developer> {
+    console.log(`Fetching developer with ID: ${id}`);
+    console.log(`Using API URL: ${this.apiUrl}`);
 
-        const headers = new HttpHeaders({
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        });
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    });
 
-    return this.http.get<Developer>(`${this.apiUrl}/developers/${id}`, { headers })
+    return this.http
+      .get<Developer>(`${this.apiUrl}/developers/${id}`, { headers })
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Error fetching developer:', error);
@@ -32,14 +37,20 @@ export class DeveloperService {
       );
   }
 
-  createDeveloper(data: { name: string; description: string; website: string; profilePictureUrl?: string }): Observable<Developer> {
+  createDeveloper(data: {
+    name: string;
+    description: string;
+    website: string;
+    profilePictureUrl?: string;
+  }): Observable<Developer> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders({
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     });
-    return this.http.post<Developer>(`${this.apiUrl}/developers`, data, { headers })
+    return this.http
+      .post<Developer>(`${this.apiUrl}/developers`, data, { headers })
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error('Error creating developer:', error);
@@ -51,13 +62,19 @@ export class DeveloperService {
   checkHasDeveloperProfile(): Observable<string | null> {
     const token = localStorage.getItem('token');
     const headers = {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     };
-    return this.http.get(`${this.apiUrl}/developers/me/exists`, { headers, responseType: 'text' })
+    return this.http
+      .get(`${this.apiUrl}/developers/me/exists`, {
+        headers,
+        responseType: 'text',
+      })
       .pipe(
-        map((id: unknown) => typeof id === 'string' && id.length > 0 ? id : null),
+        map((id: unknown) =>
+          typeof id === 'string' && id.length > 0 ? id : null
+        ),
         catchError((error: HttpErrorResponse) => {
           if (error.status === 404) return of(null);
           return throwError(() => error);
