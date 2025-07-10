@@ -25,12 +25,24 @@
           Editar perfil
         </button>
 
-        <!-- Botón Convertirse en Desarrollador -->
-        <a *ngIf="!hasDeveloperProfile"
-           routerLink="/become-developer"
-           class="mt-2 inline-block w-full text-center bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200">
-          Convertirse en Desarrollador
-        </a>
+
+ <!-- Botón Convertirse en Desarrollador -->
+  <ng-container *ngIf="!hasDeveloperProfile; else devDashboard">
+    <a
+      routerLink="/become-developer"
+      class="mt-4 inline-block w-full text-center bg-primary text-primary-foreground py-2 rounded-lg hover:bg-primary/90 transition-colors duration-200"
+    >
+      Convertirse en Desarrollador
+    </a>
+  </ng-container>
+  <ng-template #devDashboard>
+    <button
+      [routerLink]="['/developer', user?.developerProfileId]"
+      class="mt-4 inline-flex items-center justify-center w-full bg-secondary text-secondary-foreground py-2 rounded-lg hover:bg-secondary/90 transition-colors duration-200"
+    >
+      Ir al Dashboard de Desarrollador
+    </button>
+  </ng-template>
 
         <div class="flex justify-around mt-4">
           <div>

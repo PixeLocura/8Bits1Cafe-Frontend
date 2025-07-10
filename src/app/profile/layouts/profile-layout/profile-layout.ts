@@ -38,11 +38,21 @@ export class ProfileLayout implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Obtiene usuario actual
-    this.authService.currentUser$.subscribe(u => this.user = u);
+    this.authService.currentUser$.subscribe(u=> this.user = u);
+    this.userService.ownedGames.subscribe(val=>{
+      console.log("transactioj found", val)
+      this.numberOfGames = (val??[]).length
+    })
+    this.favoritesService.favourites.subscribe(u=>{
+      this.numberOfFavourites = u.length
+    })
+    this.authService.currentUser$.subscribe(u => {
+      this.user = u
+      if(!u)return
+      this.hasDeveloperProfile = !!u.developerProfileId
+    });
 
-    // Cuenta juegos y favoritos
-    this.userService.ownedGames.subscribe(val => {
+    this.userService.transaction.subscribe(val => {
       this.numberOfGames = (val ?? []).length;
     });
 
@@ -50,7 +60,6 @@ export class ProfileLayout implements OnInit {
       this.numberOfFavourites = u.length;
     });
 
-    this.checkDeveloperProfile();
   }
 
   checkDeveloperProfile() {

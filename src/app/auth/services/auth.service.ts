@@ -153,9 +153,9 @@ export class AuthService {
   updateProfilePicture(newUrl: string) {
     const userId = this.getUserId();
     if (!userId) return;
-  
+
     const payload = { profilePictureUrl: newUrl };
-  
+
     return this.http.patch<void>(
       `${environment.backendEndpoint}/user/profile/${userId}/profile-picture`,
       payload
@@ -172,5 +172,13 @@ export class AuthService {
       })
     );
   }
-  
+
+  updateDeveloperId(developerId: string){
+    const curUser = this.currentUserSubject.value
+    if(curUser == null)return
+    curUser.developerProfileId = developerId
+    this.currentUserSubject.next(curUser)
+    localStorage.setItem('user', JSON.stringify(curUser));
+  }
+
 }

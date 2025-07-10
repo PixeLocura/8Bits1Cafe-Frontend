@@ -22,7 +22,7 @@ export class Library implements OnInit{
   }
   ngOnInit() {
     this.homeService.getNewReleases().subscribe(u =>{
-      this.recentlyViewed = u.slice(-4, -1)
+      this.recentlyViewed = u.slice(-6, -3)
     })
 
     this.userService.ownedGames.subscribe(u=>{
