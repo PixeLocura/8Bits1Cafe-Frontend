@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap, BehaviorSubject, catchError } from 'rxjs';
+import { Observable, tap, BehaviorSubject, catchError, throwError, of } from 'rxjs';
 import { LoginRequest, LoginResponse, User } from '../interfaces/auth.interfaces';
 import { environment } from '../../../environments/environment';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = `https://eightbits.onrender.com/api/v1/auth`;
+  private apiUrl = `${environment.backendEndpoint}/auth`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   currentUser$ = this.currentUserSubject.asObservable();
 
@@ -42,18 +43,6 @@ export class AuthService {
             // Store token
             localStorage.setItem('token', response.token);
             console.log('Token stored in localStorage');
-
-            // Store user info
-            const user: User = {
-              name: response.name,
-              role: response.role
-            };
-            console.log('User info to store:', user);
-            localStorage.setItem('user', JSON.stringify(user));
-            console.log('User info stored in localStorage');
-
-            this.currentUserSubject.next(user);
-            console.log('User subject updated');
           },
           error: (error) => {
             console.error('Login error details:', {
@@ -64,6 +53,30 @@ export class AuthService {
             });
             throw error;
           }
+        }),
+
+        switchMap(response => this.getProfile(credentials.email).pipe(
+          map(() => response)
+        ))
+      );
+  }
+
+  getProfile(email: string): Observable<User> {
+    const token = this.getToken();
+    if (!token) {
+      return of(null as any);
+    }
+    return this.http
+      .get<User>(`${environment.backendEndpoint}/users/by-email/${email}`)
+      .pipe(
+        tap(user => {
+          console.log('Fetched profile:', user);
+          localStorage.setItem('user', JSON.stringify(user));
+          this.currentUserSubject.next(user);
+        }),
+        catchError(err => {
+          console.error('Failed to fetch profile', err);
+          return throwError(() => err);
         })
       );
   }
@@ -98,4 +111,42 @@ export class AuthService {
     return this.http.post<{ token: string }>(`${this.apiUrl}/register/admin`, userData);
   }
 
+
+  getUserId(): string | null {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('No token found in localStorage');
+      return null;
+    }
+
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Decoded JWT payload:', payload);
+      return payload.userId;
+    } catch (err) {
+      console.error('Error decoding JWT:', err);
+      return null;
+    }
+  }
+
+
+  updateProfile(updates: Partial<User>) {
+    updates.id = this.currentUserSubject.value?.id
+    updates.role = this.currentUserSubject.value?.role;
+
+    const curUser = this.currentUserSubject.value;
+    if (curUser == null) return;
+    curUser.name = updates.name ?? "";
+    curUser.lastname = updates.lastname ?? "";
+    curUser.username = updates.username ?? "";
+    curUser.email = updates.email ?? "";
+
+    return this.http.put<User>(`${environment.backendEndpoint}/users/${updates.id}`, curUser).pipe(
+      tap(user => {
+        console.log('Updated profile:', user);
+        localStorage.setItem('user', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      })
+    )
+  }
 }

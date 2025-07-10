@@ -1,1 +1,65 @@
-<p>settings works!</p>
+<span class="text-2xl">
+  Editar Perfil
+</span>
+<form
+  [formGroup]="profileForm"
+  (ngSubmit)="onSubmit()"
+  class="grid gap-4 grid-cols-2 max-md:flex max-md:flex-col"
+>
+  <div class="flex flex-col">
+      <span>Nombre</span>
+      <input
+        formControlName="name"
+        class="rounded-lg p-2"
+        placeholder="Nombre"
+      />
+    <small *ngIf="profileForm.get('name')?.touched && profileForm.get('name')?.invalid" class="text-red-500">
+      Nombre es requerido
+    </small>
+  </div>
+
+  <div class="flex flex-col">
+      <span>Apellido</span>
+      <input
+        formControlName="lastname"
+        class="rounded-lg p-2"
+        placeholder="Apellido"
+      />
+    <small *ngIf="profileForm.get('lastname')?.touched && profileForm.get('lastname')?.invalid" class="text-red-500">
+      Apellido es requerido
+    </small>
+  </div>
+
+  <div class="flex flex-col">
+      <span>Correo</span>
+      <input
+        formControlName="email"
+        class="rounded-lg p-2"
+        placeholder="Correo"
+      />
+    <small *ngIf="profileForm.get('email')?.touched && profileForm.get('email')?.invalid" class="text-red-500">
+      Ingresa un correo válido
+    </small>
+  </div>
+
+  <div class="flex flex-col">
+
+      <span>Usuario</span>
+      <input
+        formControlName="username"
+        class="rounded-lg p-2"
+        placeholder="Usuario"
+      />
+    <small *ngIf="profileForm.get('username')?.touched && profileForm.get('username')?.invalid" class="text-red-500">
+      Usuario es requerido
+    </small>
+  </div>
+
+  <button
+    type="submit"
+    class="col-span-2 bg-secondary rounded-lg p-4 text-gr disabled:opacity-50"
+    [disabled]="profileForm.invalid"
+  >
+    Actualizar Información
+  </button>
+</form>

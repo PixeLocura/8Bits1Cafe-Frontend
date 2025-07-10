@@ -9,6 +9,7 @@ import { GameService } from '../services/game.service';
 //extraer el username para mostrarlo en la infor de un juego--------------
 import { Developer } from '../shared/interfaces/developer.interfaces';
 import { GameConUsername } from '../shared/interfaces/game.interfaces';
+import { CartService } from '../shared/services/cart';
 //------------------------------------------------------------------------
 @Component({
   selector: 'app-buscar-juegos',
@@ -76,7 +77,7 @@ export class BuscarJuegosComponent {
   mostrarModal: boolean = false;
   juegoSeleccionado: Game | null = null;
 
-  constructor(private gameService: GameService) {
+  constructor(private gameService: GameService, private cartService: CartService) {
     this.cargarDatos();
   }
 
@@ -92,6 +93,7 @@ export class BuscarJuegosComponent {
               return {
                 ...game,
                 developerUsername: dev?.name ?? 'Desconocido',
+                coverUrl: game.coverUrl || game.images?.[0] || 'assets/default-cover.png',
                 rating: Math.floor(Math.random() * 5) + 1
               };
             });
@@ -106,6 +108,7 @@ export class BuscarJuegosComponent {
       }
     });
   }
+
 
 
 
@@ -196,5 +199,8 @@ export class BuscarJuegosComponent {
     return filtered;
   }
 
+  addToCart(gameId: string) {
+    this.cartService.addToCart(gameId);
+  }
 
 }

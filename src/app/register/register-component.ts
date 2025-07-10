@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../auth/services/auth.service'; // importa tu servicio
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -83,5 +84,13 @@ export class RegisterComponent {
       }
 
     });
+  }
+
+  continueWithGoogle() {
+    window.location.href = `${environment.backendEndpoint}/oauth2/authorization/google`;
+  }
+
+  continueWithDiscord() {
+    window.location.href = `${environment.backendEndpoint}/oauth2/authorization/discord`;
   }
 }

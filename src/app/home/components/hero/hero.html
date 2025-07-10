@@ -6,26 +6,26 @@
     <div class="flex-1 text-center lg:text-left">
       <span class="inline-block bg-primary text-white px-3 py-1 text-sm font-press-start rounded">Game of the Day</span>
       <h1 class="mt-4 text-3xl md:text-4xl font-press-start text-coffee-brown leading-tight">
-        {{ deal.title }}
+        {{ deal?.title }}
       </h1>
 
       <div class="mt-4 flex justify-center lg:justify-start items-center space-x-6 text-sm text-coffee-brown">
         <div class="flex items-center">
           <lucide-icon name="star" class="w-4 h-4 text-yellow-500 mr-1"></lucide-icon>
-          <span>{{ deal.rating }} Rating</span>
+          <span>{{ deal?.rating }} Rating</span>
         </div>
         <div class="flex items-center">
           <lucide-icon name="tag" class="w-4 h-4 text-primary mr-1"></lucide-icon>
-          <span>{{ deal.genres.join(', ') }}</span>
+<!--          <span>{{ deal?.genres.join(', ') }}</span>-->
         </div>
       </div>
 
-      <p class="mt-6 max-w-lg mx-auto lg:mx-0 text-base">{{ deal.description }}</p>
+      <p class="mt-6 max-w-lg mx-auto lg:mx-0 text-base">{{ deal?.description }}</p>
 
       <div class="mt-6 inline-block bg-coffee-yellow/50 p-4 rounded-lg">
         <div class="flex items-center justify-center mb-1 space-x-2">
-          <span class="text-lg line-through text-muted-foreground">{{ deal.price }}</span>
-          <span class="text-2xl font-bold text-primary">{{ (deal.price * 0.8).toFixed(2) }}</span>
+          <span class="text-lg line-through text-muted-foreground">{{ deal?.price }}</span>
+          <span class="text-2xl font-bold text-primary">{{ ((deal?.price??0 )* 0.8).toFixed(2) }}</span>
           <span class="bg-primary text-white px-2 py-0.5 text-xs font-press-start rounded">{{ '20%' }} OFF</span>
         </div>
         <div class="text-sm text-coffee-brown">Deal ends in: {{ '23:59:59' }}</div>
@@ -36,7 +36,7 @@
           <lucide-icon name="shopping-cart" class="w-4 h-4 mr-2"></lucide-icon>
           Add to Cart
         </button>
-        <a [routerLink]="['/games', deal.id]">
+        <a [routerLink]="['/games', deal?.id]">
           <button class="px-6 py-3 border border-coffee-brown/20 bg-coffee-cream text-coffee-brown font-medium rounded hover:shadow">
             View Details
           </button>
@@ -47,7 +47,12 @@
     <!-- Image -->
     <div class="flex-1 relative">
       <div class="aspect-w-4 aspect-h-3 overflow-hidden rounded-lg shadow-lg">
-        <img [src]="deal.coverImage" [alt]="deal.title" class="object-cover w-full h-full aspect-[4/3]" />
+        <img
+          [src]="'https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60'"
+          [alt]="deal?.title"
+          class="object-cover w-full h-full aspect-[4/3]"
+        />
+
         <div class="absolute top-4 right-4 transform rotate-12 bg-primary text-white font-press-start text-sm px-3 py-1.5 rounded-sm">
           HOT DEAL
         </div>

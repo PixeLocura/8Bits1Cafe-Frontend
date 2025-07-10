@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {ProfileLayout} from './layouts/profile-layout/profile-layout';
-import {Overview} from './components/overview/overview';
-import {Favourites} from './components/favourites/favourites';
 import {Settings} from './components/settings/settings';
 import {Account} from './components/account/account';
 import {LibraryLayout} from './layouts/library-layout/library-layout';
@@ -21,6 +19,7 @@ const routes: Routes = [
         component: LibraryLayout,
         children: [
           { path: '',         component: Library    },
+          {path: 'settings', component: Account  },
           { path: 'orders',   component: Orders     },
           { path: 'wishlist', component: Wishlist   },
         ]

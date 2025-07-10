@@ -11,7 +11,7 @@
         <a [routerLink]="['/juego', a.id]" class="group block aspect-square">
           <div class="bg-coffee-cream border border-coffee-brown/20 rounded-lg overflow-hidden group-hover:shadow transition">
             <div class="aspect-square relative overflow-hidden">
-              <img [src]="a.coverImage" [alt]="a.title"
+              <img [src]="a.coverUrl" [alt]="a.title"
                    class="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300" />
               <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white">
                 <div class="truncate font-medium">{{ a.title }}</div>

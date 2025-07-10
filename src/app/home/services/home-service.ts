@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../../environments/environment';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Game} from '../../shared/models/game.model';
-import { map } from 'rxjs/operators';
-import {catchError, Observable, of} from 'rxjs';
-import {MOCK_GAMES} from '../../shared/mock/mock-games';
+import { Game } from '../../shared/interfaces/game.interfaces';
+import {BehaviorSubject, Observable, of} from 'rxjs';
+import {GameService} from '../../services/game.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,41 +11,13 @@ export class HomeService {
 
   private baseUrl: string = environment.backendEndpoint
 
-  constructor(private http: HttpClient) { }
+  constructor(private gameService: GameService) { }
 
-  getDealGame(): Observable<Game>{
-    const headers = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-
-    return this.http.get<Game[]>(`${this.baseUrl}/games`, {headers}).pipe(
-      map(games => {
-        if (!games || games.length === 0) {
-          throw new Error('No games available');
-        }
-        return games[0];
-      }),
-      catchError(err => {
-        console.error('Error loading deal game:', err);
-        // return our fixed fallback game so subscribers still get a Game
-        return of(MOCK_GAMES[0]);
-      })
-
-    );
+  getDealGame(): Observable<Game[]>{
+    return this.gameService.games
   }
 
   getNewReleases(): Observable<Game[]>{
-    const headers = new HttpHeaders({
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    });
-
-    return this.http.get<Game[]>(`${this.baseUrl}/games`, {headers}).pipe(
-      catchError(err => {
-        console.error('Error loading deal game:', err);
-        return of(MOCK_GAMES);
-      })
-    );
+    return this.gameService.games
   }
 }
