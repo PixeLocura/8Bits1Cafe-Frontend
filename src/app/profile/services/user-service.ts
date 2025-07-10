@@ -1,25 +1,10 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom } from 'rxjs';
+import { BehaviorSubject, firstValueFrom, of } from 'rxjs';
 import { AuthService } from '../../auth/services/auth.service';
 import { GameService } from '../../services/game.service';
 import { Game } from '../../shared/interfaces/game.interfaces';
-
-// ✅ Define tus interfaces aquí mismo
-interface TransactionDetail {
-  transactionId: string;
-  gameId: string;
-  price: number;
-}
-
-interface Transaction {
-  id: string;
-  userId: string;
-  totalPrice: number;
-  transactionDate: string;
-  details: TransactionDetail[];
-}
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +13,7 @@ export class UserService {
   baseUrl: string = `${environment.backendEndpoint}`;
   private ownedGamesSubject = new BehaviorSubject<Game[] | null>(null);
   ownedGames = this.ownedGamesSubject.asObservable();
-  private transactionSubject = new BehaviorSubject<Transaction[] | null>(null);
+  private transactionSubject = new BehaviorSubject<any[] | null>(null);
   transaction = this.transactionSubject.asObservable();
 
   constructor(
@@ -38,16 +23,28 @@ export class UserService {
   ) {
     this.authService.currentUser$.subscribe(user => {
       if (!user) return;
-      this.fetchInfoUser(user.id)
+      this.fetchInfoUser(user.id);
     });
   }
+ actualizarFotoPerfil(url: string) {
+    const userId = this.authService.getCurrentUser()?.id;
+    if (!userId) {
+      console.error('No user ID');
+      return of({}); // ⚡ devuelve Observable vacío del mismo tipo
+    }
 
-  triggerReloadInfo(){
-    return this.fetchInfoUser(this.authService.getCurrentUser()?.id??"")
+    const body = { profilePictureUrl: url };
+    return this.http.patch(`${this.baseUrl}/user/profile/${userId}/profile-picture`, body);
+  }
+
+
+  // Lo demás igual
+  triggerReloadInfo() {
+    return this.fetchInfoUser(this.authService.getCurrentUser()?.id ?? "");
   }
 
   private fetchInfoUser(id: string | null) {
-    if(!id) return;
+    if (!id) return;
 
     this.getTransaction(id).subscribe(async (val) => {
       if (val == null) {
@@ -57,7 +54,7 @@ export class UserService {
       this.transactionSubject.next(val);
 
       const gamePromises = val.flatMap(tx =>
-        tx.details.map((d: TransactionDetail) =>
+        tx.details.map((d: any) =>
           firstValueFrom(this.gameService.getGameById(d.gameId))
         )
       );
@@ -65,14 +62,11 @@ export class UserService {
       const games: Game[] = await Promise.all(gamePromises);
       this.ownedGamesSubject.next(games);
     });
-
   }
 
   private getTransaction(id: string) {
-    return this.http.get<Transaction[] | null>(`${this.baseUrl}/transactions/user/${id}`);
+    return this.http.get<any[] | null>(`${this.baseUrl}/transactions/user/${id}`);
   }
-
-
 
   getTransations() {
     return this.transactionSubject;
@@ -89,5 +83,4 @@ export class UserService {
   isPurchased(id: string): boolean {
     return !!this.ownedGamesSubject.value?.find(e => e.id === id);
   }
-
 }

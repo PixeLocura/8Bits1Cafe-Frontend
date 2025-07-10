@@ -7,9 +7,11 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { UserService } from '../../services/user-service';
 import { FavoritesService } from '../../../services/favorites.service';
 import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-profile-layout',
+  standalone: true,
   imports: [
     CommonModule,
     RouterOutlet,
@@ -36,17 +38,11 @@ export class ProfileLayout implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authService.currentUser$.subscribe(u=> this.user = u);
-    this.userService.ownedGames.subscribe(val=>{
-      console.log("transactioj found", val)
-      this.numberOfGames = (val??[]).length
-    })
-    this.favoritesService.favourites.subscribe(u=>{
-      this.numberOfFavourites = u.length
-    })
+    // Obtiene usuario actual
     this.authService.currentUser$.subscribe(u => this.user = u);
 
-    this.userService.transaction.subscribe(val => {
+    // Cuenta juegos y favoritos
+    this.userService.ownedGames.subscribe(val => {
       this.numberOfGames = (val ?? []).length;
     });
 
@@ -73,6 +69,22 @@ export class ProfileLayout implements OnInit {
       });
   }
 
+  editarPerfil() {
+    const nuevaUrl = prompt('Ingresa la URL de tu nueva foto de perfil:');
+
+    if (nuevaUrl && nuevaUrl.trim() !== '') {
+      // Actualiza en frontend
+      if (this.user) {
+        this.user.profilePictureUrl = nuevaUrl.trim();
+      }
+
+      // Llama a backend para persistir
+      this.userService.actualizarFotoPerfil(nuevaUrl.trim()).subscribe({
+        next: () => alert('✅ Foto de perfil actualizada'),
+        error: () => alert('❌ Error al actualizar la foto')
+      });
+    }
+  }
 
   logout() {
     this.authService.logout();
