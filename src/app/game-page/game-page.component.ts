@@ -49,8 +49,19 @@ export class GamePageComponent implements OnInit {
       if (!v) return;
       this.ownedGames = v;
     });
+
+    this.route.paramMap.subscribe(params => {
+      const id = params.get('id');
+      if (!id) {
+        alert('ID inválido');
+        this.router.navigate(['/buscar-juegos']);
+        return;
+      }
+
+      this.cargarJuego(id);
+    });
   }
-  
+
 
   private cargarJuego(id: string) {
     this.gameService.getGameById(id).subscribe({
