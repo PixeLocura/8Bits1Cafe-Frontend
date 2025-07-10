@@ -44,7 +44,11 @@ export class ProfileLayout implements OnInit {
     this.favoritesService.favourites.subscribe(u=>{
       this.numberOfFavourites = u.length
     })
-    this.authService.currentUser$.subscribe(u => this.user = u);
+    this.authService.currentUser$.subscribe(u => {
+      this.user = u
+      if(!u)return
+      this.hasDeveloperProfile = !!u.developerProfileId
+    });
 
     this.userService.transaction.subscribe(val => {
       this.numberOfGames = (val ?? []).length;
@@ -54,7 +58,6 @@ export class ProfileLayout implements OnInit {
       this.numberOfFavourites = u.length;
     });
 
-    this.checkDeveloperProfile();
   }
 
   checkDeveloperProfile() {

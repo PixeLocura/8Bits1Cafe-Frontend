@@ -4,9 +4,11 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Observable, catchError, throwError, map } from 'rxjs';
+import {Observable, catchError, throwError, map, tap} from 'rxjs';
 import { Developer } from '../interfaces/developer.interfaces';
 import { environment } from '../../../environments/environment';
+import {UserService} from '../../profile/services/user-service';
+import {AuthService} from '../../auth/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,7 @@ import { environment } from '../../../environments/environment';
 export class DeveloperService {
   private apiUrl = environment.backendEndpoint; // 👉 Asegúrate que termine SIN slash: ej: http://localhost:8080/api/v1
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getDeveloper(id: string): Observable<Developer> {
     console.log(`Fetching developer with ID: ${id}`);
@@ -54,6 +56,9 @@ export class DeveloperService {
         catchError((error: HttpErrorResponse) => {
           console.error('Error creating developer:', error);
           return throwError(() => error);
+        }),
+        tap((res)=>{
+          this.authService.updateDeveloperId(res.id)
         })
       );
   }
