@@ -85,10 +85,10 @@ export class Login {
   }
 
   continueWithGoogle() {
-    window.location.href = `${environment.backendEndpoint}oauth2/authorization/google`;
+    window.location.href = `${environment.backendEndpoint}/oauth2/authorization/google`;
   }
 
   continueWithDiscord() {
-    window.location.href = `${environment.backendEndpoint}oauth2/authorization/discord`;
+    window.location.href = `${environment.backendEndpoint}/oauth2/authorization/discord`;
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {Observable, tap, BehaviorSubject, catchError, throwError, of} from 'rxjs';
+import { Observable, tap, BehaviorSubject, catchError, throwError, of } from 'rxjs';
 import { LoginRequest, LoginResponse, User } from '../interfaces/auth.interfaces';
 import { environment } from '../../../environments/environment';
-import {map, switchMap} from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -108,11 +108,11 @@ export class AuthService {
     password: string;
     countryIso: string;
   }): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}register/admin`, userData);
+    return this.http.post<{ token: string }>(`${this.apiUrl}/register/admin`, userData);
   }
 
 
-getUserId(): string | null {
+  getUserId(): string | null {
     const token = localStorage.getItem('token');
     if (!token) {
       console.warn('No token found in localStorage');
@@ -135,14 +135,14 @@ getUserId(): string | null {
     updates.role = this.currentUserSubject.value?.role;
 
     const curUser = this.currentUserSubject.value;
-    if(curUser == null) return ;
-    curUser.name = updates.name??"";
-    curUser.lastname = updates.lastname??"";
-    curUser.username = updates.username??"";
-    curUser.email = updates.email??"";
+    if (curUser == null) return;
+    curUser.name = updates.name ?? "";
+    curUser.lastname = updates.lastname ?? "";
+    curUser.username = updates.username ?? "";
+    curUser.email = updates.email ?? "";
 
     return this.http.put<User>(`${environment.backendEndpoint}/users/${updates.id}`, curUser).pipe(
-      tap(user=> {
+      tap(user => {
         console.log('Updated profile:', user);
         localStorage.setItem('user', JSON.stringify(user));
         this.currentUserSubject.next(user);

@@ -10,7 +10,7 @@ import { Game } from '../../shared/interfaces/game.interfaces';
   providedIn: 'root'
 })
 export class UserService {
-  baseUrl : string= `${environment.backendEndpoint}`
+  baseUrl: string= `${environment.backendEndpoint}`
   private ownedGamesSubject  = new BehaviorSubject<Game[] | null>(null);
   ownedGames = this.ownedGamesSubject.asObservable()
   private transactionSubject = new BehaviorSubject<any[] | null>(null);
@@ -49,6 +49,4 @@ export class UserService {
   getNumberOfOwnedGames(){
     return this.ownedGamesSubject.value?.length
   }
-
-
 }
