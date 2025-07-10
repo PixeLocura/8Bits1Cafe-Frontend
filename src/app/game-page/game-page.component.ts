@@ -12,7 +12,8 @@ import { Review } from '../shared/interfaces/review.interface';
 import { ReviewService } from '../services/review.service';
 import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
-
+import { CartService } from '../shared/services/cart';
+import { GameConUsername } from '../shared/interfaces/game.interfaces';
 
 @Component({
   selector: 'app-game-page',
@@ -28,13 +29,16 @@ export class GamePageComponent implements OnInit {
   juegosDelMismoDev: Game[] = [];
   developers: Developer[] = [];
   promedioEstrellas: number = 0;
+  games: GameConUsername[] = [];
+  
 
   constructor(
     private favoritesService: FavoritesService,
     private route: ActivatedRoute,
     private router: Router,
     private reviewService: ReviewService,
-    private gameService: GameService
+    private gameService: GameService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -263,15 +267,15 @@ export class GamePageComponent implements OnInit {
     alert('Juego añadido al carrito de compras');
   }
 
-  jugarDemo() {
-    alert('🎮 Juego demo descargado. ¡Empieza a jugar!');
-  }
-
   descargarJuego() {
     alert('🔒 Esta función estará disponible cuando compres el juego.');
   }
 
   irAGamePage(id: string): void {
     this.router.navigate(['/juego', id]);
+  }
+
+  addToCart(gameId: string) {
+    this.cartService.addToCart(gameId);
   }
 }
