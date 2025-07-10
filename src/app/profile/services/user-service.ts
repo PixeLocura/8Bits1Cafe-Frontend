@@ -33,34 +33,46 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    authService: AuthService,
-    gameService: GameService
+    private authService: AuthService,
+    private gameService: GameService
   ) {
-    authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe(user => {
       if (!user) return;
-
-      this.getTransaction(user.id).subscribe(async (val) => {
-        if (val == null) {
-          console.log("NO transactions found");
-          return;
-        }
-        this.transactionSubject.next(val);
-
-        const gamePromises = val.flatMap(tx =>
-          tx.details.map((d: TransactionDetail) =>
-            firstValueFrom(gameService.getGameById(d.gameId))
-          )
-        );
-
-        const games: Game[] = await Promise.all(gamePromises);
-        this.ownedGamesSubject.next(games);
-      });
+      this.fetchInfoUser(user.id)
     });
   }
 
-  getTransaction(id: string) {
+  triggerReloadInfo(){
+    return this.fetchInfoUser(this.authService.getCurrentUser()?.id??"")
+  }
+
+  private fetchInfoUser(id: string | null) {
+    if(!id) return;
+
+    this.getTransaction(id).subscribe(async (val) => {
+      if (val == null) {
+        console.log("NO transactions found");
+        return;
+      }
+      this.transactionSubject.next(val);
+
+      const gamePromises = val.flatMap(tx =>
+        tx.details.map((d: TransactionDetail) =>
+          firstValueFrom(this.gameService.getGameById(d.gameId))
+        )
+      );
+
+      const games: Game[] = await Promise.all(gamePromises);
+      this.ownedGamesSubject.next(games);
+    });
+
+  }
+
+  private getTransaction(id: string) {
     return this.http.get<Transaction[] | null>(`${this.baseUrl}/transactions/user/${id}`);
   }
+
+
 
   getTransations() {
     return this.transactionSubject;
@@ -73,4 +85,9 @@ export class UserService {
   getNumberOfOwnedGames() {
     return this.ownedGamesSubject.value?.length;
   }
+
+  isPurchased(id: string): boolean {
+    return !!this.ownedGamesSubject.value?.find(e => e.id === id);
+  }
+
 }

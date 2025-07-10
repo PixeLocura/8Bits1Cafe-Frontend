@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, from, forkJoin } from 'rxjs';
+import {BehaviorSubject, Observable, from, forkJoin, tap} from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 import { Game } from '../interfaces/game.interfaces';
+import {UserService} from '../../profile/services/user-service';
 
 export interface CartProduct {
   id: string;
@@ -20,7 +21,7 @@ export class CartService {
   private cartItemIds = new BehaviorSubject<string[]>([]);
   private apiUrl = environment.backendEndpoint;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private userService: UserService) {
     this.loadCartFromStorage();
     // // Add test item if cart is empty
     // if (this.cartItemIds.value.length === 0) {
@@ -101,6 +102,10 @@ export class CartService {
         Authorization: `Bearer ${authToken}`,
         'Content-Type': 'application/json',
       },
-    });
+    }).pipe(
+      tap(()=>{
+        this.userService.triggerReloadInfo()
+      })
+    );
   }
 }

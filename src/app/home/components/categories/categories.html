@@ -9,7 +9,7 @@
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
       <ng-container *ngFor="let cat of categories">
-        <a [routerLink]="['/search']" [queryParams]="{ category: cat.name }">
+        <a>
           <div class="bg-coffee-cream border border-coffee-brown/20 p-6 text-center rounded-lg hover:shadow transition">
             <div [ngClass]="cat.color + ' w-12 h-12 mx-auto mb-3 rounded-full flex items-center justify-center'">
               <lucide-icon [name]="cat.icon" class="w-6 h-6 text-white"></lucide-icon>

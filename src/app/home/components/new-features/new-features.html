@@ -63,9 +63,11 @@
 
             <button
               class="w-full mt-3 px-4 py-2 bg-coffee-yellow/50 text-coffee-brown font-press-start rounded inline-flex items-center justify-center hover:bg-coffee-yellow transition"
+              [disabled]="isPurchased(game.id)"
+              (click)="addToCart(game.id)"
             >
               <lucide-icon name="shopping-cart" class="w-4 h-4 mr-2"></lucide-icon>
-              Añadir al Carrito
+              {{ isPurchased(game.id)? "Juego Adquirido" : "Añadir al Carrito" }}
             </button>
           </div>
         </div>

@@ -30,7 +30,7 @@ export class ProfileLayout implements OnInit{
 
   ngOnInit() {
     this.authService.currentUser$.subscribe(u=> this.user = u);
-    this.userService.transaction.subscribe(val=>{
+    this.userService.ownedGames.subscribe(val=>{
       console.log("transactioj found", val)
       this.numberOfGames = (val??[]).length
     })
