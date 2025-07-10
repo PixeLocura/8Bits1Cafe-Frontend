@@ -4,6 +4,7 @@ import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {Game} from '../../../shared/models/game.model';
 import {UserService} from '../../services/user-service';
 import {CartService} from '../../../shared/services/cart';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-game-card',
@@ -11,6 +12,7 @@ import {CartService} from '../../../shared/services/cart';
     LucideAngularModule,
     NgForOf,
     DatePipe,
+    RouterLink,
   ],
   templateUrl: './game-card.html',
   styleUrl: './game-card.css'
