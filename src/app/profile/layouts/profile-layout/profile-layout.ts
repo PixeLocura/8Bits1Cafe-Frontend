@@ -36,6 +36,14 @@ export class ProfileLayout implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.authService.currentUser$.subscribe(u=> this.user = u);
+    this.userService.ownedGames.subscribe(val=>{
+      console.log("transactioj found", val)
+      this.numberOfGames = (val??[]).length
+    })
+    this.favoritesService.favourites.subscribe(u=>{
+      this.numberOfFavourites = u.length
+    })
     this.authService.currentUser$.subscribe(u => this.user = u);
 
     this.userService.transaction.subscribe(val => {
@@ -64,7 +72,7 @@ export class ProfileLayout implements OnInit {
         }
       });
   }
-  
+
 
   logout() {
     this.authService.logout();

@@ -7,12 +7,14 @@ import {HomeService} from '../../../home/services/home-service';
 import {FavoriteGame, FavoritesService} from '../../../services/favorites.service';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import {AuthService} from '../../../auth/services/auth.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
   imports: [
     NgForOf,
-    NgIf
+    NgIf,
+    RouterLink
   ],
   templateUrl: './wishlist.html',
   styleUrl: './wishlist.css'

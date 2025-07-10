@@ -17,11 +17,11 @@
     {{ user?.registrationDate | date:'dd \'de\' MMMM \'de\' yyyy' }}
   </p>
 
-  
+
   <button class="mt-4 inline-flex items-center justify-center w-full border border-primary text-foreground py-2 rounded-lg hover:bg-primary/10 transition-colors duration-200">
     Editar perfil
   </button>
-  
+
 
  <!-- Botón Convertirse en Desarrollador -->
  <a *ngIf="!hasDeveloperProfile"
@@ -41,8 +41,22 @@
   </div>
 </div>
 
-
-</div>
+        <h2 class="font-press-start text-lg">{{ user?.username }}</h2>
+        <p class="text-sm text-muted-foreground">Miembro desde {{ user?.registrationDate
+          | date:'dd \'de\' MMMM \'de\' yyyy'
+          }}</p>
+        <div class="flex justify-around mt-4">
+          <div>
+            <p class="text-xl font-medium">{{ numberOfGames??0 }}</p>
+            <p class="text-xs">Juegos</p>
+          </div>
+          <div>
+            <p class="text-xl font-medium">{{ numberOfFavourites??0 }}</p>
+            <p class="text-xs">Favoritos</p>
+          </div>
+        </div>
+        <button class="mt-4 btn-outline w-full">Editar Perfil</button>
+      </div>
 
 
       <!-- Sidebar nav -->

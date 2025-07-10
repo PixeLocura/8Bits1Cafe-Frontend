@@ -17,9 +17,9 @@ import {LucideAngularModule} from 'lucide-angular';
 export class LibraryLayout {
 
   tabs = [
-    { label: 'My Library', href: '/profile/library',         iconName: 'gamepad2' },
-    { label: 'My Orders',  href: '/profile/library/orders',  iconName: 'ShoppingCart'   },
-    { label: 'Wishlist',   href: '/profile/library/wishlist', iconName: 'Heart'          },
+    { label: 'Mi Biblioteca', href: '/profile/library',         iconName: 'gamepad2' },
+    { label: 'Myis Pedidos',  href: '/profile/library/orders',  iconName: 'ShoppingCart'   },
+    { label: 'Favoritos',   href: '/profile/library/wishlist', iconName: 'Heart'          },
   ];
 
   isActive(href: string) {

@@ -12,6 +12,7 @@ import { Review } from '../shared/interfaces/review.interface';
 import { ReviewService } from '../services/review.service';
 import { GameService } from '../services/game.service';
 import { Developer } from '../shared/interfaces/developer.interfaces';
+import {UserService} from '../profile/services/user-service';
 
 
 @Component({
@@ -28,13 +29,14 @@ export class GamePageComponent implements OnInit {
   juegosDelMismoDev: Game[] = [];
   developers: Developer[] = [];
   promedioEstrellas: number = 0;
-
+  ownedGames: Game[] = []
   constructor(
     private favoritesService: FavoritesService,
     private route: ActivatedRoute,
     private router: Router,
     private reviewService: ReviewService,
-    private gameService: GameService
+    private gameService: GameService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -58,6 +60,11 @@ export class GamePageComponent implements OnInit {
         this.developers = [];
       }
     });
+
+    this.userService.ownedGames.subscribe(v=>{
+      if(!v)return
+      this.ownedGames = v;
+    })
   }
 
   // 🔁 Esta función carga todo lo necesario para el juego con el ID dado
@@ -226,20 +233,20 @@ export class GamePageComponent implements OnInit {
       alert('Debes iniciar sesión para añadir a favoritos');
       return;
     }
-  
+
     const token = localStorage.getItem('token');
     const userEmail = this.getEmailFromToken(token!);
     const gameId = this.juego?.id;
-  
+
     if (!userEmail || !gameId) {
       alert('No se pudo añadir a favoritos. Inténtalo de nuevo.');
       return;
     }
-  
+
     this.reviewService.getUserIdByEmail(userEmail).subscribe({
       next: (response) => {
         const userId = response.id;
-  
+
         this.favoritesService.addFavorite(userId, gameId).subscribe({
           next: () => alert('💖 Juego agregado a favoritos'),
           error: (err) => {
@@ -253,7 +260,7 @@ export class GamePageComponent implements OnInit {
       }
     });
   }
-  
+
 
   compartir() {
     this.copiarLinkDelJuego();
@@ -273,5 +280,9 @@ export class GamePageComponent implements OnInit {
 
   irAGamePage(id: string): void {
     this.router.navigate(['/juego', id]);
+  }
+
+  isPurchased(){
+    return !!this.ownedGames.find(v=>v.id == this.juego?.id)
   }
 }
