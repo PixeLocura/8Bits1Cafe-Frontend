@@ -9,13 +9,11 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next) 
   const authService = inject(AuthService);
   const token = localStorage.getItem('token');
 
-  // ⚙️ Si es relativa, conviértela. Si ya trae api/v1, quítalo para que no se duplique.
   const isRelative = req.url.startsWith('/');
   let finalUrl = req.url;
 
   if (isRelative) {
     if (req.url.startsWith('/api/v1')) {
-      // Elimina el primer `/api/v1` porque ya está en backendEndpoint
       finalUrl = req.url.replace('/api/v1', '');
     }
     finalUrl = `${environment.backendEndpoint}${finalUrl}`;
@@ -23,8 +21,10 @@ export const AuthInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next) 
 
   let modifiedReq = req.clone({ url: finalUrl });
 
-  // Solo games son públicos
-  const isPublic = modifiedReq.url.includes('/games');
+  const isPublic =
+    modifiedReq.method === 'GET' &&
+    modifiedReq.url.includes('/api/v1/games') &&
+    !modifiedReq.url.includes('/reviews');
 
   console.log('Auth Interceptor - Request URL:', modifiedReq.url);
   console.log('Auth Interceptor - Is Public:', isPublic);
