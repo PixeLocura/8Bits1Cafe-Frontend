@@ -6,13 +6,15 @@ import { throwError } from 'rxjs';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const token = localStorage.getItem('token'); // Direct check for debugging
+  const token = localStorage.getItem('token');
+
+  const isPublic = req.url.includes('/api/v1/games') || req.url.includes('/api/v1/developers');
 
   console.log('Auth Interceptor - Request URL:', req.url);
-  console.log('Auth Interceptor - Request Method:', req.method);
+  console.log('Auth Interceptor - Is Public:', isPublic);
   console.log('Auth Interceptor - Token present:', !!token);
 
-  if (token) {
+  if (token && !isPublic) {
     console.log('Auth Interceptor - Adding token to request');
     req = req.clone({
       setHeaders: {
@@ -39,9 +41,9 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     catchError(error => {
       if (error.status === 401) {
         console.error('Auth Interceptor - Unauthorized request');
-        // Could handle token refresh here if needed
       }
       return throwError(() => error);
     })
   );
-}
+};
+

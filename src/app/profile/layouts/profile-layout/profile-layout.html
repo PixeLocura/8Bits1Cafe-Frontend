@@ -8,7 +8,8 @@
     <aside class="space-y-6">
       <!-- Avatar y datos básicos -->
       <div class="bg-coffee-cream rounded-lg p-6 border border-coffee-brown/10 text-center">
-        <img [src]="avatar" class="w-24 h-24 rounded-full mx-auto mb-4" />
+        <img [src]="user?.profilePictureUrl || avatar" alt="Foto de perfil" class="w-32 h-32 rounded-full object-cover mx-auto">
+
         <h2 class="font-press-start text-lg">{{ user?.username }}</h2>
         <p class="text-sm text-muted-foreground">Miembro desde {{ user?.registrationDate
           | date:'dd \'de\' MMMM \'de\' yyyy'
